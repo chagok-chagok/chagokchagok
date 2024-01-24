@@ -3,10 +3,11 @@ package com.hana.chagokchagok.entity;
 import com.hana.chagokchagok.enums.ErrorCode;
 import com.hana.chagokchagok.enums.ReportStatus;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Entity
+@Entity @Getter
 public class Report {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

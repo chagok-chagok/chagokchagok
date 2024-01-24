@@ -1,9 +1,10 @@
 package com.hana.chagokchagok.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 //관리자
-@Entity
+@Entity @Getter
 public class Admin {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

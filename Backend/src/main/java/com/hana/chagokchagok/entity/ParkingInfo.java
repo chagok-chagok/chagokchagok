@@ -18,11 +18,8 @@ public class ParkingInfo {
     private String parkNo;
 
     @OneToOne
+    @JoinColumn(name = "allocation_id")
     private AllocationLog allocationlog;
-    //private Boolean isParked;
-
-//    @OneToMany(mappedBy = "parkingInfo", cascade = CascadeType.ALL)
-//    private List<AllocationLog> allocationLogs = new ArrayList<>();
 
     @OneToMany(mappedBy = "parkingInfo", cascade = CascadeType.ALL)
     private List<Report> reports = new ArrayList<>();

@@ -1,12 +1,13 @@
 package com.hana.chagokchagok.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.hibernate.mapping.Join;
 
 import java.time.LocalDateTime;
 
 //주차배정기록
-@Entity
+@Entity @Getter
 public class AllocationLog {
 
     @Id
@@ -14,9 +15,8 @@ public class AllocationLog {
     @Column(name="allocation_id")
     private Long allocationId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="park_id")
-    private ParkingInfo parkingInfo;
+    @Column(name="park_no")
+    private String parkNo;
 
     @Column(name="car_number")
     private String carNumber;
