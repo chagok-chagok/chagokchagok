@@ -1,5 +1,7 @@
 package com.hana.chagokchagok.entity;
 
+import com.hana.chagokchagok.enums.ErrorCode;
+import com.hana.chagokchagok.enums.ReportStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

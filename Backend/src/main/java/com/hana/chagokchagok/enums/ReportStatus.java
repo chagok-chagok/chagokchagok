@@ -1,4 +1,4 @@
-package com.hana.chagokchagok.entity;
+package com.hana.chagokchagok.enums;
 
 public enum ReportStatus {
     IN_PROGRESS, // 진행중

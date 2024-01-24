@@ -1,4 +1,4 @@
-package com.hana.chagokchagok.entity;
+package com.hana.chagokchagok.enums;
 
 //신고코드
 public enum ErrorCode {
