@@ -18,5 +18,6 @@ public class ParkingInfo {
 
     @Column(name="park_no")
     private String parkNo;
-
+    @Column(name = "is_disabled")
+    private Boolean isDisabled;
 }
