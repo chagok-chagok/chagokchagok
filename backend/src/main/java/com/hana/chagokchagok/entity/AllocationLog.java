@@ -22,7 +22,7 @@ public class AllocationLog {
     @Column(name="car_number")
     private String carNo;
 
-    @Column(name="parment_status")
+    @Column(name="payment_status")
     private Boolean paymentStatus;
 
     @Column(name="parking_fee")
