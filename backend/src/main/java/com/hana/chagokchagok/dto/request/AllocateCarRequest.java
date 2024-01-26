@@ -2,8 +2,6 @@ package com.hana.chagokchagok.dto.request;
 
 import lombok.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString
