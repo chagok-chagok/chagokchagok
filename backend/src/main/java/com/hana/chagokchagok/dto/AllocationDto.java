@@ -16,7 +16,7 @@ public class AllocationDto {
         this.parkingInfo = realtimeParking.getParkingInfo();
         this.carNo = carNo;
     }
-    
+
     private ParkingInfo parkingInfo;
     private String carNo;
 }

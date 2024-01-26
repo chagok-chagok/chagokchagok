@@ -2,9 +2,11 @@ package com.hana.chagokchagok.dto.response;
 
 import com.hana.chagokchagok.entity.AllocationLog;
 import com.hana.chagokchagok.entity.RealtimeParking;
+
 import lombok.*;
 
 import java.time.LocalDateTime;
+
 
 @Getter
 @Setter
