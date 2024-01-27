@@ -6,6 +6,6 @@ import lombok.*;
 @Setter
 @ToString
 public class AllocateCarRequest {
-    private String carNo;
-    private Boolean isDisabled;
+    private String carNo; // 차량 번호
+    private Boolean isDisabled; // 장애 여부
 }
