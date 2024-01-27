@@ -15,9 +15,10 @@ public class ParkingInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="park_id")
     private Integer parkId;
-
+    @Column(name = "area_code")
+    private String areaCode;
     @Column(name="park_no")
-    private String parkNo;
+    private Integer parkNo;
     @Column(name = "is_disabled")
     private Boolean isDisabled;
 }
