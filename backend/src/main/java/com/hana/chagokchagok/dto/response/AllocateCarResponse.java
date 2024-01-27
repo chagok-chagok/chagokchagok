@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @ToString
 public class AllocateCarResponse {
     public AllocateCarResponse(RealtimeParking realtimeParking, AllocationLog allocationLog) {
-        this.allocatedLocation = realtimeParking.getParkingInfo().getParkNo();
+        this.allocatedLocation = realtimeParking.getParkingInfo().getFullName();
         this.carNo = allocationLog.getCarNo();
         this.entryTime = allocationLog.getEntryTime();
     }
