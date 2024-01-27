@@ -37,5 +37,4 @@ public interface RealTimeParkingRepository extends JpaRepository<RealtimeParking
             "ORDER BY r.parkId ASC " +
             "LIMIT 1")
     RealtimeParking findFirstWhoIsNotDisabled();
-
 }
