@@ -7,7 +7,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 //현시각 주차현황테이블
+<<<<<<< PATCH SET (0814e0 :bug: rebase로 인한 merge로 버그 수정)
+@Entity @Getter @ToString
+=======
 @Entity @Getter @Setter @ToString
+>>>>>>> BASE      (9feb6d :sparkles: 관리자용 자리교환 기능 완성)
 public class RealtimeParking {
 
     @Id
