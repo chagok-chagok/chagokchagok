@@ -11,7 +11,7 @@ import lombok.ToString;
 public class ParkingInfoDto {
     public ParkingInfoDto(RealtimeParking info) {
         this.park_spot = info.getParkingInfo().getParkNo();
-        this.park_status = info.getLog() == null? false : true;
+        this.park_status = info.getAllocationLog() == null? false : true;
     }
 
     private String park_spot; //주차자리명

@@ -17,7 +17,7 @@ public class RealTimeParkingInfoResponse {
         this.parks = new ArrayList<>();
         for(RealtimeParking info : realtimeParkingInfo){
             parks.add(new ParkingInfoDto(info));
-            if(info.getLog()!=null) this.curr_cnt++;
+            if(info.getAllocationLog()!=null) this.curr_cnt++;
         }
     }
     private List<ParkingInfoDto> parks; //주차현황

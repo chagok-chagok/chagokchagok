@@ -3,9 +3,11 @@ package com.hana.chagokchagok.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 //현시각 주차현황테이블
-@Entity @Getter
+@Entity @Getter @Setter @ToString
 public class RealtimeParking {
 
     @Id
@@ -19,7 +21,11 @@ public class RealtimeParking {
 
     @OneToOne
     @JoinColumn(name = "allocation_id") //null이면 빈자리
-    private AllocationLog log;
+    private AllocationLog allocationLog;
 
+
+    public void changeAllocationLog(AllocationLog targetAllocationLog) {
+        this.allocationLog = targetAllocationLog;
+    }
 
 }
