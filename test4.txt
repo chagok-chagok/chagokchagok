@@ -1,2 +1,0 @@
-this is test4.txt
-test merge
