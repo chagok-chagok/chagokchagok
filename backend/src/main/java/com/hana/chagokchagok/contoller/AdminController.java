@@ -1,13 +1,11 @@
 package com.hana.chagokchagok.contoller;
 
+import com.hana.chagokchagok.dto.request.OpenBarRequest;
 import com.hana.chagokchagok.dto.request.ReportRequest;
 import com.hana.chagokchagok.dto.response.ReportResponse;
 import com.hana.chagokchagok.service.AdminService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,5 +16,10 @@ public class AdminController {
     public ReportResponse getReportList(@RequestParam(name = "page", defaultValue = "0") int page) {
         ReportRequest reportRequest = new ReportRequest(page);
         return adminService.getReportList(reportRequest);
+    }
+
+    @PutMapping("/bar")
+    public void openBar(@RequestBody OpenBarRequest openBarRequest) {
+        // 로직 구현 필요
     }
 }
