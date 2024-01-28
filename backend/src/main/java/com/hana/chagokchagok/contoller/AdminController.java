@@ -1,9 +1,12 @@
 package com.hana.chagokchagok.contoller;
 
 import com.hana.chagokchagok.dto.request.ReportRequest;
+import com.hana.chagokchagok.dto.response.CommonAlertResponse;
 import com.hana.chagokchagok.dto.response.ReportResponse;
 import com.hana.chagokchagok.service.AdminService;
+import com.hana.chagokchagok.service.GuestService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +22,9 @@ public class AdminController {
         ReportRequest reportRequest = new ReportRequest(page);
         return adminService.getReportList(reportRequest);
     }
+    @GetMapping("/common")
+    public CommonAlertResponse getCommonAlertData() {
+        return adminService.getCommonAlertData();
+    }
 
-    
 }
