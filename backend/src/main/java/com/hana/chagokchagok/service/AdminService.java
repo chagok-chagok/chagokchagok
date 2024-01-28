@@ -1,8 +1,11 @@
 package com.hana.chagokchagok.service;
 
+import com.hana.chagokchagok.dto.ReportDto;
 import com.hana.chagokchagok.dto.request.ReportRequest;
 import com.hana.chagokchagok.dto.response.ReportResponse;
+import com.hana.chagokchagok.entity.ParkingInfo;
 import com.hana.chagokchagok.entity.Report;
+import com.hana.chagokchagok.repository.ParkingInfoRepository;
 import com.hana.chagokchagok.repository.ReportRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -13,14 +16,15 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class AdminService {
-
     private final ReportRepository reportRepository;
-
+    private final ParkingInfoRepository parkingInfoRepository;
     /**
      * 신고 기록을 조회하는 메소드
      * @param reportRequest 페이지 정보, 오늘 날짜
@@ -46,5 +50,17 @@ public class AdminService {
         return todayReports;
     }
 
-
+    /**
+     * 신고 정보 수정하는 메소드
+     * @param reportDto Request로 들어오는 DTO
+     */
+    public void updateReport(ReportDto reportDto) {
+        // 더티체킹으로 업데이트
+        Report report = reportRepository.findByReportId(reportDto.getReportId()); // 수정할 신고 검색
+        Optional<ParkingInfo> parkingInfo = parkingInfoRepository.findById(reportDto.getParkId()); // 수정할 parkId로 검색
+        if (parkingInfo.isPresent()) { // 수정 신고 필드에 반영
+            report.updateParkingInfo(parkingInfo.get());
+        }
+        report.updateReport(reportDto); // 나머지 필드도 수정
+    }
 }

@@ -1,5 +1,6 @@
 package com.hana.chagokchagok.entity;
 
+import com.hana.chagokchagok.dto.ReportDto;
 import com.hana.chagokchagok.enums.ErrorCode;
 import com.hana.chagokchagok.enums.ReportStatus;
 import jakarta.persistence.*;
@@ -11,6 +12,17 @@ import java.time.LocalDateTime;
 @Entity @Getter
 @ToString
 public class Report {
+    public void updateParkingInfo(ParkingInfo parkingInfo) {
+        this.parkingInfo = parkingInfo;
+    }
+    public void updateReport(ReportDto reportDto) {
+        this.reportId = reportDto.getReportId();
+        this.errorCode = reportDto.getErrorCode();
+        this.reportTime = reportDto.getReportTime();
+        this.doneTime = reportDto.getDoneTime();
+        this.reportStatus = reportDto.getStatus();
+        this.note = reportDto.getNote();
+    }
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reportId;

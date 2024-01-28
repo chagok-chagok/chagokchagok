@@ -40,6 +40,7 @@ public class ReportResponse {
 
     /**
      * 오류 타입별 카운트 증가시키는 메소드
+     *
      * @param code 오류 타입
      */
     private void increaseCountByErrorCode(ErrorCode code) {
