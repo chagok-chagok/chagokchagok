@@ -8,5 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AllocationLogRepository extends JpaRepository<AllocationLog, Long> {
 
+    AllocationLog findByCarNo(String carNo);
+
 
 }

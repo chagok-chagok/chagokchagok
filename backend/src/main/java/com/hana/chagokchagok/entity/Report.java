@@ -32,4 +32,16 @@ public class Report {
     private ReportStatus reportStatus;
 
     private String note;
+
+    public Report(ParkingInfo parkingInfo) {
+        this.parkingInfo = parkingInfo;
+        this.errorCode = ErrorCode.AUTO_REPORT;
+        this.reportTime = LocalDateTime.now();
+        this.reportStatus = ReportStatus.UNRESOLVED;
+    }
+
+    public static Report createReport(ParkingInfo parkingInfo) {
+        return new Report(parkingInfo);
+    }
+
 }

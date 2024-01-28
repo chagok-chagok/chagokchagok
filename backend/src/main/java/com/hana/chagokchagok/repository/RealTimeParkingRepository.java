@@ -1,5 +1,6 @@
 package com.hana.chagokchagok.repository;
 
+import com.hana.chagokchagok.entity.AllocationLog;
 import com.hana.chagokchagok.entity.RealtimeParking;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +14,7 @@ public interface RealTimeParkingRepository extends JpaRepository<RealtimeParking
     @Override
     @EntityGraph(attributePaths = {"parkingInfo"})
     List<RealtimeParking> findAll();
+
 
     /**
      * 장애 좌석 배정 가능 메소드
@@ -37,4 +39,12 @@ public interface RealTimeParkingRepository extends JpaRepository<RealtimeParking
             "ORDER BY r.parkId ASC " +
             "LIMIT 1")
     RealtimeParking findFirstWhoIsNotDisabled();
+
+    /**
+     * 만차인지 판별하는 메소드
+     * @return 만차시 false
+     */
+    boolean existsByLogIsNull();
+
+    RealtimeParking findByLog(AllocationLog log);
 }

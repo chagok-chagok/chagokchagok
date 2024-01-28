@@ -21,5 +21,8 @@ public class RealtimeParking {
     @JoinColumn(name = "allocation_id") //null이면 빈자리
     private AllocationLog log;
 
+    public void deleteAllocationLog(){
+        this.log = null;
+    }
 
 }
