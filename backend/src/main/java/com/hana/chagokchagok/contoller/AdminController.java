@@ -19,4 +19,6 @@ public class AdminController {
         ReportRequest reportRequest = new ReportRequest(page);
         return adminService.getReportList(reportRequest);
     }
+
+    
 }
