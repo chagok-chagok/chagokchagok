@@ -2,9 +2,16 @@ package com.hana.chagokchagok.contoller;
 
 import com.hana.chagokchagok.dto.request.ExchangeRequest;
 import com.hana.chagokchagok.dto.request.ReportRequest;
+import com.hana.chagokchagok.dto.response.CommonAlertResponse;
 import com.hana.chagokchagok.dto.response.ReportResponse;
 import com.hana.chagokchagok.service.AdminService;
+import com.hana.chagokchagok.service.GuestService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +29,9 @@ public class AdminController {
     public ResponseEntity<String> exchangeAllocation(@RequestBody ExchangeRequest exchangeRequest) {
         return adminService.exchangeAllocation(exchangeRequest);
     }
+    @GetMapping("/common")
+    public CommonAlertResponse getCommonAlertData() {
+        return adminService.getCommonAlertData();
+    }
 
 }
-

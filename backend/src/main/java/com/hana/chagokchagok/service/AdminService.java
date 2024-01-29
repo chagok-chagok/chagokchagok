@@ -1,12 +1,15 @@
 package com.hana.chagokchagok.service;
 
 import com.hana.chagokchagok.dto.request.ReportRequest;
+import com.hana.chagokchagok.dto.response.CommonAlertResponse;
 import com.hana.chagokchagok.dto.response.ReportResponse;
+import com.hana.chagokchagok.entity.RealtimeParking;
 import com.hana.chagokchagok.entity.Report;
 import com.hana.chagokchagok.repository.ReportRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -130,7 +133,15 @@ public class AdminService {
         }
     }
 
-
+    /**
+     * 공통바에 사용할 데이터를 조회하는 메소드
+     * @return 주차장 현황(숫자), 최근 해결된 신고데이터 5개, 주차현황리스트
+     */
+    public CommonAlertResponse getCommonAlertData() {
+        List<RealtimeParking> realtimeParkingInfo = realtimeParkingRepository.findAll();
+        List<Report> reports = reportRepository.findTop5ByOrderByDoneTimeDesc();
+        return new CommonAlertResponse(realtimeParkingInfo, reports);
+    }
 
 
 }
