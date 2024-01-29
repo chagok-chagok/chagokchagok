@@ -5,8 +5,11 @@ import com.hana.chagokchagok.dto.request.PullOutRequest;
 import com.hana.chagokchagok.dto.request.ValidateAreaRequest;
 import com.hana.chagokchagok.dto.response.AllocateCarResponse;
 import com.hana.chagokchagok.dto.response.ValidateAreaResponse;
+import com.hana.chagokchagok.service.AdminService;
 import com.hana.chagokchagok.service.ParkService;
+import com.hana.chagokchagok.service.SseService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +18,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/park")
 public class ParkController {
     private final ParkService parkService;
+    private final AdminService adminService;
+    private final SseService sseService;
+    @Value("${admin.key}")
+    private String ADMIN_KEY;
 
     /**
      * 자리 배정 요청
@@ -68,7 +75,10 @@ public class ParkController {
      */
     @PostMapping("/out")
     public ResponseEntity<String> pullOut(@RequestBody PullOutRequest pullOutRequest){
-        return parkService.pullOut(pullOutRequest.getCarNo());
+        ResponseEntity<String> resp = parkService.pullOut(pullOutRequest.getCarNo());
+        //출차처리 되었으니 관리자페이지에 공통바 SSE알림
+        sseService.sendRealtimeCommon(ADMIN_KEY);
+        return resp;
     }
 
     /**
