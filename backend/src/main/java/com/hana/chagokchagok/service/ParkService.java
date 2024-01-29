@@ -3,6 +3,7 @@ package com.hana.chagokchagok.service;
 import com.hana.chagokchagok.dto.AllocationDto;
 import com.hana.chagokchagok.dto.ValidationParkingInfoDto;
 import com.hana.chagokchagok.dto.request.AllocateCarRequest;
+import com.hana.chagokchagok.dto.request.OpenBarRequest;
 import com.hana.chagokchagok.dto.request.ValidateAreaRequest;
 import com.hana.chagokchagok.dto.response.AllocateCarResponse;
 import com.hana.chagokchagok.dto.response.ValidateAreaResponse;
@@ -32,6 +33,7 @@ public class ParkService {
     private final AllocationLogRepository allocationLogRepository;
     private final ParkingInfoRepository parkingInfoRepository;
     private final ReportRepository reportRepository;
+    private final FeignService feignService;
     /**
      * 자리 배정 로직 수행 메소드
      * @author 김용준
@@ -129,5 +131,24 @@ public class ParkService {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * 특정 위치 차단바 여는 메소드
+     * @author 김용준
+     * @param openBarRequest
+     * @return
+     */
+    public ResponseEntity<Void> openBar(OpenBarRequest openBarRequest) {
+        // 주차현황 가져오기
+        RealtimeParking searchedRealTimeParking = realTimeParkingRepository
+                .findByParkingInfo_ParkNoAndParkingInfo_AreaCode(
+                        openBarRequest.getParkNo(),
+                        openBarRequest.getAreaCode());
 
+        AllocationLog allocationLog = searchedRealTimeParking.getAllocationLog();
+        // 입출차기록에 저장된 차량 번호를 입력받은 차량 번호로 변경
+        allocationLog.changeCarNo(openBarRequest.getCarNo());
+        // 차단바 제어 서버로 전송(자리 번호)
+        feignService.sendOpenBarRequest(searchedRealTimeParking.getParkId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

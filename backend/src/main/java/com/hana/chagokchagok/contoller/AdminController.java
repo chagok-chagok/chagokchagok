@@ -5,6 +5,7 @@ import com.hana.chagokchagok.dto.request.OpenBarRequest;
 import com.hana.chagokchagok.dto.request.ReportRequest;
 import com.hana.chagokchagok.dto.response.ReportResponse;
 import com.hana.chagokchagok.service.AdminService;
+import com.hana.chagokchagok.service.ParkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin")
 public class AdminController {
     private final AdminService adminService;
+    private final ParkService parkService;
     @GetMapping("/report")
     public ReportResponse getReportList(@RequestParam(name = "page", defaultValue = "0") int page) {
         ReportRequest reportRequest = new ReportRequest(page);
@@ -25,7 +27,7 @@ public class AdminController {
     }
     @PutMapping("/bar")
     public void openBar(@RequestBody OpenBarRequest openBarRequest) {
-        // 로직 구현 필요
+        parkService.openBar(openBarRequest); // 차단바 해제 요청
     }
 }
 

@@ -9,7 +9,6 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 
 @Entity @Getter
-@ToString
 public class Report {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

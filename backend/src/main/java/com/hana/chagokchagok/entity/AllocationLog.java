@@ -66,4 +66,12 @@ public class AllocationLog {
     public void changeParkingInfo(ParkingInfo parkingInfo){
         this.parkingInfo = parkingInfo;
     }
+
+    /**
+     * 오인식 번호 수정용
+     * @param carNo 자동차 번호
+     */
+    public void changeCarNo(String carNo) {
+        this.carNo = carNo;
+    }
 }
