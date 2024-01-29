@@ -1,11 +1,13 @@
 package com.hana.chagokchagok.contoller;
 
 import com.hana.chagokchagok.dto.request.AllocateCarRequest;
+import com.hana.chagokchagok.dto.request.PullOutRequest;
 import com.hana.chagokchagok.dto.request.ValidateAreaRequest;
 import com.hana.chagokchagok.dto.response.AllocateCarResponse;
 import com.hana.chagokchagok.dto.response.ValidateAreaResponse;
 import com.hana.chagokchagok.service.ParkService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -57,5 +59,25 @@ public class ParkController {
         else {
             return validateAreaResponse;
         }
+    }
+
+    /**
+     * 출차처리
+     * @param pullOutRequest 차번호
+     * @return 해당 차량이 배정받았던 자리
+     */
+    @PostMapping("/out")
+    public ResponseEntity<String> pullOut(@RequestBody PullOutRequest pullOutRequest){
+        return parkService.pullOut(pullOutRequest.getCarNo());
+    }
+
+    /**
+     * 자동신고 시스템
+     * @param location
+     * @return resoponseEntity
+     */
+    @GetMapping("/auto")
+    public ResponseEntity<Void> autoSystem(@RequestParam(name = "location") String location){
+        return parkService.autoSystem(location);
     }
 }

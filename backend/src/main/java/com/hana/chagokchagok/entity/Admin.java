@@ -12,10 +12,22 @@ public class Admin {
     @Column(name = "admin_no")
     private Long adminNo;
 
-    @NotEmpty
-    private String name;
-
     private String id;
 
     private String password;
+
+    @Column(name = "refresh_token")
+    private String refreshToken;
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+    public void deleteRefreshToken(){
+        this.refreshToken = null;
+    }
+
+    public void join(String id, String password){
+        this.id = id;
+        this.password = password;
+    }
 }

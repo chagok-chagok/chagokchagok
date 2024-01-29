@@ -3,12 +3,14 @@ package com.hana.chagokchagok.entity;
 import com.hana.chagokchagok.dto.AllocationDto;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.ToString;
 import org.hibernate.mapping.Join;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 //입출차기록(배정기록)
-@Entity @Getter
+@Entity @Getter @ToString
 public class AllocationLog {
     /**
      * Allocation Entity를 생성하는 정적 팩토리 메소드
@@ -47,4 +49,21 @@ public class AllocationLog {
 
     @Column(name="exit_time")
     private LocalDateTime exitTime;
+
+    /**
+     * 출차시 셋팅
+     */
+    public void pullOut() {
+        this.exitTime = LocalDateTime.now();
+        this.paymentStatus = true;
+
+        Duration duration = Duration.between(entryTime, exitTime);
+        // 10분당 500원의 요금 계산
+        long minutes = duration.toMinutes();
+        int feePer10Minutes = 500;
+        this.parkingFee = (int) ((minutes / 10) * feePer10Minutes);
+    }
+    public void changeParkingInfo(ParkingInfo parkingInfo){
+        this.parkingInfo = parkingInfo;
+    }
 }
