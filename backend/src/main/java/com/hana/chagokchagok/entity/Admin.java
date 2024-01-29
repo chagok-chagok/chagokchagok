@@ -12,9 +12,6 @@ public class Admin {
     @Column(name = "admin_no")
     private Long adminNo;
 
-    @NotEmpty
-    private String name;
-
     private String id;
 
     private String password;
@@ -27,5 +24,10 @@ public class Admin {
     }
     public void deleteRefreshToken(){
         this.refreshToken = null;
+    }
+
+    public void join(String id, String password){
+        this.id = id;
+        this.password = password;
     }
 }

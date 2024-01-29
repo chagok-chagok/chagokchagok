@@ -16,9 +16,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JWTUtil {
 
-    static private String salt = "weAreChaGokChaGokProjectByHaNaTeam";
+    @Value("${jwt.salt}")
+    private String salt;
 
-    @Value("30000")
+    @Value("${jwt.access-token.expiretime}")
     private long accessTokenExpireTime;
 
     @Value("${jwt.refresh-token.expiretime}")
@@ -59,7 +60,7 @@ public class JWTUtil {
     }
 
     //	Signature 설정에 들어갈 key 생성.
-    static private byte[] generateKey() {
+    private byte[] generateKey() {
         byte[] key = null;
         try {
 //			charset 설정 안하면 사용자 플랫폼의 기본 인코딩 설정으로 인코딩 됨.

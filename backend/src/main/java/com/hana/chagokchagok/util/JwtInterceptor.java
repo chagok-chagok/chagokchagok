@@ -20,7 +20,7 @@ public class JwtInterceptor implements HandlerInterceptor {
     public boolean preHandle(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response, Object handler) throws Exception {
         final String token = request.getHeader(HEADER_AUTH);
 
-        if (request.getRequestURI().equals("/admin/login")) {
+        if (request.getRequestURI().equals("/admin/login") || request.getRequestURI().equals("/admin/test")) {
             return true;
         }
 

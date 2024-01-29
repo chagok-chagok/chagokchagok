@@ -1,11 +1,14 @@
 package com.hana.chagokchagok.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.Setter;
+import lombok.Setter;
+import lombok.ToString;
 
 //현시각 주차현황테이블
 @Entity @Getter
+@Setter // Setter를 사용하지 않고 필드값을 update하는 법을 모르겠다...
 public class RealtimeParking {
 
     @Id
@@ -19,7 +22,14 @@ public class RealtimeParking {
 
     @OneToOne
     @JoinColumn(name = "allocation_id") //null이면 빈자리
-    private AllocationLog log;
+    private AllocationLog allocationLog;
 
+    public void deleteAllocationLog(){
+        this.allocationLog = null;
+    }
+
+    public void changeAllocationLog(AllocationLog targetAllocationLog) {
+        this.allocationLog = targetAllocationLog;
+    }
 
 }
