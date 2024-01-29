@@ -12,7 +12,7 @@ import com.hana.chagokchagok.entity.RealtimeParking;
 import com.hana.chagokchagok.entity.Report;
 import com.hana.chagokchagok.repository.AllocationLogRepository;
 import com.hana.chagokchagok.repository.ParkingInfoRepository;
-import com.hana.chagokchagok.repository.RealTimeParkingRepository;
+import com.hana.chagokchagok.repository.RealtimeParkingRepository;
 import com.hana.chagokchagok.repository.ReportRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 @Transactional
 public class ParkService {
-    private final RealTimeParkingRepository realTimeParkingRepository;
+    private final RealtimeParkingRepository realTimeParkingRepository;
     private final AllocationLogRepository allocationLogRepository;
     private final ParkingInfoRepository parkingInfoRepository;
     private final ReportRepository reportRepository;
@@ -62,7 +62,7 @@ public class ParkService {
             allocationLogRepository.save(allocationLog);
 
             // 주차현황 테이블 업데이트
-            allocatedLocation.setLog(allocationLog);
+            allocatedLocation.changeAllocationLog(allocationLog);
             realTimeParkingRepository.save(allocatedLocation);
 
             return new AllocateCarResponse(allocatedLocation, allocationLog);
@@ -104,7 +104,7 @@ public class ParkService {
         //해당 차량 출차처리
         System.out.println("차버노 "+carNo);
         AllocationLog allocationLog = allocationLogRepository.findByCarNo(carNo);
-        RealtimeParking realtimeParking = realTimeParkingRepository.findByLog(allocationLog);
+        RealtimeParking realtimeParking = realTimeParkingRepository.findByAllocationLog(allocationLog);
         System.out.println("allocationLog.getAllocationId() : "+allocationLog.getAllocationId());
         System.out.println("realtimeParking.getParkId() : "+realtimeParking.getParkId());
 
@@ -112,7 +112,7 @@ public class ParkService {
         realtimeParking.deleteAllocationLog();
 
         // 만차판별
-        if(!realTimeParkingRepository.existsByLogIsNull()){
+        if(!realTimeParkingRepository.existsByAllocationLogIsNull()){
             //만차였던 경우 빈자리가 생겼으므로 키오스크 서버로 SSE알림
         }
 

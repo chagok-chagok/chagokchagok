@@ -21,7 +21,7 @@ public interface ParkingInfoRepository extends JpaRepository<ParkingInfo, Intege
     @Query("SELECT NEW com.hana.chagokchagok.dto.ValidationParkingInfoDto(pi.parkId, pi.areaCode) " +
             "FROM ParkingInfo pi " +
             "JOIN RealtimeParking rp ON pi.parkId = rp.parkId " +
-            "JOIN AllocationLog al ON rp.log = al " +
+            "JOIN AllocationLog al ON rp.allocationLog = al " +
             "WHERE al.carNo = :carNumber")
     ValidationParkingInfoDto findValidationParkingInfo(@Param("carNumber") String carNumber);
 
