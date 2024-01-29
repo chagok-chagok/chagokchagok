@@ -17,17 +17,30 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.hana.chagokchagok.dto.request.ExchangeRequest;
+import com.hana.chagokchagok.dto.request.ReportRequest;
+import com.hana.chagokchagok.dto.response.ReportResponse;
 import com.hana.chagokchagok.entity.AllocationLog;
 import com.hana.chagokchagok.entity.ParkingInfo;
 import com.hana.chagokchagok.entity.RealtimeParking;
+import com.hana.chagokchagok.entity.Report;
+import com.hana.chagokchagok.exception.InvalidInputException;
 import com.hana.chagokchagok.exception.SpotNotEmptyException;
 import com.hana.chagokchagok.repository.RealtimeParkingRepository;
+import com.hana.chagokchagok.repository.ReportRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -115,7 +128,6 @@ public class AdminService {
         }
     }
 
-
     /**
      * FullName을 구역과 번호로 나눠주는 메소드
      * @param input
@@ -135,6 +147,7 @@ public class AdminService {
         }
         return answer;
     }
+
 
 }
 

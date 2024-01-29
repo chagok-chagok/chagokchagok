@@ -52,7 +52,7 @@ public class ParkService {
             allocationLogRepository.save(allocationLog);
 
             // 주차현황 테이블 업데이트
-            allocatedLocation.setAllocationLog(allocationLog);
+            allocatedLocation.changeAllocationLog(allocationLog);
             realTimeParkingRepository.save(allocatedLocation);
 
             return new AllocateCarResponse(allocatedLocation, allocationLog);
