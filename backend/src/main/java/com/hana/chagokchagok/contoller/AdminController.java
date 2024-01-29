@@ -1,6 +1,7 @@
 package com.hana.chagokchagok.contoller;
 
 import com.hana.chagokchagok.dto.request.LoginRequest;
+import com.hana.chagokchagok.dto.request.UpdatePWRequest;
 import com.hana.chagokchagok.dto.response.LoginResponse;
 import com.hana.chagokchagok.dto.response.LogoutResponse;
 import com.hana.chagokchagok.dto.response.RefreshTokenResponse;
@@ -80,4 +81,9 @@ public class AdminController {
         return adminService.getCommonAlertData();
     }
 
+    @PutMapping("/pwUpdate")
+    public void updatePassword(@RequestBody UpdatePWRequest updatePWRequest, HttpServletRequest request){
+        System.out.println("updatePWRequest = " + updatePWRequest.getPassword());
+        adminService.updatePassword(jwtUtil.getUserId(request.getHeader("Authorization")), updatePWRequest.getPassword());
+    }
 }

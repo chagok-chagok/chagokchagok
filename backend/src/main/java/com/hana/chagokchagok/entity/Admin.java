@@ -22,6 +22,11 @@ public class Admin {
     public void updateRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
+
+    public void updatePassword(String newPassword){
+        this.password = newPassword;
+    }
+
     public void deleteRefreshToken(){
         this.refreshToken = null;
     }

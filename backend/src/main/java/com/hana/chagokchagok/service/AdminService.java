@@ -3,6 +3,7 @@ package com.hana.chagokchagok.service;
 import com.hana.chagokchagok.dto.request.LoginRequest;
 import com.hana.chagokchagok.dto.response.LoginResponse;
 import com.hana.chagokchagok.entity.Admin;
+import com.hana.chagokchagok.exception.SHA256Exception;
 import com.hana.chagokchagok.repository.AdminRepository;
 import com.hana.chagokchagok.util.JWTUtil;
 import com.hana.chagokchagok.util.SHA256;
@@ -181,5 +182,15 @@ public class AdminService {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void updatePassword(String id, String newPassword){
+        Admin admin = adminRepository.findById(id);
+        try {
+            admin.updatePassword(new SHA256().encrypt(newPassword));
+        } catch (NoSuchAlgorithmException e) {
+            throw new SHA256Exception();
+        }
+        adminRepository.save(admin);
     }
 }
