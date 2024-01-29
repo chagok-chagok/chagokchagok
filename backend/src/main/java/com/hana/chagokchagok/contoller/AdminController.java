@@ -1,6 +1,7 @@
 package com.hana.chagokchagok.contoller;
 
 import com.hana.chagokchagok.dto.request.ExchangeRequest;
+import com.hana.chagokchagok.dto.request.OpenBarRequest;
 import com.hana.chagokchagok.dto.request.ReportRequest;
 import com.hana.chagokchagok.dto.response.ReportResponse;
 import com.hana.chagokchagok.service.AdminService;
@@ -22,6 +23,9 @@ public class AdminController {
     public ResponseEntity<String> exchangeAllocation(@RequestBody ExchangeRequest exchangeRequest) {
         return adminService.exchangeAllocation(exchangeRequest);
     }
-
+    @PutMapping("/bar")
+    public void openBar(@RequestBody OpenBarRequest openBarRequest) {
+        // 로직 구현 필요
+    }
 }
 
