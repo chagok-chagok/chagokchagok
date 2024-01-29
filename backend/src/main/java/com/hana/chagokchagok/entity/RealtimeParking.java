@@ -1,17 +1,14 @@
 package com.hana.chagokchagok.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.Setter;
 import lombok.ToString;
 
 //현시각 주차현황테이블
-<<<<<<< PATCH SET (0814e0 :bug: rebase로 인한 merge로 버그 수정)
-@Entity @Getter @ToString
-=======
-@Entity @Getter @Setter @ToString
->>>>>>> BASE      (9feb6d :sparkles: 관리자용 자리교환 기능 완성)
+@Entity @Getter
+@Setter // Setter를 사용하지 않고 필드값을 update하는 법을 모르겠다...
 public class RealtimeParking {
 
     @Id

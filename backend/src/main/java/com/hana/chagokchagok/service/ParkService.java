@@ -1,4 +1,3 @@
-<<<<<<< PATCH SET (0814e0 :bug: rebase로 인한 merge로 버그 수정)
 package com.hana.chagokchagok.service;
 
 import com.hana.chagokchagok.dto.AllocationDto;
@@ -54,6 +53,7 @@ public class ParkService {
 
             // 주차현황 테이블 업데이트
             allocatedLocation.changeAllocationLog(allocationLog);
+            allocatedLocation.setAllocationLog(allocationLog);
             realTimeParkingRepository.save(allocatedLocation);
 
             return new AllocateCarResponse(allocatedLocation, allocationLog);
@@ -87,5 +87,3 @@ public class ParkService {
         }
     }
 }
-=======
->>>>>>> BASE      (9feb6d :sparkles: 관리자용 자리교환 기능 완성)

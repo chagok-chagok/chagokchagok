@@ -4,10 +4,12 @@ import com.hana.chagokchagok.enums.ErrorCode;
 import com.hana.chagokchagok.enums.ReportStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Entity @Getter
+@ToString
 public class Report {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

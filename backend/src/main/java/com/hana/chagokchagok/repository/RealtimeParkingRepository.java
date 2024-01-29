@@ -1,6 +1,5 @@
 package com.hana.chagokchagok.repository;
 
-<<<<<<< PATCH SET (0814e0 :bug: rebase로 인한 merge로 버그 수정)
 import com.hana.chagokchagok.entity.ParkingInfo;
 import com.hana.chagokchagok.entity.RealtimeParking;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -42,21 +41,4 @@ public interface RealtimeParkingRepository extends JpaRepository<RealtimeParking
             "ORDER BY r.parkId ASC " +
             "LIMIT 1")
     RealtimeParking findFirstWhoIsNotDisabled();
-=======
-import com.hana.chagokchagok.entity.RealtimeParking;
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
-
-@Repository
-public interface RealtimeParkingRepository extends JpaRepository<RealtimeParking, Integer> {
-    @Override
-    @EntityGraph(attributePaths = {"parkingInfo"})
-    List<RealtimeParking> findAll();
-
-    RealtimeParking findByParkingInfo_ParkNo(String parkNo);
-    RealtimeParking findByAllocationLog_CarNo(String carNo);
->>>>>>> BASE      (9feb6d :sparkles: 관리자용 자리교환 기능 완성)
 }

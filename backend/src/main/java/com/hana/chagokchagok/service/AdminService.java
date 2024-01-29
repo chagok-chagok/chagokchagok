@@ -1,27 +1,24 @@
 package com.hana.chagokchagok.service;
 
-<<<<<<< PATCH SET (0814e0 :bug: rebase로 인한 merge로 버그 수정)
+import com.hana.chagokchagok.dto.request.ExchangeRequest;
 import com.hana.chagokchagok.dto.request.ReportRequest;
 import com.hana.chagokchagok.dto.response.ReportResponse;
-import com.hana.chagokchagok.entity.Report;
-import com.hana.chagokchagok.exception.InvalidInputException;
-import com.hana.chagokchagok.repository.ReportRepository;
-=======
-import com.hana.chagokchagok.dto.request.ExchangeRequest;
 import com.hana.chagokchagok.entity.AllocationLog;
 import com.hana.chagokchagok.entity.ParkingInfo;
 import com.hana.chagokchagok.entity.RealtimeParking;
+import com.hana.chagokchagok.entity.Report;
+import com.hana.chagokchagok.exception.InvalidInputException;
 import com.hana.chagokchagok.exception.SpotNotEmptyException;
 import com.hana.chagokchagok.repository.RealtimeParkingRepository;
+import com.hana.chagokchagok.repository.ReportRepository;
 import jakarta.persistence.EntityManager;
->>>>>>> BASE      (9feb6d :sparkles: 관리자용 자리교환 기능 완성)
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-<<<<<<< PATCH SET (0814e0 :bug: rebase로 인한 merge로 버그 수정)
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -29,73 +26,26 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.hana.chagokchagok.dto.request.ExchangeRequest;
-import com.hana.chagokchagok.entity.AllocationLog;
-import com.hana.chagokchagok.entity.ParkingInfo;
-import com.hana.chagokchagok.entity.RealtimeParking;
-import com.hana.chagokchagok.exception.SpotNotEmptyException;
-import com.hana.chagokchagok.repository.RealtimeParkingRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
-=======
->>>>>>> BASE      (9feb6d :sparkles: 관리자용 자리교환 기능 완성)
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class AdminService {
     private final RealtimeParkingRepository realtimeParkingRepository;
     private final EntityManager em;
-
-<<<<<<< PATCH SET (0814e0 :bug: rebase로 인한 merge로 버그 수정)
     private final ReportRepository reportRepository;
-    private final RealtimeParkingRepository realtimeParkingRepository;
-    private final EntityManager em;
-=======
-    public ResponseEntity<String> exchangeAllocation(ExchangeRequest exchangeRequest) {
->>>>>>> BASE      (9feb6d :sparkles: 관리자용 자리교환 기능 완성)
 
-        try{
-            RealtimeParking originRealtimeParking = realtimeParkingRepository
-                    .findByParkingInfo_ParkNo(exchangeRequest.getOriginalLocation());
-            RealtimeParking targetRealtimeParking = realtimeParkingRepository
-                    .findByAllocationLog_CarNo(exchangeRequest.getCarNumber());
-
-            if(targetRealtimeParking == null) {
-                throw new SpotNotEmptyException(exchangeRequest.getCarNumber()+"에 해당하는 자리가 존재하지 않습니다.");
-            }
-
-            //Original, Target 정보를 임시변수에 저장
-            ParkingInfo tmpOriginParkingInfo = originRealtimeParking.getAllocationLog().getParkingInfo();
-            ParkingInfo tmpTargetParkingInfo = targetRealtimeParking.getAllocationLog().getParkingInfo();
-
-            //(1)주차배정로그 테이블의 배정내역을 변경
-            originRealtimeParking.getAllocationLog().changeParkingInfo(tmpTargetParkingInfo);
-            targetRealtimeParking.getAllocationLog().changeParkingInfo(tmpOriginParkingInfo);
-
-            //변경된 Original, Target 정보를 임시변수에 저장
-            AllocationLog tmpOriginAllocationLog = originRealtimeParking.getAllocationLog();
-            AllocationLog tmpTargetAllocationLog = targetRealtimeParking.getAllocationLog();
-
-            //(2)주차현황 테이블의 매핑을 변경 - 변경감지를 사용하므로 제약조건위배 방지를 위해 null로 초기화후 사용
-            originRealtimeParking.changeAllocationLog(null);
-            targetRealtimeParking.changeAllocationLog(null);
-
-            em.flush();
-
-            originRealtimeParking.changeAllocationLog(tmpTargetAllocationLog);
-            targetRealtimeParking.changeAllocationLog(tmpOriginAllocationLog);
-
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (SpotNotEmptyException e) {
-            return new ResponseEntity<>("Spot not empty: " + e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    /**
+     * 신고 기록을 조회하는 메소드
+     * @param reportRequest 페이지 정보, 오늘 날짜
+     * @return 신고 기록 페이지에 필요한 데이터를 담은 ReportResponse
+     */
+    public ReportResponse getReportList(ReportRequest reportRequest) {
+        // 현재 페이지 신고 내역
+        Page<Report> page = reportRepository.findAll(reportRequest.getPageable());
+        // 오늘의 신고 내역
+        List<Report> todayReports = getTodayReports(reportRequest.getToday());
+        return new ReportResponse(page, todayReports);
     }
-<<<<<<< PATCH SET (0814e0 :bug: rebase로 인한 merge로 버그 수정)
 
     /**
      * 오늘 들어온 신고를 조회하는 메소드
@@ -162,6 +112,13 @@ public class AdminService {
         }
     }
 
+
+
+    /**
+     * FullName을 구역과 번호로 나눠주는 메소드
+     * @param input
+     * @return [0]은 구역, [1]은 번호
+     */
     public String[] separateLocationInput(String input){
         String[] answer = new String[2];
 
@@ -178,10 +135,6 @@ public class AdminService {
         }
         return answer;
     }
-
-
-=======
->>>>>>> BASE      (9feb6d :sparkles: 관리자용 자리교환 기능 완성)
 }
 
 

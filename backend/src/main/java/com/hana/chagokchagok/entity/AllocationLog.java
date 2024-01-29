@@ -1,5 +1,6 @@
 package com.hana.chagokchagok.entity;
 
+import com.hana.chagokchagok.dto.AllocationDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.ToString;
@@ -10,6 +11,19 @@ import java.time.LocalDateTime;
 //입출차기록(배정기록)
 @Entity @Getter @ToString
 public class AllocationLog {
+    /**
+     * Allocation Entity를 생성하는 정적 팩토리 메소드
+     * @author 김용준
+     * @param allocationDto Allocation Entity를 생성하기 위한 DTO 객체
+     * @return allocationLog
+     */
+    public static AllocationLog createAllocationLog(AllocationDto allocationDto) {
+        AllocationLog allocationLog = new AllocationLog();
+        allocationLog.parkingInfo = allocationDto.getParkingInfo();
+        allocationLog.carNo = allocationDto.getCarNo();
+        allocationLog.entryTime = allocationDto.getEntryTime();
+        return allocationLog;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

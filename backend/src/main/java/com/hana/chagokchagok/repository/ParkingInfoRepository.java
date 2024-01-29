@@ -1,4 +1,3 @@
-<<<<<<< PATCH SET (0814e0 :bug: rebase로 인한 merge로 버그 수정)
 package com.hana.chagokchagok.repository;
 
 import com.hana.chagokchagok.dto.ValidationParkingInfoDto;
@@ -27,5 +26,3 @@ public interface ParkingInfoRepository extends JpaRepository<ParkingInfo, Intege
     ValidationParkingInfoDto findValidationParkingInfo(@Param("carNumber") String carNumber);
 
 }
-=======
->>>>>>> BASE      (9feb6d :sparkles: 관리자용 자리교환 기능 완성)
