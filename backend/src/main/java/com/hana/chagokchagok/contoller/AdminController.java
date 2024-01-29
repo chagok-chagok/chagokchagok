@@ -59,7 +59,6 @@ public class AdminController {
     public LogoutResponse removeToken(HttpServletRequest request) {
         LogoutResponse logoutResponse = new LogoutResponse();
         try {
-            System.out.println(jwtUtil.getUserId(request.getHeader("Authorization")));
             adminService.deleRefreshToken(jwtUtil.getUserId(request.getHeader("Authorization")));
             logoutResponse.setMessage("로그아웃되었습니다.");
         } catch (Exception e) {

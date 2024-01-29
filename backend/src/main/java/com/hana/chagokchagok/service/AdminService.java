@@ -47,7 +47,6 @@ public class AdminService {
         LoginResponse loginResponse = new LoginResponse();
         try{
             Admin admin = adminRepository.findById(adminInfoDto.getId());
-            System.out.println(adminInfoDto.getPass());
             if(admin != null && sha256.encrypt(adminInfoDto.getPass()).equals(admin.getPassword())){
 
                 String accessToken = jwtUtil.createAccessToken(adminInfoDto.getId());
