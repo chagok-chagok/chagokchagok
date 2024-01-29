@@ -5,6 +5,8 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //주차장 정보
 @Entity
@@ -31,4 +33,7 @@ public class ParkingInfo {
     public String getFullName() {
         return this.areaCode + this.parkNo;
     }
+
+
+
 }

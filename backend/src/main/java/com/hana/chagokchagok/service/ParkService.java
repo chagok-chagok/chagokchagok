@@ -10,7 +10,7 @@ import com.hana.chagokchagok.entity.AllocationLog;
 import com.hana.chagokchagok.entity.RealtimeParking;
 import com.hana.chagokchagok.repository.AllocationLogRepository;
 import com.hana.chagokchagok.repository.ParkingInfoRepository;
-import com.hana.chagokchagok.repository.RealTimeParkingRepository;
+import com.hana.chagokchagok.repository.RealtimeParkingRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Transactional
 public class ParkService {
-    private final RealTimeParkingRepository realTimeParkingRepository;
+    private final RealtimeParkingRepository realTimeParkingRepository;
     private final AllocationLogRepository allocationLogRepository;
     private final ParkingInfoRepository parkingInfoRepository;
     /**
@@ -52,7 +52,7 @@ public class ParkService {
             allocationLogRepository.save(allocationLog);
 
             // 주차현황 테이블 업데이트
-            allocatedLocation.setLog(allocationLog);
+            allocatedLocation.setAllocationLog(allocationLog);
             realTimeParkingRepository.save(allocatedLocation);
 
             return new AllocateCarResponse(allocatedLocation, allocationLog);

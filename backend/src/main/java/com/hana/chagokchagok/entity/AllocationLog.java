@@ -3,12 +3,13 @@ package com.hana.chagokchagok.entity;
 import com.hana.chagokchagok.dto.AllocationDto;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.ToString;
 import org.hibernate.mapping.Join;
 
 import java.time.LocalDateTime;
 
 //입출차기록(배정기록)
-@Entity @Getter
+@Entity @Getter @ToString
 public class AllocationLog {
     /**
      * Allocation Entity를 생성하는 정적 팩토리 메소드
@@ -47,4 +48,8 @@ public class AllocationLog {
 
     @Column(name="exit_time")
     private LocalDateTime exitTime;
+
+    public void changeParkingInfo(ParkingInfo parkingInfo){
+        this.parkingInfo = parkingInfo;
+    }
 }

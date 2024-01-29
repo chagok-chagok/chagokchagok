@@ -9,10 +9,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RealTimeParkingRepository extends JpaRepository<RealtimeParking, Integer> {
+public interface RealtimeParkingRepository extends JpaRepository<RealtimeParking, Integer> {
     @Override
     @EntityGraph(attributePaths = {"parkingInfo"})
     List<RealtimeParking> findAll();
+
+    RealtimeParking findByParkingInfo_ParkNoAndParkingInfo_AreaCode(int parkNo, String areaCode);
+    RealtimeParking findByAllocationLog_CarNo(String carNo);
 
     /**
      * 장애 좌석 배정 가능 메소드
@@ -21,7 +24,7 @@ public interface RealTimeParkingRepository extends JpaRepository<RealtimeParking
      */
     @Query("SELECT r FROM RealtimeParking r " +
             "JOIN ParkingInfo p ON r.parkId = p.parkId " +
-            "WHERE r.log IS NULL " +
+            "WHERE r.allocationLog IS NULL " +
             "ORDER BY p.isDisabled DESC, r.parkId ASC " +
             "LIMIT 1")
     RealtimeParking findFirstWhoIsDisabled();
@@ -33,7 +36,7 @@ public interface RealTimeParkingRepository extends JpaRepository<RealtimeParking
      */
     @Query("SELECT r FROM RealtimeParking r " +
             "JOIN ParkingInfo p ON r.parkId = p.parkId " +
-            "WHERE r.log IS NULL AND p.isDisabled = false " +
+            "WHERE r.allocationLog IS NULL AND p.isDisabled = false " +
             "ORDER BY r.parkId ASC " +
             "LIMIT 1")
     RealtimeParking findFirstWhoIsNotDisabled();
