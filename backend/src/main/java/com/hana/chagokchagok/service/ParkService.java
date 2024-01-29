@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import static com.hana.chagokchagok.util.SeparateLocation.separateLocationInput;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -102,11 +102,8 @@ public class ParkService {
      */
     public ResponseEntity<String> pullOut(String carNo) {
         //해당 차량 출차처리
-        System.out.println("차버노 "+carNo);
         AllocationLog allocationLog = allocationLogRepository.findByCarNo(carNo);
         RealtimeParking realtimeParking = realTimeParkingRepository.findByAllocationLog(allocationLog);
-        System.out.println("allocationLog.getAllocationId() : "+allocationLog.getAllocationId());
-        System.out.println("realtimeParking.getParkId() : "+realtimeParking.getParkId());
 
         allocationLog.pullOut();
         realtimeParking.deleteAllocationLog();
@@ -121,35 +118,15 @@ public class ParkService {
     }
 
     /**
-     * 자동신고시스템
+     * 자동신고시스템 => Report작성
      * @param input (자리값)
      * @return
      */
     public ResponseEntity<Void> autoSystem(String input) {
         String[] location = separateLocationInput(input);
         ParkingInfo parkingInfo = parkingInfoRepository.findByParkNoAndAreaCode(Integer.valueOf(location[1]),location[0]);
-        // 해당 자리에 대한 Report 작성
         reportRepository.save(Report.createReport(parkingInfo));
-        // RealTime에서 해당 자리를 block처리 어떤식으로?? => 컬럼추가해야할거같은데..?
-
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    public String[] separateLocationInput(String input){
-        String[] answer = new String[2];
-
-        String regex = "([A-Za-z]+)(\\d+)";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(input);
-
-        // 매칭된 경우에만 그룹을 가져옴
-        if (matcher.matches()) {
-            answer[0] = matcher.group(1);
-            answer[1] = matcher.group(2);
-            System.out.println("Letters: " + answer[0]);
-            System.out.println("Numbers: " + answer[1]);
-        }
-        return answer;
     }
 
 

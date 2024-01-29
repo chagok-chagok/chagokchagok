@@ -1,4 +1,4 @@
-package com.hana.chagokchagok;
+package com.hana.chagokchagok.util;
 
 import com.p6spy.engine.logging.Category;
 import com.p6spy.engine.spy.P6SpyOptions;
