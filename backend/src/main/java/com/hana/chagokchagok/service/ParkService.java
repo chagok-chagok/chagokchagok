@@ -19,11 +19,14 @@ import com.hana.chagokchagok.repository.RealtimeParkingRepository;
 import com.hana.chagokchagok.repository.ReportRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import static com.hana.chagokchagok.util.SeparateLocation.separateLocationInput;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Service
@@ -35,6 +38,11 @@ public class ParkService {
     private final ParkingInfoRepository parkingInfoRepository;
     private final ReportRepository reportRepository;
     private final FeignService feignService;
+    private final SseService sseService;
+    @Value("${admin.key}")
+    private String ADMIN_KEY;
+    @Value("${kiosk.key}")
+    private String KIOSK_KEY;
     /**
      * 자리 배정 로직 수행 메소드
      * @author 김용준
@@ -107,15 +115,20 @@ public class ParkService {
         AllocationLog allocationLog = allocationLogRepository.findByCarNo(carNo);
         RealtimeParking realtimeParking = realTimeParkingRepository.findByAllocationLog(allocationLog);
 
+        //allocationLog에 출차관련 데이터 update
         allocationLog.pullOut();
-        realtimeParking.deleteAllocationLog();
 
-        // 만차판별
+        //만차였던 경우 빈자리가 생겼으므로 키오스크 서버로 SSE알림
         if(!realTimeParkingRepository.existsByAllocationLogIsNull()){
-            //만차였던 경우 빈자리가 생겼으므로 키오스크 서버로 SSE알림
+            sseService.congestionClear(KIOSK_KEY);
         }
 
-        //공통 -> 라즈베리로 위치 반환
+        //RealtimeParking에서 해당차량 삭제
+        realtimeParking.deleteAllocationLog();
+
+
+
+        //라즈베리로 위치 반환
         return new ResponseEntity<>(realtimeParking.getParkingInfo().getFullName(), HttpStatus.OK);
     }
 
@@ -125,9 +138,15 @@ public class ParkService {
      * @return
      */
     public ResponseEntity<Void> autoSystem(String input) {
+
+        //Report 작성
         String[] location = separateLocationInput(input);
         ParkingInfo parkingInfo = parkingInfoRepository.findByParkNoAndAreaCode(Integer.valueOf(location[1]),location[0]);
-        reportRepository.save(Report.createReport(parkingInfo));
+        Report report = reportRepository.save(Report.createReport(parkingInfo));
+
+        //플로팅알림 전송
+        sseService.sendSensorReport(report, ADMIN_KEY);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

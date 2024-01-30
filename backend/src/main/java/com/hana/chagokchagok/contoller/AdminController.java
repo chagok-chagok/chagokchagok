@@ -11,9 +11,11 @@ import com.hana.chagokchagok.dto.response.RefreshTokenResponse;
 import com.hana.chagokchagok.dto.response.ReportResponse;
 import com.hana.chagokchagok.service.AdminService;
 import com.hana.chagokchagok.service.ParkService;
+import com.hana.chagokchagok.service.SseService;
 import com.hana.chagokchagok.util.JWTUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +32,10 @@ public class AdminController {
     private final AdminService adminService;
     private final JWTUtil jwtUtil;
     private final ParkService parkService;
+    private final SseService sseService;
+    @Value("${admin.key}")
+    private String ADMIN_KEY;
+
 
     @GetMapping("/test")
     public void test(){
@@ -78,7 +84,9 @@ public class AdminController {
     }
     @PutMapping("/exchange")
     public ResponseEntity<String> exchangeAllocation(@RequestBody ExchangeRequest exchangeRequest) {
-        return adminService.exchangeAllocation(exchangeRequest);
+        ResponseEntity<String> resp = adminService.exchangeAllocation(exchangeRequest);
+        sseService.sendRealtimeCommon(ADMIN_KEY);
+        return resp;
     }
     @GetMapping("/common")
     public CommonAlertResponse getCommonAlertData() {
