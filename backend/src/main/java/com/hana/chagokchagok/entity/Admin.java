@@ -15,6 +15,7 @@ public class Admin {
     @Column(name = "admin_no")
     private Long adminNo;
 
+    @Column(unique = true)
     private String id;
 
     private String password;

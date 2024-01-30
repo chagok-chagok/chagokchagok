@@ -80,17 +80,15 @@ public class AdminController {
 
     /**
      * 신고 목록 조회하는 메소드
-     *
+     * @author 김용준
      * @param page 페이지 번호(0번부터 시작)
      * @return reportResponse 화면에 뿌려줄 정보
-     * @author 김용준
      */
     @GetMapping("/report")
     public ReportResponse getReportList(@RequestParam(name = "page", defaultValue = "0") int page) {
         ReportRequest reportRequest = new ReportRequest(page);
         return adminService.getReportList(reportRequest);
     }
-
     /**
      * 신고 내용 수정하는 메소드
      * @author 김용준

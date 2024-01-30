@@ -158,7 +158,6 @@ public class ParkService {
      * @return
      */
     public ResponseEntity<Void> openBar(OpenBarRequest openBarRequest) {
-        // 주차현황 가져오기
         String[] location = SeparateLocation.separateLocationInput(openBarRequest.getParkFullName());
         RealtimeParking searchedRealTimeParking = realTimeParkingRepository
                 .findByParkingInfo_ParkNoAndParkingInfo_AreaCode(Integer.parseInt(location[0]), location[1]);
@@ -174,4 +173,6 @@ public class ParkService {
         feignService.sendOpenBarRequest(searchedRealTimeParking.getParkId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
 }
