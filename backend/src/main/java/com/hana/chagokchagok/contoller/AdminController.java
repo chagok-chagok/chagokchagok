@@ -80,28 +80,24 @@ public class AdminController {
 
     /**
      * 신고 목록 조회하는 메소드
-     *
+     * @author 김용준
      * @param page 페이지 번호(0번부터 시작)
      * @return reportResponse 화면에 뿌려줄 정보
-     * @author 김용준
      */
     @GetMapping("/report")
     public ReportResponse getReportList(@RequestParam(name = "page", defaultValue = "0") int page) {
         ReportRequest reportRequest = new ReportRequest(page);
         return adminService.getReportList(reportRequest);
     }
-
     /**
      * 신고 내용 수정하는 메소드
-     *
-     * @param reportDto 기존에 만들었던 ReportDto가 이 메소드의 Request 기능을 수행할 수 있음
      * @author 김용준
+     * @param reportDto 기존에 만들었던 ReportDto가 이 메소드의 Request 기능을 수행할 수 있음
      */
     @PutMapping("/report")
     public void updateReport(@RequestBody ReportDto reportDto) {
         adminService.updateReport(reportDto);
     }
-
     @PutMapping("/exchange")
     public ResponseEntity<String> exchangeAllocation(@RequestBody ExchangeRequest exchangeRequest) {
         ResponseEntity<String> resp = adminService.exchangeAllocation(exchangeRequest);
