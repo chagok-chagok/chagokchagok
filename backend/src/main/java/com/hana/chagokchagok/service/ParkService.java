@@ -3,6 +3,7 @@ package com.hana.chagokchagok.service;
 import com.hana.chagokchagok.dto.AllocationDto;
 import com.hana.chagokchagok.dto.ValidationParkingInfoDto;
 import com.hana.chagokchagok.dto.request.AllocateCarRequest;
+import com.hana.chagokchagok.dto.request.OpenBarRequest;
 import com.hana.chagokchagok.dto.request.ValidateAreaRequest;
 import com.hana.chagokchagok.dto.response.AllocateCarResponse;
 import com.hana.chagokchagok.dto.response.ValidateAreaResponse;
@@ -10,19 +11,20 @@ import com.hana.chagokchagok.entity.AllocationLog;
 import com.hana.chagokchagok.entity.ParkingInfo;
 import com.hana.chagokchagok.entity.RealtimeParking;
 import com.hana.chagokchagok.entity.Report;
+import com.hana.chagokchagok.exception.CustomException;
+import com.hana.chagokchagok.exception.ErrorCode;
 import com.hana.chagokchagok.repository.AllocationLogRepository;
 import com.hana.chagokchagok.repository.ParkingInfoRepository;
 import com.hana.chagokchagok.repository.RealtimeParkingRepository;
 import com.hana.chagokchagok.repository.ReportRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import static com.hana.chagokchagok.util.SeparateLocation.separateLocationInput;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import static com.hana.chagokchagok.util.SeparateLocation.separateLocationInput;
 
 @Service
 @RequiredArgsConstructor
@@ -32,13 +34,19 @@ public class ParkService {
     private final AllocationLogRepository allocationLogRepository;
     private final ParkingInfoRepository parkingInfoRepository;
     private final ReportRepository reportRepository;
+    private final FeignService feignService;
+    private final SseService sseService;
+    @Value("${admin.key}")
+    private String ADMIN_KEY;
+    @Value("${kiosk.key}")
+    private String KIOSK_KEY;
     /**
      * 자리 배정 로직 수행 메소드
      * @author 김용준
      * @param allocateCarRequest 장애 여부, 차량 번호
-     * @return 자리가 있다면 allocateCarResponse, 만차라면 null
+     * @return 자리가 있다면 allocateCarResponse, 만차라면 NO_PARKING_SPACE 에러 반환
      */
-    public AllocateCarResponse getAllocatedInfo(AllocateCarRequest allocateCarRequest) {
+    public ResponseEntity<AllocateCarResponse> getAllocatedInfo(AllocateCarRequest allocateCarRequest) {
         RealtimeParking allocatedLocation;
         // 장애 배려 차량 여부 확인
         if (allocateCarRequest.getIsDisabled()) {
@@ -48,14 +56,12 @@ public class ParkService {
         }
 
         // 자리가 없다면 만차 응답 반환
+        // 404 CustomException
         if (allocatedLocation == null) {
-            System.out.println("자리업슴");
-            return null;
+            throw new CustomException(ErrorCode.NO_PARKING_SPACE);
         }
         // 자리 있다면 배정 로직 수행
         else {
-            System.out.println("allocated location : " + allocatedLocation.getParkId());
-
             // 입출차기록 테이블에 저장
             AllocationDto allocationDto = new AllocationDto(allocatedLocation, allocateCarRequest.getCarNo());
             AllocationLog allocationLog = AllocationLog.createAllocationLog(allocationDto);
@@ -63,9 +69,10 @@ public class ParkService {
 
             // 주차현황 테이블 업데이트
             allocatedLocation.changeAllocationLog(allocationLog);
-            realTimeParkingRepository.save(allocatedLocation);
 
-            return new AllocateCarResponse(allocatedLocation, allocationLog);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new AllocateCarResponse(allocatedLocation, allocationLog));
         }
     }
 
@@ -105,15 +112,20 @@ public class ParkService {
         AllocationLog allocationLog = allocationLogRepository.findByCarNo(carNo);
         RealtimeParking realtimeParking = realTimeParkingRepository.findByAllocationLog(allocationLog);
 
+        //allocationLog에 출차관련 데이터 update
         allocationLog.pullOut();
-        realtimeParking.deleteAllocationLog();
 
-        // 만차판별
+        //만차였던 경우 빈자리가 생겼으므로 키오스크 서버로 SSE알림
         if(!realTimeParkingRepository.existsByAllocationLogIsNull()){
-            //만차였던 경우 빈자리가 생겼으므로 키오스크 서버로 SSE알림
+            sseService.congestionClear(KIOSK_KEY);
         }
 
-        //공통 -> 라즈베리로 위치 반환
+        //RealtimeParking에서 해당차량 삭제
+        realtimeParking.deleteAllocationLog();
+
+
+
+        //라즈베리로 위치 반환
         return new ResponseEntity<>(realtimeParking.getParkingInfo().getFullName(), HttpStatus.OK);
     }
 
@@ -123,11 +135,36 @@ public class ParkService {
      * @return
      */
     public ResponseEntity<Void> autoSystem(String input) {
+
+        //Report 작성
         String[] location = separateLocationInput(input);
         ParkingInfo parkingInfo = parkingInfoRepository.findByParkNoAndAreaCode(Integer.valueOf(location[1]),location[0]);
-        reportRepository.save(Report.createReport(parkingInfo));
+        Report report = reportRepository.save(Report.createReport(parkingInfo));
+
+        //플로팅알림 전송
+        sseService.sendSensorReport(report, ADMIN_KEY);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * 특정 위치 차단바 여는 메소드
+     * @author 김용준
+     * @param openBarRequest
+     * @return
+     */
+    public ResponseEntity<Void> openBar(OpenBarRequest openBarRequest) {
+        // 주차현황 가져오기
+        RealtimeParking searchedRealTimeParking = realTimeParkingRepository
+                .findByParkingInfo_ParkNoAndParkingInfo_AreaCode(
+                        openBarRequest.getParkNo(),
+                        openBarRequest.getAreaCode());
 
+        AllocationLog allocationLog = searchedRealTimeParking.getAllocationLog();
+        // 입출차기록에 저장된 차량 번호를 입력받은 차량 번호로 변경
+        allocationLog.changeCarNo(openBarRequest.getCarNo());
+        // 차단바 제어 서버로 전송(자리 번호)
+        feignService.sendOpenBarRequest(searchedRealTimeParking.getParkId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

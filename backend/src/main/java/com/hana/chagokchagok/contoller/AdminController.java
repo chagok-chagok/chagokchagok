@@ -1,20 +1,20 @@
 package com.hana.chagokchagok.contoller;
 
-import com.hana.chagokchagok.dto.request.LoginRequest;
-import com.hana.chagokchagok.dto.request.UpdatePWRequest;
-import com.hana.chagokchagok.dto.response.LoginResponse;
-import com.hana.chagokchagok.dto.response.LogoutResponse;
-import com.hana.chagokchagok.dto.response.RefreshTokenResponse;
+import com.hana.chagokchagok.dto.ReportDto;
+import com.hana.chagokchagok.dto.request.*;
+import com.hana.chagokchagok.dto.response.*;
 import com.hana.chagokchagok.service.AdminService;
+import com.hana.chagokchagok.service.ParkService;
+import com.hana.chagokchagok.service.SseService;
 import com.hana.chagokchagok.util.JWTUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import com.hana.chagokchagok.dto.request.ExchangeRequest;
-import com.hana.chagokchagok.dto.request.ReportRequest;
-import com.hana.chagokchagok.dto.response.CommonAlertResponse;
-import com.hana.chagokchagok.dto.response.ReportResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +26,10 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
     private final AdminService adminService;
     private final JWTUtil jwtUtil;
+    private final ParkService parkService;
+    private final SseService sseService;
+    @Value("${admin.key}")
+    private String ADMIN_KEY;
 
     @GetMapping("/test")
     public void test(){
@@ -67,14 +71,36 @@ public class AdminController {
         }
         return logoutResponse;
     }
+
+    /**
+     * 신고 목록 조회하는 메소드
+     *
+     * @param page 페이지 번호(0번부터 시작)
+     * @return reportResponse 화면에 뿌려줄 정보
+     * @author 김용준
+     */
     @GetMapping("/report")
     public ReportResponse getReportList(@RequestParam(name = "page", defaultValue = "0") int page) {
         ReportRequest reportRequest = new ReportRequest(page);
         return adminService.getReportList(reportRequest);
     }
+
+    /**
+     * 신고 내용 수정하는 메소드
+     *
+     * @param reportDto 기존에 만들었던 ReportDto가 이 메소드의 Request 기능을 수행할 수 있음
+     * @author 김용준
+     */
+    @PutMapping("/report")
+    public void updateReport(@RequestBody ReportDto reportDto) {
+        adminService.updateReport(reportDto);
+    }
+
     @PutMapping("/exchange")
     public ResponseEntity<String> exchangeAllocation(@RequestBody ExchangeRequest exchangeRequest) {
-        return adminService.exchangeAllocation(exchangeRequest);
+        ResponseEntity<String> resp = adminService.exchangeAllocation(exchangeRequest);
+        sseService.sendRealtimeCommon(ADMIN_KEY);
+        return resp;
     }
     @GetMapping("/common")
     public CommonAlertResponse getCommonAlertData() {
@@ -85,5 +111,9 @@ public class AdminController {
     public void updatePassword(@RequestBody UpdatePWRequest updatePWRequest, HttpServletRequest request){
         System.out.println("updatePWRequest = " + updatePWRequest.getPassword());
         adminService.updatePassword(jwtUtil.getUserId(request.getHeader("Authorization")), updatePWRequest.getPassword());
+    }
+    @PutMapping("/bar")
+    public void openBar(@RequestBody OpenBarRequest openBarRequest) {
+        parkService.openBar(openBarRequest); // 차단바 해제 요청
     }
 }

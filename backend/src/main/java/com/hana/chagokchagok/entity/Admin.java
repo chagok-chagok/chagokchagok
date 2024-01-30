@@ -1,7 +1,10 @@
 package com.hana.chagokchagok.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Getter;
 
 //관리자
@@ -12,6 +15,7 @@ public class Admin {
     @Column(name = "admin_no")
     private Long adminNo;
 
+    @Column(unique = true)
     private String id;
 
     private String password;
