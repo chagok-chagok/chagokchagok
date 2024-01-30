@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
-
 @Getter @Setter
 public class ReportRequest {
     public ReportRequest(int page) {

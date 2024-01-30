@@ -1,10 +1,13 @@
 package com.hana.chagokchagok.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Setter;
-import lombok.ToString;
 
 //현시각 주차현황테이블
 @Entity @Getter

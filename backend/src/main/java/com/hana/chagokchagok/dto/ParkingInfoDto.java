@@ -1,6 +1,5 @@
 package com.hana.chagokchagok.dto;
 
-import com.hana.chagokchagok.entity.ParkingInfo;
 import com.hana.chagokchagok.entity.RealtimeParking;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
