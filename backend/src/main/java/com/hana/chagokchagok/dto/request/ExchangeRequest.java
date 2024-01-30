@@ -1,7 +1,6 @@
 package com.hana.chagokchagok.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.hana.chagokchagok.enums.SearchType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

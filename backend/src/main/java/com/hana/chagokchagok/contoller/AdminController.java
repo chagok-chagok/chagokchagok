@@ -1,23 +1,27 @@
 package com.hana.chagokchagok.contoller;
 
+import com.hana.chagokchagok.dto.request.ExchangeRequest;
 import com.hana.chagokchagok.dto.request.LoginRequest;
+import com.hana.chagokchagok.dto.request.OpenBarRequest;
+import com.hana.chagokchagok.dto.request.ReportRequest;
+import com.hana.chagokchagok.dto.response.CommonAlertResponse;
 import com.hana.chagokchagok.dto.response.LoginResponse;
 import com.hana.chagokchagok.dto.response.LogoutResponse;
 import com.hana.chagokchagok.dto.response.RefreshTokenResponse;
+import com.hana.chagokchagok.dto.response.ReportResponse;
 import com.hana.chagokchagok.service.AdminService;
+import com.hana.chagokchagok.service.ParkService;
 import com.hana.chagokchagok.util.JWTUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import com.hana.chagokchagok.dto.request.ExchangeRequest;
-import com.hana.chagokchagok.dto.request.ReportRequest;
-import com.hana.chagokchagok.dto.response.CommonAlertResponse;
-import com.hana.chagokchagok.dto.response.ReportResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
     private final AdminService adminService;
     private final JWTUtil jwtUtil;
+    private final ParkService parkService;
 
     @GetMapping("/test")
     public void test(){
@@ -80,4 +85,8 @@ public class AdminController {
         return adminService.getCommonAlertData();
     }
 
+    @PutMapping("/bar")
+    public void openBar(@RequestBody OpenBarRequest openBarRequest) {
+        parkService.openBar(openBarRequest); // 차단바 해제 요청
+    }
 }

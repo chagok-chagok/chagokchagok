@@ -2,8 +2,9 @@ package com.hana.chagokchagok.dto.response;
 
 import com.hana.chagokchagok.entity.AllocationLog;
 import com.hana.chagokchagok.entity.RealtimeParking;
-
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 

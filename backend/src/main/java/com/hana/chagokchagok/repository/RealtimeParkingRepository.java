@@ -1,7 +1,6 @@
 package com.hana.chagokchagok.repository;
 
 import com.hana.chagokchagok.entity.AllocationLog;
-import com.hana.chagokchagok.entity.ParkingInfo;
 import com.hana.chagokchagok.entity.RealtimeParking;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
