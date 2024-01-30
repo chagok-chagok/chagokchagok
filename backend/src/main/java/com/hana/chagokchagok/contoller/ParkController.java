@@ -33,6 +33,7 @@ public class ParkController {
     public AllocateCarResponse allocateCar(@RequestBody AllocateCarRequest allocateCarRequest) {
         System.out.println(allocateCarRequest);
         AllocateCarResponse allocateCarResponse = parkService.getAllocatedInfo(allocateCarRequest);
+        sseService.sendRealtimeCommon(ADMIN_KEY);
 
         // 만차일 때
         if (allocateCarResponse == null) {
