@@ -8,7 +8,12 @@ import com.hana.chagokchagok.dto.response.ValidateAreaResponse;
 import com.hana.chagokchagok.service.ParkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,24 +23,13 @@ public class ParkController {
 
     /**
      * 자리 배정 요청
-     * @author 김용준
      * @param allocateCarRequest 차량 번호, 장애 여부를 가진 요청
      * @return 자리가 배정됐다면 차량 번호, 입차 시간, 자리 번호를 가진 allocateCarResponse, 만차라면 null
+     * @author 김용준
      */
     @PostMapping("/allocation")
-    public AllocateCarResponse allocateCar(@RequestBody AllocateCarRequest allocateCarRequest) {
-        System.out.println(allocateCarRequest);
-        AllocateCarResponse allocateCarResponse = parkService.getAllocatedInfo(allocateCarRequest);
-
-        // 만차일 때
-        if (allocateCarResponse == null) {
-            // 뭘 리턴해야 하지?
-            return null;
-        }
-        // 자리가 배정됐을 때
-        else {
-            return allocateCarResponse;
-        }
+    public ResponseEntity<AllocateCarResponse> allocateCar(@RequestBody AllocateCarRequest allocateCarRequest) {
+        return parkService.getAllocatedInfo(allocateCarRequest);
     }
 
     /**

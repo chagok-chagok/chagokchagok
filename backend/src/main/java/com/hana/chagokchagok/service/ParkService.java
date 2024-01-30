@@ -11,6 +11,8 @@ import com.hana.chagokchagok.entity.AllocationLog;
 import com.hana.chagokchagok.entity.ParkingInfo;
 import com.hana.chagokchagok.entity.RealtimeParking;
 import com.hana.chagokchagok.entity.Report;
+import com.hana.chagokchagok.exception.CustomException;
+import com.hana.chagokchagok.exception.ErrorCode;
 import com.hana.chagokchagok.repository.AllocationLogRepository;
 import com.hana.chagokchagok.repository.ParkingInfoRepository;
 import com.hana.chagokchagok.repository.RealtimeParkingRepository;
@@ -37,9 +39,9 @@ public class ParkService {
      * 자리 배정 로직 수행 메소드
      * @author 김용준
      * @param allocateCarRequest 장애 여부, 차량 번호
-     * @return 자리가 있다면 allocateCarResponse, 만차라면 null
+     * @return 자리가 있다면 allocateCarResponse, 만차라면 NO_PARKING_SPACE 에러 반환
      */
-    public AllocateCarResponse getAllocatedInfo(AllocateCarRequest allocateCarRequest) {
+    public ResponseEntity<AllocateCarResponse> getAllocatedInfo(AllocateCarRequest allocateCarRequest) {
         RealtimeParking allocatedLocation;
         // 장애 배려 차량 여부 확인
         if (allocateCarRequest.getIsDisabled()) {
@@ -49,14 +51,12 @@ public class ParkService {
         }
 
         // 자리가 없다면 만차 응답 반환
+        // 404 CustomException
         if (allocatedLocation == null) {
-            System.out.println("자리업슴");
-            return null;
+            throw new CustomException(ErrorCode.NO_PARKING_SPACE);
         }
         // 자리 있다면 배정 로직 수행
         else {
-            System.out.println("allocated location : " + allocatedLocation.getParkId());
-
             // 입출차기록 테이블에 저장
             AllocationDto allocationDto = new AllocationDto(allocatedLocation, allocateCarRequest.getCarNo());
             AllocationLog allocationLog = AllocationLog.createAllocationLog(allocationDto);
@@ -64,9 +64,10 @@ public class ParkService {
 
             // 주차현황 테이블 업데이트
             allocatedLocation.changeAllocationLog(allocationLog);
-            realTimeParkingRepository.save(allocatedLocation);
 
-            return new AllocateCarResponse(allocatedLocation, allocationLog);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new AllocateCarResponse(allocatedLocation, allocationLog));
         }
     }
 
