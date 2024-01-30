@@ -1,6 +1,7 @@
 package com.hana.chagokchagok.service;
 
 import com.hana.chagokchagok.dto.AllocationDto;
+import com.hana.chagokchagok.dto.ErrorDto;
 import com.hana.chagokchagok.dto.ValidationParkingInfoDto;
 import com.hana.chagokchagok.dto.request.AllocateCarRequest;
 import com.hana.chagokchagok.dto.request.OpenBarRequest;
@@ -11,12 +12,14 @@ import com.hana.chagokchagok.entity.AllocationLog;
 import com.hana.chagokchagok.entity.ParkingInfo;
 import com.hana.chagokchagok.entity.RealtimeParking;
 import com.hana.chagokchagok.entity.Report;
+import com.hana.chagokchagok.enums.ReportStatus;
 import com.hana.chagokchagok.exception.CustomException;
 import com.hana.chagokchagok.exception.ErrorCode;
 import com.hana.chagokchagok.repository.AllocationLogRepository;
 import com.hana.chagokchagok.repository.ParkingInfoRepository;
 import com.hana.chagokchagok.repository.RealtimeParkingRepository;
 import com.hana.chagokchagok.repository.ReportRepository;
+import com.hana.chagokchagok.util.SeparateLocation;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +27,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import static com.hana.chagokchagok.enums.ErrorCode.AUTO_REPORT;
+import static com.hana.chagokchagok.enums.ErrorCode.HUMAN_ERROR;
 import static com.hana.chagokchagok.util.SeparateLocation.separateLocationInput;
 
 @Service
@@ -123,8 +128,6 @@ public class ParkService {
         //RealtimeParking에서 해당차량 삭제
         realtimeParking.deleteAllocationLog();
 
-
-
         //라즈베리로 위치 반환
         return new ResponseEntity<>(realtimeParking.getParkingInfo().getFullName(), HttpStatus.OK);
     }
@@ -139,7 +142,8 @@ public class ParkService {
         //Report 작성
         String[] location = separateLocationInput(input);
         ParkingInfo parkingInfo = parkingInfoRepository.findByParkNoAndAreaCode(Integer.valueOf(location[1]),location[0]);
-        Report report = reportRepository.save(Report.createReport(parkingInfo));
+        ErrorDto errorDto = new ErrorDto(AUTO_REPORT, ReportStatus.UNRESOLVED);
+        Report report = reportRepository.save(Report.createReport(parkingInfo, errorDto));
 
         //플로팅알림 전송
         sseService.sendSensorReport(report, ADMIN_KEY);
@@ -154,15 +158,17 @@ public class ParkService {
      * @return
      */
     public ResponseEntity<Void> openBar(OpenBarRequest openBarRequest) {
-        // 주차현황 가져오기
+        String[] location = SeparateLocation.separateLocationInput(openBarRequest.getParkFullName());
         RealtimeParking searchedRealTimeParking = realTimeParkingRepository
-                .findByParkingInfo_ParkNoAndParkingInfo_AreaCode(
-                        openBarRequest.getParkNo(),
-                        openBarRequest.getAreaCode());
+                .findByParkingInfo_ParkNoAndParkingInfo_AreaCode(Integer.parseInt(location[0]), location[1]);
 
         AllocationLog allocationLog = searchedRealTimeParking.getAllocationLog();
         // 입출차기록에 저장된 차량 번호를 입력받은 차량 번호로 변경
         allocationLog.changeCarNo(openBarRequest.getCarNo());
+        // 신고 기록에 자동 추가
+        ErrorDto errorDto = new ErrorDto(HUMAN_ERROR, ReportStatus.COMPLETED);
+        reportRepository.save(Report.createReport(searchedRealTimeParking.getParkingInfo(), errorDto));
+
         // 차단바 제어 서버로 전송(자리 번호)
         feignService.sendOpenBarRequest(searchedRealTimeParking.getParkId());
         return new ResponseEntity<>(HttpStatus.OK);

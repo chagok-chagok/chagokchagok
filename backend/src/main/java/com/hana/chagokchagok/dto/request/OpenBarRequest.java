@@ -11,8 +11,6 @@ import lombok.ToString;
 public class OpenBarRequest {
     @JsonProperty("car_no")
     private String carNo;
-    @JsonProperty("area_code")
-    private String areaCode;
-    @JsonProperty("park_no")
-    private Integer parkNo;
+    @JsonProperty("park_full_name")
+    private String parkFullName;
 }
