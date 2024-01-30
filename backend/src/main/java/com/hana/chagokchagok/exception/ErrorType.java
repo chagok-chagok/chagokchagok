@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @RequiredArgsConstructor
 // 사용자 정의 에러
-public enum ErrorCode {
+public enum ErrorType {
     /* 400 BAD_REQUEST : 잘못된 요청 */
     INVALID_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "리프레시 토큰이 유효하지 않습니다"),
     INVALID_AREA(HttpStatus.BAD_REQUEST, "배정된 구역이 아닙니다"),
