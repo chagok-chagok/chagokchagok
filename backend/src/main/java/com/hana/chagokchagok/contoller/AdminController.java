@@ -96,7 +96,9 @@ public class AdminController {
      */
     @PutMapping("/report")
     public void updateReport(@RequestBody ReportDto reportDto) {
-        adminService.updateReport(reportDto);
+        boolean isNowDoneReport = adminService.updateReport(reportDto);
+        if (isNowDoneReport) sseService.sendRealtimeCommon(ADMIN_KEY);
+
     }
     @PutMapping("/exchange")
     public ResponseEntity<String> exchangeAllocation(@RequestBody ExchangeRequest exchangeRequest) {
@@ -112,5 +114,6 @@ public class AdminController {
     @PutMapping("/bar")
     public void openBar(@RequestBody OpenBarRequest openBarRequest) {
         parkService.openBar(openBarRequest); // 차단바 해제 요청
+        sseService.sendRealtimeCommon(ADMIN_KEY);
     }
 }

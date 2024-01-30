@@ -12,6 +12,7 @@ import com.hana.chagokchagok.entity.AllocationLog;
 import com.hana.chagokchagok.entity.ParkingInfo;
 import com.hana.chagokchagok.entity.RealtimeParking;
 import com.hana.chagokchagok.entity.Report;
+import com.hana.chagokchagok.enums.ReportStatus;
 import com.hana.chagokchagok.exception.InvalidInputException;
 import com.hana.chagokchagok.exception.SpotNotEmptyException;
 import com.hana.chagokchagok.repository.AdminRepository;
@@ -118,16 +119,20 @@ public class AdminService {
     }
 
     /**
+     * @author 김용준
      * 신고 정보 수정하는 메소드
      * @param reportDto Request로 들어오는 DTO
+     * @return 현재 수정으로 Report가 Done 되었는지 여부
      */
-    public void updateReport(ReportDto reportDto) {
+    public boolean updateReport(ReportDto reportDto) {
         // 더티체킹으로 업데이트
         Report report = reportRepository.findByReportId(reportDto.getReportId()); // 수정할 신고 검색
+        boolean isNowDone = (report.getReportStatus() != ReportStatus.COMPLETED) && (reportDto.getStatus() == ReportStatus.COMPLETED);
         Optional<ParkingInfo> parkingInfo = parkingInfoRepository.findById(reportDto.getParkId()); // 수정할 parkId로 검색
         // 수정 신고 필드에 반영
-        parkingInfo.ifPresent(report::updateParkingInfo);
+        parkingInfo.ifPresent(report::updateParkingInfo); // 이거 뭔데 이렇게 바뀌었지..?
         report.updateReport(reportDto); // 나머지 필드도 수정
+        return isNowDone;
     }
 
     /**

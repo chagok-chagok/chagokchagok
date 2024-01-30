@@ -14,7 +14,7 @@ import com.hana.chagokchagok.entity.RealtimeParking;
 import com.hana.chagokchagok.entity.Report;
 import com.hana.chagokchagok.enums.ReportStatus;
 import com.hana.chagokchagok.exception.CustomException;
-import com.hana.chagokchagok.exception.ErrorCode;
+import com.hana.chagokchagok.exception.ErrorType;
 import com.hana.chagokchagok.repository.AllocationLogRepository;
 import com.hana.chagokchagok.repository.ParkingInfoRepository;
 import com.hana.chagokchagok.repository.RealtimeParkingRepository;
@@ -27,8 +27,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import static com.hana.chagokchagok.enums.ErrorCode.AUTO_REPORT;
-import static com.hana.chagokchagok.enums.ErrorCode.HUMAN_ERROR;
+import static com.hana.chagokchagok.enums.ErrorCode.*;
 import static com.hana.chagokchagok.util.SeparateLocation.separateLocationInput;
 
 @Service
@@ -63,7 +62,7 @@ public class ParkService {
         // 자리가 없다면 만차 응답 반환
         // 404 CustomException
         if (allocatedLocation == null) {
-            throw new CustomException(ErrorCode.NO_PARKING_SPACE);
+            throw new CustomException(ErrorType.NO_PARKING_SPACE);
         }
         // 자리 있다면 배정 로직 수행
         else {
@@ -75,9 +74,7 @@ public class ParkService {
             // 주차현황 테이블 업데이트
             allocatedLocation.changeAllocationLog(allocationLog);
 
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(new AllocateCarResponse(allocatedLocation, allocationLog));
+            return ResponseEntity.status(HttpStatus.OK).body(new AllocateCarResponse(allocatedLocation, allocationLog));
         }
     }
 
@@ -85,25 +82,25 @@ public class ParkService {
      * 구역 판별 메소드
      * @author 김용준
      * @param validateAreaRequest 차량 번호, 구역 코드
-     * @return 배정된 구역이라면 배정 자리 번호, 그 외에는 null
+     * @return 배정된 구역이라면 배정 자리 번호, 배정된 구역이 아니라면 INVALID_AREA, 차량 정보가 없다면 NO_CAR_NUMBER
      */
-    public ValidateAreaResponse validateArea(ValidateAreaRequest validateAreaRequest) {
+    public ResponseEntity<ValidateAreaResponse> validateArea(ValidateAreaRequest validateAreaRequest) {
         // 차량 번호로 배정된 구역 검색
         ValidationParkingInfoDto area = parkingInfoRepository.findValidationParkingInfo(validateAreaRequest.getCarNo());
 
         // 차량 번호로 검색했을 때 배정된 구역이 나오지 않음
         if (area == null) {
-            return null;
+            throw new CustomException(ErrorType.NO_CAR_NUMBER);
         }
         // 배정된 구역이 검색됨
         else {
             // 배정된 구역에 진입했다면
             if (area.getAreaCode().equals(validateAreaRequest.getArea())) {
-                return new ValidateAreaResponse(area);
+                return ResponseEntity.status(HttpStatus.OK).body(new ValidateAreaResponse(area));
             }
             // 다른 구역에 진입했다면
             else {
-                return null;
+                throw new CustomException(ErrorType.INVALID_AREA);
             }
         }
     }
@@ -166,7 +163,7 @@ public class ParkService {
         // 입출차기록에 저장된 차량 번호를 입력받은 차량 번호로 변경
         allocationLog.changeCarNo(openBarRequest.getCarNo());
         // 신고 기록에 자동 추가
-        ErrorDto errorDto = new ErrorDto(HUMAN_ERROR, ReportStatus.COMPLETED);
+        ErrorDto errorDto = new ErrorDto(SENSOR_ERROR, ReportStatus.COMPLETED);
         reportRepository.save(Report.createReport(searchedRealTimeParking.getParkingInfo(), errorDto));
 
         // 차단바 제어 서버로 전송(자리 번호)
