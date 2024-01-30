@@ -1,39 +1,44 @@
 package com.hana.chagokchagok.contoller;
 
 import com.hana.chagokchagok.dto.request.AllocateCarRequest;
+import com.hana.chagokchagok.dto.request.PullOutRequest;
 import com.hana.chagokchagok.dto.request.ValidateAreaRequest;
 import com.hana.chagokchagok.dto.response.AllocateCarResponse;
 import com.hana.chagokchagok.dto.response.ValidateAreaResponse;
+import com.hana.chagokchagok.service.AdminService;
 import com.hana.chagokchagok.service.ParkService;
+import com.hana.chagokchagok.service.SseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/park")
 public class ParkController {
     private final ParkService parkService;
+    private final AdminService adminService;
+    private final SseService sseService;
+    @Value("${admin.key}")
+    private String ADMIN_KEY;
 
     /**
      * 자리 배정 요청
-     * @author 김용준
      * @param allocateCarRequest 차량 번호, 장애 여부를 가진 요청
      * @return 자리가 배정됐다면 차량 번호, 입차 시간, 자리 번호를 가진 allocateCarResponse, 만차라면 null
+     * @author 김용준
      */
     @PostMapping("/allocation")
-    public AllocateCarResponse allocateCar(@RequestBody AllocateCarRequest allocateCarRequest) {
-        System.out.println(allocateCarRequest);
-        AllocateCarResponse allocateCarResponse = parkService.getAllocatedInfo(allocateCarRequest);
-
-        // 만차일 때
-        if (allocateCarResponse == null) {
-            // 뭘 리턴해야 하지?
-            return null;
-        }
-        // 자리가 배정됐을 때
-        else {
-            return allocateCarResponse;
-        }
+    public ResponseEntity<AllocateCarResponse> allocateCar(@RequestBody AllocateCarRequest allocateCarRequest) {
+        ResponseEntity<AllocateCarResponse> response = parkService.getAllocatedInfo(allocateCarRequest);
+        sseService.sendRealtimeCommon(ADMIN_KEY);
+        return response;
     }
 
     /**
@@ -57,5 +62,28 @@ public class ParkController {
         else {
             return validateAreaResponse;
         }
+    }
+
+    /**
+     * 출차처리
+     * @param pullOutRequest 차번호
+     * @return 해당 차량이 배정받았던 자리
+     */
+    @PostMapping("/out")
+    public ResponseEntity<String> pullOut(@RequestBody PullOutRequest pullOutRequest){
+        ResponseEntity<String> response = parkService.pullOut(pullOutRequest.getCarNo());
+        //출차처리 되었으니 관리자페이지에 공통바 SSE알림
+        sseService.sendRealtimeCommon(ADMIN_KEY);
+        return response;
+    }
+
+    /**
+     * 자동신고 시스템
+     * @param location
+     * @return resoponseEntity
+     */
+    @GetMapping("/auto")
+    public ResponseEntity<Void> autoSystem(@RequestParam(name = "location") String location){
+        return parkService.autoSystem(location);
     }
 }

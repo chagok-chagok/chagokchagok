@@ -1,14 +1,22 @@
 package com.hana.chagokchagok.entity;
 
 import com.hana.chagokchagok.dto.AllocationDto;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
-import org.hibernate.mapping.Join;
+import lombok.ToString;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 //입출차기록(배정기록)
-@Entity @Getter
+@Entity @Getter @ToString
 public class AllocationLog {
     /**
      * Allocation Entity를 생성하는 정적 팩토리 메소드
@@ -47,4 +55,29 @@ public class AllocationLog {
 
     @Column(name="exit_time")
     private LocalDateTime exitTime;
+
+    /**
+     * 출차시 셋팅
+     */
+    public void pullOut() {
+        this.exitTime = LocalDateTime.now();
+        this.paymentStatus = true;
+
+        Duration duration = Duration.between(entryTime, exitTime);
+        // 10분당 500원의 요금 계산
+        long minutes = duration.toMinutes();
+        int feePer10Minutes = 500;
+        this.parkingFee = (int) ((minutes / 10) * feePer10Minutes);
+    }
+    public void changeParkingInfo(ParkingInfo parkingInfo){
+        this.parkingInfo = parkingInfo;
+    }
+
+    /**
+     * 오인식 번호 수정용
+     * @param carNo 자동차 번호
+     */
+    public void changeCarNo(String carNo) {
+        this.carNo = carNo;
+    }
 }
