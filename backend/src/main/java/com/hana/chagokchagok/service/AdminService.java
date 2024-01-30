@@ -1,35 +1,40 @@
 package com.hana.chagokchagok.service;
 
+import com.hana.chagokchagok.dto.ReportDto;
+import com.hana.chagokchagok.dto.request.ExchangeRequest;
 import com.hana.chagokchagok.dto.request.LoginRequest;
-import com.hana.chagokchagok.dto.response.LoginResponse;
-import com.hana.chagokchagok.entity.Admin;
-import com.hana.chagokchagok.repository.AdminRepository;
-import com.hana.chagokchagok.util.JWTUtil;
-import com.hana.chagokchagok.util.SHA256;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import com.hana.chagokchagok.dto.request.ReportRequest;
 import com.hana.chagokchagok.dto.response.CommonAlertResponse;
+import com.hana.chagokchagok.dto.response.LoginResponse;
 import com.hana.chagokchagok.dto.response.ReportResponse;
+import com.hana.chagokchagok.entity.Admin;
+import com.hana.chagokchagok.entity.AllocationLog;
+import com.hana.chagokchagok.entity.ParkingInfo;
 import com.hana.chagokchagok.entity.RealtimeParking;
 import com.hana.chagokchagok.entity.Report;
+import com.hana.chagokchagok.exception.InvalidInputException;
+import com.hana.chagokchagok.exception.SpotNotEmptyException;
+import com.hana.chagokchagok.repository.AdminRepository;
+import com.hana.chagokchagok.repository.ParkingInfoRepository;
+import com.hana.chagokchagok.repository.RealtimeParkingRepository;
 import com.hana.chagokchagok.repository.ReportRepository;
+import com.hana.chagokchagok.util.JWTUtil;
+import com.hana.chagokchagok.util.SHA256;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
-import com.hana.chagokchagok.dto.request.ExchangeRequest;
-import com.hana.chagokchagok.entity.AllocationLog;
-import com.hana.chagokchagok.entity.ParkingInfo;
-import com.hana.chagokchagok.exception.InvalidInputException;
-import com.hana.chagokchagok.exception.SpotNotEmptyException;
-import com.hana.chagokchagok.repository.RealtimeParkingRepository;
-import jakarta.persistence.EntityManager;
-import org.springframework.http.HttpStatus;
+import java.util.Optional;
+
 import static com.hana.chagokchagok.util.SeparateLocation.separateLocationInput;
 
 @Service
@@ -41,6 +46,7 @@ public class AdminService {
     private final ReportRepository reportRepository;
     private final AdminRepository adminRepository;
     private final JWTUtil jwtUtil;
+    private final ParkingInfoRepository parkingInfoRepository;
 
     public LoginResponse login(LoginRequest adminInfoDto) {
         SHA256 sha256 = new SHA256();
@@ -85,6 +91,7 @@ public class AdminService {
         adminRepository.save(admin);
     }
 
+
     /**
      * 신고 기록을 조회하는 메소드
      * @param reportRequest 페이지 정보, 오늘 날짜
@@ -108,6 +115,19 @@ public class AdminService {
         LocalDateTime endOfDay = LocalDateTime.of(today, LocalTime.MAX); // 오늘 23시 59분 59초 ...
         List<Report> todayReports = reportRepository.findAllByReportTimeBetween(startOfDay, endOfDay);
         return todayReports;
+    }
+
+    /**
+     * 신고 정보 수정하는 메소드
+     * @param reportDto Request로 들어오는 DTO
+     */
+    public void updateReport(ReportDto reportDto) {
+        // 더티체킹으로 업데이트
+        Report report = reportRepository.findByReportId(reportDto.getReportId()); // 수정할 신고 검색
+        Optional<ParkingInfo> parkingInfo = parkingInfoRepository.findById(reportDto.getParkId()); // 수정할 parkId로 검색
+        // 수정 신고 필드에 반영
+        parkingInfo.ifPresent(report::updateParkingInfo);
+        report.updateReport(reportDto); // 나머지 필드도 수정
     }
 
     /**
@@ -173,7 +193,7 @@ public class AdminService {
         return new CommonAlertResponse(realtimeParkingInfo, reports);
     }
 
-    public void createRoot(){
+    public void createRoot() {
         Admin admin = new Admin();
         try {
             admin.join("admin", new SHA256().encrypt("1"));

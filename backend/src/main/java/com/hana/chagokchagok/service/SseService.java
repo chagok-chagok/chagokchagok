@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.hana.chagokchagok.contoller.SseController;
 import com.hana.chagokchagok.dto.request.CarNumRequest;
-import com.hana.chagokchagok.dto.response.CommonAlertResponse;
 import com.hana.chagokchagok.entity.Report;
 import com.hana.chagokchagok.enums.SseStatus;
 import com.hana.chagokchagok.exception.SseEmitterIsNullException;

@@ -25,9 +25,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import static com.hana.chagokchagok.util.SeparateLocation.separateLocationInput;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 
 @Service
 @RequiredArgsConstructor
