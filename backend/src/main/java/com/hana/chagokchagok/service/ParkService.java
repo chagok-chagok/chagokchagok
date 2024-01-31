@@ -27,7 +27,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import static com.hana.chagokchagok.enums.ErrorCode.*;
+import static com.hana.chagokchagok.enums.ErrorCode.AUTO_REPORT;
+import static com.hana.chagokchagok.enums.ErrorCode.SENSOR_ERROR;
 import static com.hana.chagokchagok.util.SeparateLocation.separateLocationInput;
 
 @Service
