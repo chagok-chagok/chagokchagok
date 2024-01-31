@@ -18,7 +18,7 @@ public class ReportDto {
     // 신고 수정 요청 시 Json의 String 값을 Enum 필드로 매핑하는 생성자
     @JsonCreator
     public ReportDto(
-            @JsonProperty("errorCode") String errorCode,
+            @JsonProperty("error_code") String errorCode,
             @JsonProperty("status") String status) {
         this.errorCode = ErrorCode.valueOf(errorCode);
         this.status = ReportStatus.valueOf(status);
@@ -32,12 +32,18 @@ public class ReportDto {
         this.status = report.getReportStatus();
         this.note = report.getNote();
     }
-
+    @JsonProperty("report_id")
     private Long reportId; // 신고번호
+    @JsonProperty("park_id")
     private Integer parkId; // 주차장 자리 번호
+    @JsonProperty("report_time")
     private LocalDateTime reportTime; // 신고 시각
+    @JsonProperty("done_time")
     private LocalDateTime doneTime; // 처리 시각
+    @JsonProperty("error_code")
     private ErrorCode errorCode; // 신고 코드
+    @JsonProperty("status")
     private ReportStatus status; // 처리 상태
+    @JsonProperty("note")
     private String note; // 비고
 }
