@@ -10,5 +10,5 @@ public interface AllocationLogRepository extends JpaRepository<AllocationLog, Lo
 
     AllocationLog findByCarNo(String carNo);
 
-
+    AllocationLog findByParkId(int parkId);
 }

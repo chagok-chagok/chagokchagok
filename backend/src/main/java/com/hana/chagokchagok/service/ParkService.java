@@ -4,9 +4,11 @@ import com.hana.chagokchagok.dto.AllocationDto;
 import com.hana.chagokchagok.dto.ErrorDto;
 import com.hana.chagokchagok.dto.ValidationParkingInfoDto;
 import com.hana.chagokchagok.dto.request.AllocateCarRequest;
+import com.hana.chagokchagok.dto.request.GetCarlocRequest;
 import com.hana.chagokchagok.dto.request.OpenBarRequest;
 import com.hana.chagokchagok.dto.request.ValidateAreaRequest;
 import com.hana.chagokchagok.dto.response.AllocateCarResponse;
+import com.hana.chagokchagok.dto.response.GetCarlocResponse;
 import com.hana.chagokchagok.dto.response.ValidateAreaResponse;
 import com.hana.chagokchagok.entity.AllocationLog;
 import com.hana.chagokchagok.entity.ParkingInfo;
@@ -170,4 +172,12 @@ public class ParkService {
         feignService.sendOpenBarRequest(searchedRealTimeParking.getParkId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    public GetCarlocResponse getCarLocation(GetCarlocRequest getCarlocRequest){
+        String[] location = separateLocationInput(getCarlocRequest.getArea());
+        ParkingInfo parkingInfo = parkingInfoRepository.findByParkNoAndAreaCode(Integer.valueOf(location[1]),location[0]);
+        AllocationLog allocationLog = allocationLogRepository.findByParkId(parkingInfo.getParkId());
+        GetCarlocResponse getCarlocResponse = new GetCarlocResponse(allocationLog.getCarNo(), allocationLog.getEntryTime());
+        return getCarlocResponse;
+    }
+
 }
