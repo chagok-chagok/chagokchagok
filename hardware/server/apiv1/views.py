@@ -4,7 +4,7 @@ from PIL import Image
 from . import utils
 import cv2
 import numpy as np
-
+import requests
 
 # Create your views here.
 def plate_recog(request):
@@ -19,3 +19,39 @@ def plate_recog(request):
     else:
         return JsonResponse({'error':'error'})
 
+
+def entrance(request):
+    if request.method == 'POST':
+        car_data = BytesIO(request.body)
+        entrance_url = 'http://localhost:8080/park/allocation/'
+        response = requests.post(entrance_url, data=car_data)
+        result = response.json()
+        return JsonResponse()
+
+
+def hall(request):
+    if request.method == 'POST':
+        car_data = BytesIO(request.body)
+        park_url = 'http://localhost:8080/park/validation/'
+        response = requests.post(park_url, data=car_data)
+        result = response.json()
+        park_id = result['park_id'][0]
+        return JsonResponse({'park_id':park_id})
+
+
+def exit_way(request):
+    if request.method == 'POST':
+        car_data = BytesIO(request.body)
+        exit_url = 'http://localhost:8080/park/out/'
+        response = requests.post(exit_url, data=car_data)
+        result = response.json()
+        return JsonResponse()
+
+
+def bar(request):
+    if request.method == 'POST':
+        bar_url = 'http://localhost:8080/admin/bar/'
+        response = requests.post(bar_url)
+        result = response.json()
+        park_no = result['park_no'][0]
+        return JsonResponse({'park_no':park_no})

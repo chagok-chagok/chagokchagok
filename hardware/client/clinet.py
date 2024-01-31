@@ -17,7 +17,7 @@ def main():
     # print(base64_str, len(base64_str))
     result = response.json() # json형태 확인
 
-    print(result)
+    print(result['text'][0])
     
     
 
