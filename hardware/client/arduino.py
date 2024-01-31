@@ -39,7 +39,12 @@ cap3.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap3.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
 
-    
+def capture_image(ret, frame):
+    cv2.imwrite('image.jpg', frame)
+    image_path = 'image.jpg'
+    image = open(image_path, 'rb')
+    base64_str = base64.b64encode(image.read())
+    return base64.b64decode(base64_str)
 
 
 def entrance(data):
@@ -47,6 +52,7 @@ def entrance(data):
     print(distance)
     if distance <= 10:
         ret, frame = cap1.read()
+        """
         cv2.imwrite('image.jpg', frame)
         image_path = 'image.jpg'
         image = open(image_path, 'rb')
@@ -55,8 +61,10 @@ def entrance(data):
         ai_server_url = 'http://127.0.0.1:8000/api/v1/car-plate/image/'
         ai_response = requests.post(ai_server_url, data=base64_str)
         ai_result = ai_response.json()
+        """
+        image_source = capture_image(ret, frame)
         entrance_url = 'http://127.0.0.1:8000/api/v1/entrance/'
-        entrance_response = requests.post(entrance_url, data=ai_result)
+        entrance_response = requests.post(entrance_url, data=image_source)
         entrance_result = entrance_response.json()
         if entrance_result:
             board.servo_write(motor_entrance, 90)
@@ -69,6 +77,7 @@ def hall(data):
     print(distance)
     if distance <= 10:
         ret, frame = cap2.read()
+        """
         cv2.imwrite('image.jpg', frame)
         image_path = 'image.jpg'
         image = open(image_path, 'rb')
@@ -77,8 +86,10 @@ def hall(data):
         ai_server_url = 'http://127.0.0.1:8000/api/v1/car-plate/image/'
         ai_response = requests.post(ai_server_url, data=base64_str)
         ai_result = ai_response.json()
+        """
+        image_source = capture_image(ret, frame)
         hall_url = 'http://127.0.0.1:8000/api/v1/hall/'
-        hall_response = requests.post(hall_url, data=ai_result)
+        hall_response = requests.post(hall_url, data=image_source)
         hall_result = hall_response.json()
         if hall_result:
             board.servo_write(motor_entrance, 90)
@@ -94,6 +105,7 @@ def exit_way(data):
     print(distance)
     if distance <= 10:
         ret, frame = cap3.read()
+        """
         cv2.imwrite('image.jpg', frame)
         image_path = 'image.jpg'
         image = open(image_path, 'rb')
@@ -102,8 +114,10 @@ def exit_way(data):
         ai_server_url = 'http://127.0.0.1:8000/api/v1/car-plate/image/'
         ai_response = requests.post(ai_server_url, data=base64_str)
         ai_result = ai_response.json()
+        """
+        image_source = capture_image(ret, frame)
         exit_url = 'http://127.0.0.1:8000/api/v1/exit-way/'
-        exit_response = requests.post(exit_url, data=ai_result)
+        exit_response = requests.post(exit_url, data=image_source)
         exit_result = exit_response.json()
         if exit_result:
             board.servo_write(motor_exit, 90)
