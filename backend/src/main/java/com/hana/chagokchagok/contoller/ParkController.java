@@ -49,19 +49,11 @@ public class ParkController {
      * @return 배정된 구역이라면 주차장 번호, 그렇지 않다면 null
      */
     @GetMapping("/validation")
-    public ValidateAreaResponse validateArea(
+    public ResponseEntity<ValidateAreaResponse> validateArea(
             @RequestParam(name = "car_no") String carNo,
             @RequestParam(name = "area") String area) {
         ValidateAreaRequest validateAreaRequest = new ValidateAreaRequest(carNo, area);
-        ValidateAreaResponse validateAreaResponse = parkService.validateArea(validateAreaRequest);
-        // 다른 구역에 진입했거나, 오인식된 차량일 때
-        if (validateAreaResponse == null) {
-            return null;
-        }
-        // 배정된 구역에 진입했을 때
-        else {
-            return validateAreaResponse;
-        }
+        return parkService.validateArea(validateAreaRequest);
     }
 
     /**

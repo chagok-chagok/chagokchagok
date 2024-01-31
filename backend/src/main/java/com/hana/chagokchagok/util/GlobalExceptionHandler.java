@@ -1,7 +1,7 @@
 package com.hana.chagokchagok.util;
 
 import com.hana.chagokchagok.exception.CustomException;
-import com.hana.chagokchagok.exception.ErrorCode;
+import com.hana.chagokchagok.exception.ErrorType;
 import com.hana.chagokchagok.exception.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.exception.ConstraintViolationException;
@@ -21,8 +21,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(value = { ConstraintViolationException.class, DataIntegrityViolationException.class})
     protected ResponseEntity<ErrorResponse> handleDataException() {
-        log.error("handleDataException throw Exception : {}", ErrorCode.DUPLICATE_RESOURCE);
-        return ErrorResponse.toResponseEntity(ErrorCode.DUPLICATE_RESOURCE);
+        log.error("handleDataException throw Exception : {}", ErrorType.DUPLICATE_RESOURCE);
+        return ErrorResponse.toResponseEntity(ErrorType.DUPLICATE_RESOURCE);
     }
 
     /**
@@ -33,7 +33,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(value = { CustomException.class })
     protected ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
-        log.error("handleCustomException throw CustomException : {}", e.getErrorCode());
-        return ErrorResponse.toResponseEntity(e.getErrorCode());
+        log.error("handleCustomException throw CustomException : {}", e.getErrorType());
+        return ErrorResponse.toResponseEntity(e.getErrorType());
     }
 }
