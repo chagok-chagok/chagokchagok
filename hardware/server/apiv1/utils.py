@@ -2,8 +2,9 @@ from glob import glob
 import numpy as np
 import cv2
 from PIL import ImageFont, ImageDraw, Image
-from . import apps
 import torch, easyocr
+from io import BytesIO
+
 
 # init part
 car_model = torch.hub.load("ultralytics/yolov5", 'yolov5s', force_reload=True, skip_validation=True)
@@ -57,3 +58,13 @@ def detect(car_m, lp_m, reader, image_path):
         return cv2.resize(to_draw, (1280,1280)), result_text
     
     return cv2.resize(to_draw, (1280,1280)), result_text
+
+
+def plate_recog(image_data):
+    img_out = Image.open(BytesIO(image_data))
+    img_out = np.array(img_out)
+    img_out = cv2.cvtColor(img_out, cv2.COLOR_BGR2RGB)
+    
+    cv2.imwrite('./image.png', img_out)
+    text = main('./image.png')
+    return text

@@ -2,11 +2,10 @@ from django.http import JsonResponse
 from io import BytesIO
 from PIL import Image
 from . import utils
-import cv2
-import numpy as np
 import requests
 
 
+""" utils 에 있는 plate_recog 함수로 대체
 # Create your views here.
 def plate_recog(request):
     if request.method == 'POST':
@@ -15,15 +14,16 @@ def plate_recog(request):
         img_out = cv2.cvtColor(img_out, cv2.COLOR_BGR2RGB)
         
         cv2.imwrite('./image.png', img_out)
-        text = utils.main('./image.png') # 여기에 번호판 인식 함수랑 집어 넣고 돌려서 보내
+        text = utils.main('./image.png')
         return JsonResponse({'text':text})
     else:
         return JsonResponse({'error':'error'})
+"""
 
 
 def entrance(request):
     if request.method == 'POST':
-        car_data = BytesIO(request.body)
+        car_data = utils.plate_recog(request.body)
         entrance_url = 'http://localhost:8080/park/allocation/'
         response = requests.post(entrance_url, data=car_data)
         result = response.json()
@@ -32,7 +32,7 @@ def entrance(request):
 
 def hall(request):
     if request.method == 'POST':
-        car_data = BytesIO(request.body)
+        car_data = utils.plate_recog(request.body)
         park_url = 'http://localhost:8080/park/validation/'
         response = requests.post(park_url, data=car_data)
         result = response.json()
@@ -42,7 +42,7 @@ def hall(request):
 
 def exit_way(request):
     if request.method == 'POST':
-        car_data = BytesIO(request.body)
+        car_data = utils.plate_recog(request.body)
         exit_url = 'http://localhost:8080/park/out/'
         response = requests.post(exit_url, data=car_data)
         result = response.json()
@@ -53,7 +53,7 @@ def exit_way(request):
 park_list = []
 def bar(request):
     if request.method == 'POST':
-        result = BytesIO(request.body)
+        result = utils.plate_recog(request.body)
         park_no = result['park_no'][0]
         park_list.append(park_no)
         return JsonResponse({'okay': 'okay'})
