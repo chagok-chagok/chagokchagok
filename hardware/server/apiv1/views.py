@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 import requests
 
+
 # Create your views here.
 def plate_recog(request):
     if request.method == 'POST':
@@ -48,10 +49,18 @@ def exit_way(request):
         return JsonResponse()
 
 
+
+park_list = []
 def bar(request):
     if request.method == 'POST':
-        bar_url = 'http://localhost:8080/admin/bar/'
-        response = requests.post(bar_url)
-        result = response.json()
+        result = BytesIO(request.body)
         park_no = result['park_no'][0]
-        return JsonResponse({'park_no':park_no})
+        park_list.append(park_no)
+        return JsonResponse({'okay': 'okay'})
+    
+
+def bar_open(request):
+    if request.method == 'POST':
+        if park_list:
+            park_no = park_list.pop(0)
+            return JsonResponse({'park_no': park_no})
