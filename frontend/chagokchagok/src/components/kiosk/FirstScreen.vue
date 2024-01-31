@@ -19,9 +19,11 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import axios from "axios";
 import router from "@/router";
+import { useParkingStore } from "@/stores/parkingStore";
 
 const currentTime = ref(getCurrentTime());
 const allocatedLocation = ref("");
+const parkingStore = useParkingStore();
 
 onMounted(() => {
   const interval = setInterval(() => {
@@ -54,7 +56,8 @@ function selectParking(isDisabled) {
     )
     .then((response) => {
       console.log(response.data.allocatedLocation);
-      allocatedLocation.value = response.data.allocatedLocation;
+      // allocatedLocation.value = response.data.allocatedLocation;
+      parkingStore.allocatedLocation = response.data.allocatedLocation;
       router.push("/fourth");
     })
     .catch((error) => {
@@ -64,6 +67,7 @@ function selectParking(isDisabled) {
     });
 }
 </script>
+
 <style scoped>
 .screen-container {
   position: relative;

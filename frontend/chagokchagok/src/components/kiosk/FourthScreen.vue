@@ -10,19 +10,19 @@
         alt="주차확인증"
         class="ticket-image"
       />
-      <div class="ticket">{{ allocatedLocation }}</div>
+      <div class="ticket">{{ parkingStore.allocatedLocation }}</div>
     </div>
     <div class="welcome-message">환영합니다.</div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import router from "@/router";
-import axios from "axios";
+import { useParkingStore } from "@/stores/parkingStore"; // Pinia store 임포트
 
 const currentTime = ref("");
-const allocatedLocation = ref(""); // 할당된 주차 구역 번호를 저장할 ref 변수
+const parkingStore = useParkingStore(); // 할당된 주차 구역 번호를 저장할 ref 변수
 
 // 주차 구역을 요청하고 할당된 주차 구역 번호를 업데이트하는 함수
 // function fetchParkingAllocation() {
@@ -60,7 +60,6 @@ function updateCurrentTime() {
 // 마운트될 때와 매초마다 현재 시간을 업데이트하고 주차 구역을 요청
 onMounted(() => {
   updateCurrentTime();
-  fetchParkingAllocation();
   setInterval(updateCurrentTime, 1000);
   setTimeout(() => {
     router.push("/");

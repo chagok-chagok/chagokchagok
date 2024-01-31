@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
-import FirstScreen from "../components/FirstScreen.vue";
-import SecondScreen from "../components/SecondScreen.vue";
-import ThirdScreen from "../components/ThirdScreen.vue";
-import FourthScreen from "../components/FourthScreen.vue";
+import FirstScreen from "../components/kiosk/FirstScreen.vue";
+import SecondScreen from "../components/kiosk/SecondScreen.vue";
+import ThirdScreen from "../components/kiosk/ThirdScreen.vue";
+import FourthScreen from "../components/kiosk/FourthScreen.vue";
 
 const routes = [
   { path: "/", component: FirstScreen },
