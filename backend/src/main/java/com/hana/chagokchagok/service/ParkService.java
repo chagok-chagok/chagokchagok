@@ -9,6 +9,7 @@ import com.hana.chagokchagok.dto.request.OpenBarRequest;
 import com.hana.chagokchagok.dto.request.ValidateAreaRequest;
 import com.hana.chagokchagok.dto.response.AllocateCarResponse;
 import com.hana.chagokchagok.dto.response.GetCarlocResponse;
+import com.hana.chagokchagok.dto.response.RealtimeCarsResponse;
 import com.hana.chagokchagok.dto.response.ValidateAreaResponse;
 import com.hana.chagokchagok.entity.AllocationLog;
 import com.hana.chagokchagok.entity.ParkingInfo;
@@ -28,6 +29,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.hana.chagokchagok.enums.ErrorCode.*;
 import static com.hana.chagokchagok.util.SeparateLocation.separateLocationInput;
@@ -172,12 +177,22 @@ public class ParkService {
         feignService.sendOpenBarRequest(searchedRealTimeParking.getParkId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    public GetCarlocResponse getCarLocation(GetCarlocRequest getCarlocRequest){
-        String[] location = separateLocationInput(getCarlocRequest.getArea());
-        ParkingInfo parkingInfo = parkingInfoRepository.findByParkNoAndAreaCode(Integer.valueOf(location[1]),location[0]);
-        AllocationLog allocationLog = allocationLogRepository.findByParkId(parkingInfo.getParkId());
-        GetCarlocResponse getCarlocResponse = new GetCarlocResponse(allocationLog.getCarNo(), allocationLog.getEntryTime());
-        return getCarlocResponse;
+
+    /**
+     * 현재 주차된 차량 리스트
+     * @return
+     */
+    public RealtimeCarsResponse getRealtimeCars() {
+        List<RealtimeParking> realtimeParkings = realTimeParkingRepository.findAll();
+        return new RealtimeCarsResponse(realtimeParkings);
     }
 
+    public GetCarlocResponse getCarLocation(GetCarlocRequest getCarlocRequest){
+        String[] location = separateLocationInput(getCarlocRequest.getArea());
+        System.out.println("=======================테스트==============================");
+        System.out.printf("location[0] : %s, location[1] = %s%n", location[0], location[1]);
+        ParkingInfo parkingInfo = parkingInfoRepository.findByAreaCode(getCarlocRequest.getArea());
+        AllocationLog allocationLog = allocationLogRepository.findByParkingInfo(parkingInfo);
+        return new GetCarlocResponse(allocationLog.getCarNo(), allocationLog.getEntryTime());
+    }
 }

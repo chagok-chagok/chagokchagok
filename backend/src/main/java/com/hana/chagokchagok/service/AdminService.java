@@ -1,10 +1,15 @@
 package com.hana.chagokchagok.service;
 
+import com.hana.chagokchagok.dto.AllocationDto;
+import com.hana.chagokchagok.dto.ReportDataDto;
 import com.hana.chagokchagok.dto.ReportDto;
+import com.hana.chagokchagok.dto.ReportRateDto;
+import com.hana.chagokchagok.dto.UnresolvedDto;
 import com.hana.chagokchagok.dto.request.ExchangeRequest;
 import com.hana.chagokchagok.dto.request.LoginRequest;
 import com.hana.chagokchagok.dto.request.ReportRequest;
 import com.hana.chagokchagok.dto.response.CommonAlertResponse;
+import com.hana.chagokchagok.dto.response.DashBoardResponse;
 import com.hana.chagokchagok.dto.response.LoginResponse;
 import com.hana.chagokchagok.dto.response.ReportResponse;
 import com.hana.chagokchagok.entity.Admin;
@@ -12,10 +17,12 @@ import com.hana.chagokchagok.entity.AllocationLog;
 import com.hana.chagokchagok.entity.ParkingInfo;
 import com.hana.chagokchagok.entity.RealtimeParking;
 import com.hana.chagokchagok.entity.Report;
+import com.hana.chagokchagok.enums.ErrorCode;
 import com.hana.chagokchagok.enums.ReportStatus;
 import com.hana.chagokchagok.exception.InvalidInputException;
 import com.hana.chagokchagok.exception.SpotNotEmptyException;
 import com.hana.chagokchagok.repository.AdminRepository;
+import com.hana.chagokchagok.repository.AllocationLogRepository;
 import com.hana.chagokchagok.repository.ParkingInfoRepository;
 import com.hana.chagokchagok.repository.RealtimeParkingRepository;
 import com.hana.chagokchagok.repository.ReportRepository;
@@ -33,6 +40,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +54,7 @@ public class AdminService {
     private final EntityManager em;
     private final ReportRepository reportRepository;
     private final AdminRepository adminRepository;
+    private final AllocationLogRepository allocationLogRepository;
     private final JWTUtil jwtUtil;
     private final ParkingInfoRepository parkingInfoRepository;
 
@@ -206,5 +215,43 @@ public class AdminService {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    
+    
+    public DashBoardResponse getDashboard() {
+        //오늘 방문 차량 조회
+        int[] today_visits = new int[24];
+        findEnteredCarInDay(LocalDate.now(), today_visits);
+
+        //어제 방문 차량 조회
+        int[] previous_visits = new int[24];
+        findEnteredCarInDay(LocalDate.now().minusDays(1), previous_visits);
+
+        //최근 30일 오류 건수
+        List<Report> reports = reportRepository.findBefore30Days(LocalDateTime.now().minusDays(30));
+        int total_report = reports.size();
+        ReportRateDto report_rate = new ReportRateDto();
+        UnresolvedDto unresolved = new UnresolvedDto();
+        List<ReportDataDto> ReportDataDto = new ArrayList<>();
+        for(Report report : reports){
+            if(report.getErrorCode() == ErrorCode.AUTO_REPORT) report_rate.setAuto(report_rate.getAuto()+1);
+            else if(report.getErrorCode() == ErrorCode.HUMAN_ERROR) report_rate.setHuman(report_rate.getHuman()+1);
+            else if(report.getErrorCode() == ErrorCode.SENSOR_ERROR) report_rate.setSensor(report_rate.getSensor()+1);
+            if(report.getReportStatus() == ReportStatus.UNRESOLVED)  {
+                unresolved.setCnt(unresolved.getCnt()+1);
+                if(ReportDataDto.size() >= 3) continue;
+                ReportDataDto.add(new ReportDataDto(report.getReportId(), report.getReportTime(), report.getErrorCode(), report.getNote()));
+            }
+        }
+        unresolved.setReport_data(ReportDataDto);
+        return new DashBoardResponse(today_visits, previous_visits, total_report, report_rate, unresolved);
+    }
+
+    private void findEnteredCarInDay(LocalDate enterDay, int[] today_visits) {
+        LocalDateTime startOfDay = LocalDateTime.of(enterDay, LocalTime.MIN); // 오늘 0시 0분
+        LocalDateTime endOfDay = LocalDateTime.of(enterDay, LocalTime.MAX);
+        List<AllocationLog> todayVisits = allocationLogRepository.findAllByEntryTimeBetween(startOfDay, endOfDay);
+        for(AllocationLog allocationLog : todayVisits) today_visits[allocationLog.getEntryTime().getHour()]++;
     }
 }

@@ -28,4 +28,5 @@ public interface ParkingInfoRepository extends JpaRepository<ParkingInfo, Intege
     ParkingInfo findByParkNoAndAreaCode(Integer parkNo, String areaCode);
 
 
+    ParkingInfo findByAreaCode(String area);
 }
