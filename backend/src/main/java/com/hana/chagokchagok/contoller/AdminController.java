@@ -5,7 +5,12 @@ import com.hana.chagokchagok.dto.request.ExchangeRequest;
 import com.hana.chagokchagok.dto.request.LoginRequest;
 import com.hana.chagokchagok.dto.request.OpenBarRequest;
 import com.hana.chagokchagok.dto.request.ReportRequest;
-import com.hana.chagokchagok.dto.response.*;
+import com.hana.chagokchagok.dto.response.CommonAlertResponse;
+import com.hana.chagokchagok.dto.response.DashBoardResponse;
+import com.hana.chagokchagok.dto.response.LoginResponse;
+import com.hana.chagokchagok.dto.response.LogoutResponse;
+import com.hana.chagokchagok.dto.response.RefreshTokenResponse;
+import com.hana.chagokchagok.dto.response.ReportResponse;
 import com.hana.chagokchagok.service.AdminService;
 import com.hana.chagokchagok.service.ParkService;
 import com.hana.chagokchagok.service.SseService;
@@ -117,4 +122,10 @@ public class AdminController {
     public RealtimeCarsResponse realtimeCars(){
         return parkService.getRealtimeCars();
     }
+
+    @GetMapping("/dashboard")
+    public DashBoardResponse getDashboard(){
+        return adminService.getDashboard();
+    }
+
 }
