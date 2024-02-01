@@ -50,10 +50,6 @@ public class SseController {
     }
 
     //AI서버로부터 차번호 추출 텍스트를 입력받아 키오스크로 전송
-    @PostMapping("/carnum")
-    public ResponseEntity<Void> sendCarNum(@RequestBody CarNumRequest carNumRequest){
-        sseService.sendCarNum(carNumRequest, KIOSK_KEY);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+
 
 }

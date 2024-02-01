@@ -4,11 +4,9 @@ import com.hana.chagokchagok.dto.AllocationDto;
 import com.hana.chagokchagok.dto.ErrorDto;
 import com.hana.chagokchagok.dto.ValidationParkingInfoDto;
 import com.hana.chagokchagok.dto.request.AllocateCarRequest;
-import com.hana.chagokchagok.dto.request.GetCarlocRequest;
 import com.hana.chagokchagok.dto.request.OpenBarRequest;
 import com.hana.chagokchagok.dto.request.ValidateAreaRequest;
 import com.hana.chagokchagok.dto.response.AllocateCarResponse;
-import com.hana.chagokchagok.dto.response.GetCarlocResponse;
 import com.hana.chagokchagok.dto.response.ValidateAreaResponse;
 import com.hana.chagokchagok.entity.AllocationLog;
 import com.hana.chagokchagok.entity.ParkingInfo;
@@ -28,6 +26,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.hana.chagokchagok.enums.ErrorCode.*;
 import static com.hana.chagokchagok.util.SeparateLocation.separateLocationInput;
@@ -180,4 +182,13 @@ public class ParkService {
         return getCarlocResponse;
     }
 
+
+    /**
+     * 현재 주차된 차량 리스트
+     * @return
+     */
+    public RealtimeCarsResponse getRealtimeCars() {
+        List<RealtimeParking> realtimeParkings = realTimeParkingRepository.findAll();
+        return new RealtimeCarsResponse(realtimeParkings);
+    }
 }
