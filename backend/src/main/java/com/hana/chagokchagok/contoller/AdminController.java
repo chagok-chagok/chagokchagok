@@ -2,12 +2,16 @@ package com.hana.chagokchagok.contoller;
 
 import com.hana.chagokchagok.dto.ReportDto;
 import com.hana.chagokchagok.dto.request.ExchangeRequest;
+import com.hana.chagokchagok.dto.request.GetCarlocRequest;
 import com.hana.chagokchagok.dto.request.LoginRequest;
 import com.hana.chagokchagok.dto.request.OpenBarRequest;
 import com.hana.chagokchagok.dto.request.ReportRequest;
 import com.hana.chagokchagok.dto.response.CommonAlertResponse;
+import com.hana.chagokchagok.dto.response.DashBoardResponse;
+import com.hana.chagokchagok.dto.response.GetCarlocResponse;
 import com.hana.chagokchagok.dto.response.LoginResponse;
 import com.hana.chagokchagok.dto.response.LogoutResponse;
+import com.hana.chagokchagok.dto.response.RealtimeCarsResponse;
 import com.hana.chagokchagok.dto.response.RefreshTokenResponse;
 import com.hana.chagokchagok.dto.response.ReportResponse;
 import com.hana.chagokchagok.service.AdminService;
@@ -116,4 +120,20 @@ public class AdminController {
         parkService.openBar(openBarRequest); // 차단바 해제 요청
         sseService.sendRealtimeCommon(ADMIN_KEY);
     }
+
+    @PostMapping("/caloc")
+    public GetCarlocResponse getCarLocation(@RequestBody GetCarlocRequest getCarlocRequest){
+        return parkService.getCarLocation(getCarlocRequest);
+    }
+
+    @GetMapping("/cars")
+    public RealtimeCarsResponse realtimeCars(){
+        return parkService.getRealtimeCars();
+    }
+
+    @GetMapping("/dashboard")
+    public DashBoardResponse getDashboard(){
+        return adminService.getDashboard();
+    }
+
 }
