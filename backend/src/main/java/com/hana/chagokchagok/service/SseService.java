@@ -51,8 +51,8 @@ public class SseService {
             if(sseEmitter == null) throw new SseEmitterIsNullException(keyValue+" 연결이 존재하지 않음");
             else{
                 sseEmitter.send(SseEmitter.event()
-                        .name(String.valueOf(SseStatus.CONGESTION_CLEAR)));
-//                        .data("["+LocalDateTime.now()+"] 차량이 출차되었습니다. 대기자에게 새 자리가 배정됩니다."));
+                        .name(String.valueOf(SseStatus.CONGESTION_CLEAR))
+                        .data("CONGESTION_CLEAR"));
             }
 
         } catch (SseEmitterIsNullException e) {
@@ -77,11 +77,11 @@ public class SseService {
                 if(matcher.matches()) {
                     sseEmitter.send(SseEmitter.event()
                             .name(String.valueOf(SseStatus.VALID_CAR_NUM))
-                            .data("["+LocalDateTime.now()+"] AI서버로부터 정상인식된 차량번호 ["+carNum+"]가 입력됨"));
+                            .data(carNum));
                 } else{ //적합하지 않으면 키오스크 화면에 재인식 코드 띄우기
                     sseEmitter.send(SseEmitter.event()
-                            .name(String.valueOf(SseStatus.INVALID_CAR_NUM)));
-//                            .data("["+LocalDateTime.now()+"] AI서버로부터 오인식된 차량번호 ["+carNum+"]가 입력됨"));
+                            .name(String.valueOf(SseStatus.INVALID_CAR_NUM))
+                            .data("INVALID_CAR_NUM"));
                 }
 
             }
@@ -133,8 +133,8 @@ public class SseService {
             if(sseEmitter == null) throw new SseEmitterIsNullException(keyValue+" 연결이 존재하지 않음");
             else{
                 sseEmitter.send(SseEmitter.event()
-                        .name(String.valueOf(SseStatus.REALTIME_COMMON)));
-//                        .data("["+LocalDateTime.now()+"] 이 요청이 오면 /admin/common을 다시 실행하세요."));
+                        .name(String.valueOf(SseStatus.REALTIME_COMMON))
+                        .data("REALTIME_COMMON"));
             }
 
         } catch (SseEmitterIsNullException e) {
