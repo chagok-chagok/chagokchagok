@@ -6,6 +6,7 @@ import com.hana.chagokchagok.dto.request.GetCarlocRequest;
 import com.hana.chagokchagok.dto.request.LoginRequest;
 import com.hana.chagokchagok.dto.request.OpenBarRequest;
 import com.hana.chagokchagok.dto.request.ReportRequest;
+import com.hana.chagokchagok.dto.request.SearchInfoRequest;
 import com.hana.chagokchagok.dto.response.CommonAlertResponse;
 import com.hana.chagokchagok.dto.response.DashBoardResponse;
 import com.hana.chagokchagok.dto.response.GetCarlocResponse;
@@ -14,6 +15,7 @@ import com.hana.chagokchagok.dto.response.LogoutResponse;
 import com.hana.chagokchagok.dto.response.RealtimeCarsResponse;
 import com.hana.chagokchagok.dto.response.RefreshTokenResponse;
 import com.hana.chagokchagok.dto.response.ReportResponse;
+import com.hana.chagokchagok.dto.response.SearchInfoResponse;
 import com.hana.chagokchagok.service.AdminService;
 import com.hana.chagokchagok.service.ParkService;
 import com.hana.chagokchagok.service.SseService;
@@ -136,4 +138,9 @@ public class AdminController {
         return adminService.getDashboard();
     }
 
+
+    @PostMapping("/search")
+    public SearchInfoResponse searchInfo(@RequestBody SearchInfoRequest searchInfoRequest){
+        return parkService.searchInfo(searchInfoRequest);
+    }
 }
