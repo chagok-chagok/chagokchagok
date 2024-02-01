@@ -1,18 +1,18 @@
 <script setup>
-import { useBoardStore } from "@/stores/board";
+import { useReportStore } from "@/stores/report";
 import { storeToRefs } from "pinia";
 import { ref, onMounted } from "vue";
 import AppPagination from "@/components/layout/AppPagination.vue";
-
-const boardStore = useBoardStore();
+import ReportCountBar from "@/components/admin/report/ReportCountBar.vue";
+const reportStore = useReportStore();
 const page = ref(1);
-const { total_page_cnt, reports } = storeToRefs(boardStore);
+const { total_page_cnt, reports } = storeToRefs(reportStore);
 const titles = ref([]);
-boardStore.getReportList(page.value);
+reportStore.getReportList(page.value);
 
 const search = async () => {
   // total_page_cnt 비동기로 가져오기
-  await boardStore.getReportList(page.value);
+  await reportStore.getReportList(page.value);
   // 가져온 total_page_cnt를 BasicPagination에 전달
   basicPaginationProps.value.totalPages = total_page_cnt.value;
   console.log("reports : ", reports.value);
@@ -42,20 +42,27 @@ onMounted(async () => {
 
 <template>
   <div>
+    <report-count-bar></report-count-bar>
     <div>page : {{ page }}</div>
     <div>total_page_count : {{ total_page_cnt }}</div>
     <div>
       <table class="custom-table">
         <thead>
-          <tr>
-            <th v-for="(item, index) in titles" :key="index">{{ item }}</th>
-          </tr>
+          <th>NO</th>
+          <th>발생시간</th>
+          <th>신고코드</th>
+          <th>주차자리</th>
+          <th>처리상태</th>
+          <th>비고</th>
         </thead>
         <tbody>
           <tr v-for="(item, index) in reports" :key="index">
-            <td v-for="(values, index) in Object.values(item)" :key="index">
-              {{ values }}
-            </td>
+            <td><input type="checkbox" /></td>
+            <td>{{ item.report_time }}</td>
+            <td>{{ item.error_code }}</td>
+            <td>{{ item.full_name }}</td>
+            <td>{{ item.status }}</td>
+            <td>{{ item.note }}</td>
           </tr>
         </tbody>
       </table>

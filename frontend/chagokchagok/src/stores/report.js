@@ -2,7 +2,7 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import instance from "@/utils/mainAxios";
 
-export const useBoardStore = defineStore("board", () => {
+export const useReportStore = defineStore("report", () => {
   /* ============= 신고 리스트 받아오는 요청 ============= */
   const reports = ref([]);
   const today_cnt = ref(0);
