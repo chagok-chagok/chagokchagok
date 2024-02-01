@@ -16,6 +16,7 @@ const props = defineProps(["imageSrc", "title", "number"]);
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 .card {
   display: flex;
@@ -43,17 +44,17 @@ img {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: baseline;
   margin-left: 16px; /* 내용과 이미지 사이의 간격 조정 */
 }
 
 h4 {
   margin: 0;
   color: #8a92a6;
+  font-family: "Inter", sans-serif;
 }
-
 p {
   margin: 8px 0;
-  font-weight: bold;
-  color: #007bff;
+  font-family: "Poppins";
 }
 </style>

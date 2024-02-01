@@ -58,24 +58,14 @@ onMounted(async () => {
         <tbody>
           <tr v-for="(item, index) in reports" :key="index">
             <td><input type="checkbox" /></td>
-            <td>{{ item.report_time }}</td>
-            <td>{{ item.error_code }}</td>
+            <td>{{ item.report_time.replace("T", " ") }}</td>
+            <td>{{ item.error_code.split("_")[0] }}</td>
             <td>{{ item.full_name }}</td>
             <td>{{ item.status }}</td>
             <td>{{ item.note }}</td>
           </tr>
         </tbody>
       </table>
-      <!-- <table>
-        <th>
-          <td v-for="(item, index) in titles" :key="index">
-            {{ item }}
-          </td>
-        </th>
-        <tr v-for="(item, index) in reports" :key="index">
-          <td v-for="(values, index) in Object.values(item)" :key="index">{{ values }}</td>
-        </tr>
-      </table> -->
     </div>
     <app-pagination
       :current-page="basicPaginationProps.currentPage"
@@ -91,6 +81,7 @@ onMounted(async () => {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  border: 1px solid rgb(234, 236, 240);
 }
 
 .custom-table th,
@@ -98,11 +89,13 @@ onMounted(async () => {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
+  text-align: center;
 }
 
 .custom-table th {
   background-color: #f2f2f2;
 }
+
 button {
   height: 50px;
   width: 100px;
