@@ -189,9 +189,7 @@ public class ParkService {
 
     public GetCarlocResponse getCarLocation(GetCarlocRequest getCarlocRequest){
         String[] location = separateLocationInput(getCarlocRequest.getArea());
-        System.out.println("=======================테스트==============================");
-        System.out.printf("location[0] : %s, location[1] = %s%n", location[0], location[1]);
-        ParkingInfo parkingInfo = parkingInfoRepository.findByAreaCode(getCarlocRequest.getArea());
+        ParkingInfo parkingInfo = parkingInfoRepository.findByParkNoAndAreaCode(Integer.valueOf(location[1]),location[0]);
         AllocationLog allocationLog = allocationLogRepository.findByParkingInfo(parkingInfo);
         return new GetCarlocResponse(allocationLog.getCarNo(), allocationLog.getEntryTime());
     }
