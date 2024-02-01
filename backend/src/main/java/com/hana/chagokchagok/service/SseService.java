@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 @Service
@@ -62,16 +64,26 @@ public class SseService {
 
     /**
      * AI서버로부터 추출된 차번호텍스트를 SSE를 통해 키오스크로 전송
-     * @param carNumRequest
+     * @param carNum
      */
-    public void sendCarNum(CarNumRequest carNumRequest, String keyValue) {
+    public void validateCarnum(String carNum, String keyValue) {
         SseEmitter sseEmitter = SseController.sseEmitters.get(keyValue);
         try {
             if(sseEmitter == null) throw new SseEmitterIsNullException(keyValue+" 연결이 존재하지 않음");
             else{
-                sseEmitter.send(SseEmitter.event()
-                        .name(String.valueOf(SseStatus.CAR_NUM))
-                        .data("["+LocalDateTime.now()+"] AI서버로부터 차량번호 ["+carNumRequest.getCarNum()+"]가 입력됨"));
+                String regax = "^[0-9]{2}[가-힣][0-9]{4}$";
+                Pattern pattern = Pattern.compile(regax);
+                Matcher matcher = pattern.matcher(carNum);
+                if(matcher.matches()) {
+                    sseEmitter.send(SseEmitter.event()
+                            .name(String.valueOf(SseStatus.VALID_CAR_NUM))
+                            .data("["+LocalDateTime.now()+"] AI서버로부터 정상인식된 차량번호 ["+carNum+"]가 입력됨"));
+                } else{ //적합하지 않으면 키오스크 화면에 재인식 코드 띄우기
+                    sseEmitter.send(SseEmitter.event()
+                            .name(String.valueOf(SseStatus.INVALID_CAR_NUM))
+                            .data("["+LocalDateTime.now()+"] AI서버로부터 오인식된 차량번호 ["+carNum+"]가 입력됨"));
+                }
+
             }
 
         } catch (SseEmitterIsNullException e) {
@@ -131,4 +143,5 @@ public class SseService {
             throw new RuntimeException(e);
         }
     }
+
 }

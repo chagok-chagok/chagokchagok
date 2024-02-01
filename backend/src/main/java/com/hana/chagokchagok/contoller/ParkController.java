@@ -1,6 +1,7 @@
 package com.hana.chagokchagok.contoller;
 
 import com.hana.chagokchagok.dto.request.AllocateCarRequest;
+import com.hana.chagokchagok.dto.request.CarNumRequest;
 import com.hana.chagokchagok.dto.request.PullOutRequest;
 import com.hana.chagokchagok.dto.request.ValidateAreaRequest;
 import com.hana.chagokchagok.dto.response.AllocateCarResponse;
@@ -10,6 +11,7 @@ import com.hana.chagokchagok.service.ParkService;
 import com.hana.chagokchagok.service.SseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +29,8 @@ public class ParkController {
     private final SseService sseService;
     @Value("${admin.key}")
     private String ADMIN_KEY;
-
+    @Value("${kiosk.key}")
+    private String KIOSK_KEY;
     /**
      * 자리 배정 요청
      * @param allocateCarRequest 차량 번호, 장애 여부를 가진 요청
@@ -77,5 +80,15 @@ public class ParkController {
     @GetMapping("/auto")
     public ResponseEntity<Void> autoSystem(@RequestParam(name = "location") String location){
         return parkService.autoSystem(location);
+    }
+
+    /**
+     * AI서버가 보낸 추출 텍스트에 대해 유효성을 검사한 뒤 SSE로 프론트에 화면코드를 넘겨줌
+     * @return Void
+     */
+    @PostMapping("/validation/carnum")
+    public ResponseEntity<Void> sendCarNum(@RequestBody CarNumRequest carNumRequest){
+        sseService.validateCarnum(carNumRequest.getCarNum(), KIOSK_KEY);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
