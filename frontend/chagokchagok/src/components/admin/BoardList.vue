@@ -2,7 +2,7 @@
 import { useBoardStore } from "@/stores/board";
 import { storeToRefs } from "pinia";
 import { ref, onMounted } from "vue";
-import BasicPagination from "@/components/layout/BasicPagination.vue";
+import AppPagination from "@/components/layout/AppPagination.vue";
 
 const boardStore = useBoardStore();
 const page = ref(1);
@@ -70,12 +70,12 @@ onMounted(async () => {
         </tr>
       </table> -->
     </div>
-    <basic-pagination
+    <app-pagination
       :current-page="basicPaginationProps.currentPage"
       :total-pages="basicPaginationProps.totalPages"
       :page-size="basicPaginationProps.pageSize"
       @page-change="(pageNumber) => changePage(pageNumber)"
-    ></basic-pagination>
+    ></app-pagination>
   </div>
 </template>
 

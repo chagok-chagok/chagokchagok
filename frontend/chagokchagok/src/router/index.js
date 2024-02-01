@@ -24,7 +24,7 @@ const router = createRouter({
       children: [
         // BoardList
         {
-          path: "reports",
+          path: "report",
           name: "report-list",
           component: () => import("@/components/admin/BoardList.vue"),
         },
