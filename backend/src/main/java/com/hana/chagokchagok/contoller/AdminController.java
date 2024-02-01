@@ -6,6 +6,7 @@ import com.hana.chagokchagok.dto.request.LoginRequest;
 import com.hana.chagokchagok.dto.request.OpenBarRequest;
 import com.hana.chagokchagok.dto.request.ReportRequest;
 import com.hana.chagokchagok.dto.response.CommonAlertResponse;
+import com.hana.chagokchagok.dto.response.DashBoardResponse;
 import com.hana.chagokchagok.dto.response.LoginResponse;
 import com.hana.chagokchagok.dto.response.LogoutResponse;
 import com.hana.chagokchagok.dto.response.RefreshTokenResponse;
@@ -116,4 +117,10 @@ public class AdminController {
         parkService.openBar(openBarRequest); // 차단바 해제 요청
         sseService.sendRealtimeCommon(ADMIN_KEY);
     }
+
+    @GetMapping("/dashboard")
+    public DashBoardResponse getDashboard(){
+        return adminService.getDashboard();
+    }
+
 }
