@@ -5,6 +5,7 @@ import com.hana.chagokchagok.dto.ErrorDto;
 import com.hana.chagokchagok.dto.ValidationParkingInfoDto;
 import com.hana.chagokchagok.dto.request.AllocateCarRequest;
 import com.hana.chagokchagok.dto.request.OpenBarRequest;
+import com.hana.chagokchagok.dto.request.SearchInfoRequest;
 import com.hana.chagokchagok.dto.request.ValidateAreaRequest;
 import com.hana.chagokchagok.dto.response.AllocateCarResponse;
 import com.hana.chagokchagok.dto.response.ValidateAreaResponse;
@@ -169,5 +170,10 @@ public class ParkService {
         // 차단바 제어 서버로 전송(자리 번호)
         feignService.sendOpenBarRequest(searchedRealTimeParking.getParkId());
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public void searchInfo(SearchInfoRequest searchInfoRequest) {
+        AllocationLog allocationLog = allocationLogRepository.findByCarNo(searchInfoRequest.getCarNo());
+
     }
 }

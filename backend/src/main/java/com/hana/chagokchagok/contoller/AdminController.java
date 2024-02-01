@@ -5,6 +5,7 @@ import com.hana.chagokchagok.dto.request.ExchangeRequest;
 import com.hana.chagokchagok.dto.request.LoginRequest;
 import com.hana.chagokchagok.dto.request.OpenBarRequest;
 import com.hana.chagokchagok.dto.request.ReportRequest;
+import com.hana.chagokchagok.dto.request.SearchInfoRequest;
 import com.hana.chagokchagok.dto.response.CommonAlertResponse;
 import com.hana.chagokchagok.dto.response.LoginResponse;
 import com.hana.chagokchagok.dto.response.LogoutResponse;
@@ -115,5 +116,10 @@ public class AdminController {
     public void openBar(@RequestBody OpenBarRequest openBarRequest) {
         parkService.openBar(openBarRequest); // 차단바 해제 요청
         sseService.sendRealtimeCommon(ADMIN_KEY);
+    }
+
+    @PostMapping("/search")
+    public void searchInfo(@RequestBody SearchInfoRequest searchInfoRequest){
+        parkService.searchInfo(searchInfoRequest);
     }
 }
