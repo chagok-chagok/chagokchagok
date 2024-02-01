@@ -20,6 +20,11 @@ def plate_recog(request):
         return JsonResponse({'error':'error'})
 """
 
+# test
+def plate_recog(request):
+    car_data = utils.plate_recog(request.body)
+    return JsonResponse({'cardata':car_data})
+
 
 def entrance(request):
     if request.method == 'POST':
