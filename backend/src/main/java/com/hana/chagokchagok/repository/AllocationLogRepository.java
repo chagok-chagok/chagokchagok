@@ -18,6 +18,7 @@ public interface AllocationLogRepository extends JpaRepository<AllocationLog, Lo
     AllocationLog findByCarNo(String carNo);
 
     AllocationLog findByParkingInfo(ParkingInfo parkingInfo);
+
     List<AllocationLog> findAllByEntryTimeBetween(LocalDateTime startOfDay, LocalDateTime endOfDay); // 특정 날짜 입차 목록 조회
 
 }
