@@ -15,6 +15,7 @@ import com.hana.chagokchagok.dto.response.LogoutResponse;
 import com.hana.chagokchagok.dto.response.RealtimeCarsResponse;
 import com.hana.chagokchagok.dto.response.RefreshTokenResponse;
 import com.hana.chagokchagok.dto.response.ReportResponse;
+import com.hana.chagokchagok.dto.response.SearchInfoResponse;
 import com.hana.chagokchagok.service.AdminService;
 import com.hana.chagokchagok.service.ParkService;
 import com.hana.chagokchagok.service.SseService;
@@ -139,7 +140,7 @@ public class AdminController {
 
 
     @PostMapping("/search")
-    public void searchInfo(@RequestBody SearchInfoRequest searchInfoRequest){
-        parkService.searchInfo(searchInfoRequest);
+    public SearchInfoResponse searchInfo(@RequestBody SearchInfoRequest searchInfoRequest){
+        return parkService.searchInfo(searchInfoRequest);
     }
 }
