@@ -116,11 +116,10 @@ public class ParkService {
      */
     public ResponseEntity<String> pullOut(String carNo) {
         //해당 차량 출차처리
-        AllocationLog allocationLog = allocationLogRepository.findByCarNo(carNo);
-        RealtimeParking realtimeParking = realTimeParkingRepository.findByAllocationLog(allocationLog);
-
-        //allocationLog에 출차관련 데이터 update
+        RealtimeParking realtimeParking = realTimeParkingRepository.findByAllocationLog_CarNo(carNo);
+        AllocationLog allocationLog = realtimeParking.getAllocationLog();
         allocationLog.pullOut();
+
 
         //만차였던 경우 빈자리가 생겼으므로 키오스크 서버로 SSE알림
         if(!realTimeParkingRepository.existsByAllocationLogIsNull()){
