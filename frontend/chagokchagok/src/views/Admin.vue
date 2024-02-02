@@ -1,11 +1,12 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
+import navbarVue from "@/components/admin/navbar.vue";
 </script>
 
 <template>
   <main>
     <div class="container">
-      <section>헤더</section>
+      <section><navbarVue/></section>
 
       <section class="under">
         <div class="content">

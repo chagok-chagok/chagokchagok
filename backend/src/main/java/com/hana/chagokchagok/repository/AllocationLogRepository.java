@@ -2,6 +2,7 @@ package com.hana.chagokchagok.repository;
 
 import com.hana.chagokchagok.dto.AllocationDto;
 import com.hana.chagokchagok.entity.AllocationLog;
+import com.hana.chagokchagok.entity.ParkingInfo;
 import com.hana.chagokchagok.entity.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -15,6 +16,8 @@ import java.util.List;
 public interface AllocationLogRepository extends JpaRepository<AllocationLog, Long> {
 
     AllocationLog findByCarNo(String carNo);
+
+    AllocationLog findByParkingInfo(ParkingInfo parkingInfo);
 
     List<AllocationLog> findAllByEntryTimeBetween(LocalDateTime startOfDay, LocalDateTime endOfDay); // 특정 날짜 입차 목록 조회
 
