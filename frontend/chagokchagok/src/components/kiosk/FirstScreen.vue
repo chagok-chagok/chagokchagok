@@ -1,4 +1,10 @@
 <template>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@700&display=swap"
+    rel="stylesheet"
+  />
   <div class="screen-container">
     <div class="time-display">{{ currentTime }}</div>
     <div class="message">장애 차량 여부를 선택해주세요.</div>
@@ -55,9 +61,9 @@ function selectParking(isDisabled) {
       }
     )
     .then((response) => {
-      console.log(response.data.allocatedLocation);
-      // allocatedLocation.value = response.data.allocatedLocation;
-      parkingStore.allocatedLocation = response.data.allocatedLocation;
+      console.log(response);
+      console.log(response.data.allocated_location);
+      parkingStore.allocatedLocation = response.data.allocated_location;
       router.push("/fourth");
     })
     .catch((error) => {
@@ -84,14 +90,30 @@ function selectParking(isDisabled) {
   flex-direction: column;
   justify-content: center; /* Centers content vertically */
 }
+.screen-container::before {
+  content: ""; /* 가상 요소에는 내용이 필요하지 않으므로 비워둡니다. */
+  position: absolute; /* 상대 위치인 .screen-container에 대해 절대 위치를 설정합니다. */
+  top: 0; /* 상단에서 0px 위치 */
+  left: 0; /* 왼쪽에서 0px 위치 */
+  width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정합니다. */
+  height: 60px; /* 색상 바의 높이를 설정합니다. 이것은 시간 표시를 포함하기에 충분한 높이여야 합니다. */
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  border-top-left-radius: 10px; /* 왼쪽 상단 모서리 둥글게 처리 */
+  border-top-right-radius: 10px; /* 오른쪽 상단 모서리 둥글게 처리 */
+  z-index: 1; /* 다른 요소들보다 앞에 표시되도록 z-index 값을 설정합니다. */
+}
 
 .time-display {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 10px; /* 상단 바의 더 가까운 위치로 조정합니다. */
+  right: 10px; /* 오른쪽 가장자리와의 거리를 줄입니다. */
   font-size: 2em;
   color: #333;
-  z-index: 10;
+  z-index: 2; /* .screen-container::before 요소 위에 표시되도록 z-index 값을 더 높게 설정합니다. */
 }
 
 .message {
@@ -116,21 +138,25 @@ function selectParking(isDisabled) {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 15px;
-  border-radius: 10px; /* 'px' 단위가 빠져 있어 추가했습니다 */
+  padding: 50px;
+  border-radius: 10px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: transform 0.1s ease-in-out;
   flex: 1; /* 버튼이 동일한 비율로 크기를 조정하도록 flex 속성을 추가합니다 */
   margin: 0 10px; /* 버튼 사이의 간격을 추가합니다 */
-  font-size: 18px;
+  font-size: 15px;
   max-width: 266px; /* 버튼의 최대 너비를 설정합니다 */
   height: 561px; /* 버튼의 높이를 유지합니다 */
 }
+.parking-option > :first-child {
+  margin-bottom: 20px; /* 첫 번째 요소와 두 번째 요소 사이의 간격을 늘립니다 */
+}
 
-/* 이제 버튼들이 가운데에 정렬될 것입니다. */
-
+.parking-option > :last-child {
+  margin-top: 20px; /* 마지막 요소 위에 간격을 늘립니다 */
+}
 /* Additional hover effect */
 .parking-option:hover {
   transform: scale(1.02);

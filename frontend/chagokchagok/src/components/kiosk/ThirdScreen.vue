@@ -13,29 +13,28 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "ThirdScreen",
-  data() {
-    return {
-      currentTime: this.getCurrentTime(),
-    };
-  },
-  mounted() {
-    this.interval = setInterval(() => {
-      this.currentTime = this.getCurrentTime();
-    }, 1000);
-  },
-  beforeDestroy() {
-    clearInterval(this.interval);
-  },
-  methods: {
-    getCurrentTime() {
-      const now = new Date();
-      return now.toTimeString().substring(0, 5);
-    },
-  },
-};
+<script setup>
+import { ref, onMounted, onUnmounted } from "vue";
+
+const currentTime = ref(getCurrentTime());
+
+// 현재 시간을 매초마다 업데이트하는 인터벌 설정
+onMounted(() => {
+  const interval = setInterval(() => {
+    currentTime.value = getCurrentTime();
+  }, 1000);
+
+  // 컴포넌트가 언마운트되면 인터벌 클리어
+  onUnmounted(() => {
+    clearInterval(interval);
+  });
+});
+
+// 현재 시간을 HH:MM 형식으로 반환하는 함수
+function getCurrentTime() {
+  const now = new Date();
+  return now.toTimeString().substring(0, 5);
+}
 </script>
 
 <style scoped>
@@ -56,19 +55,37 @@ export default {
   align-items: center;
 }
 
+.screen-container::before {
+  content: ""; /* 가상 요소에는 내용이 필요하지 않으므로 비워둡니다. */
+  position: absolute; /* 상대 위치인 .screen-container에 대해 절대 위치를 설정합니다. */
+  top: 0; /* 상단에서 0px 위치 */
+  left: 0; /* 왼쪽에서 0px 위치 */
+  width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정합니다. */
+  height: 60px; /* 색상 바의 높이를 설정합니다. 이것은 시간 표시를 포함하기에 충분한 높이여야 합니다. */
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  border-top-left-radius: 10px; /* 왼쪽 상단 모서리 둥글게 처리 */
+  border-top-right-radius: 10px; /* 오른쪽 상단 모서리 둥글게 처리 */
+  z-index: 1; /* 다른 요소들보다 앞에 표시되도록 z-index 값을 설정합니다. */
+}
+
 .time-display {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 10px; /* 상단 바의 더 가까운 위치로 조정합니다. */
+  right: 10px; /* 오른쪽 가장자리와의 거리를 줄입니다. */
   font-size: 2em;
   color: #333;
+  z-index: 2; /* .screen-container::before 요소 위에 표시되도록 z-index 값을 더 높게 설정합니다. */
 }
 
 .status-message {
-  color: #d9534f;
+  color: #000000;
   font-size: 2em;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 20px; /* 텍스트 아래 마진 설정 */
 }
 
 .parking-image {
@@ -80,11 +97,12 @@ export default {
   font-size: 1.5em;
   text-align: center;
   color: #333;
-  margin-bottom: 20px;
+  margin-top: 20px; /* 이미지 위에 적용될 마진 */
+  margin-bottom: 20px; /* 추가 메시지 아래 마진 설정 */
 }
 .parking-image-container {
   background-color: #ffffff; /* 흰색 배경 설정 */
-  width: 100%; /* 컨테이너의 가로 폭을 화면에 꽉 차도록 설정 */
+  width: 630px; /* 최대 가로 크기 설정 */
   display: flex; /* Flexbox를 사용하여 내용물을 중앙에 배치 */
   justify-content: center; /* 가로 방향 중앙 정렬 */
   align-items: center; /* 세로 방향 중앙 정렬 */

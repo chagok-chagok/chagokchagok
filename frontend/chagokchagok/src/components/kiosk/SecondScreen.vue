@@ -11,26 +11,49 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "SecondScreen",
-  data() {
-    return {
-      currentTime: this.getCurrentTime(),
-    };
-  },
-  mounted() {
-    setInterval(() => {
-      this.currentTime = this.getCurrentTime();
-    }, 1000);
-  },
-  methods: {
-    getCurrentTime() {
-      const now = new Date();
-      return now.toTimeString().substring(0, 5);
-    },
-  },
-};
+<script setup>
+import { ref, onMounted } from "vue";
+import router from "@/router";
+
+// 현재 시간을 가져오는 함수
+function getCurrentTime() {
+  const now = new Date();
+  return now.toTimeString().substring(0, 5);
+}
+
+// 현재 시간을 HH:MM 형식으로 반환하는 함수
+const currentTime = ref(getCurrentTime());
+const kioskUrl = "http://localhost:8080/sse/kiosk";
+
+// 인터벌을 설정하여 현재 시간을 매초마다 업데이트
+onMounted(() => {
+  const sseEvent = new EventSource(kioskUrl);
+
+  //연결 리스너
+  sseEvent.addEventListener("open", function (e) {
+    //캐치할 에러코드를 써줌
+    console.log("open");
+    console.log(e.data);
+  });
+
+  //에러 리스너
+  sseEvent.addEventListener("error", function (e) {
+    console.log("error");
+    console.log(e);
+  });
+
+  // SENSOR_REPORT 상태코드 리스너 << 이런식으로 등록하면 됨
+  sseEvent.addEventListener("CONGESTION_CLEAR", function (e) {
+    //캐치할 상태코드를 써줌
+    console.log("catch");
+    console.log(e.data);
+    router.push("/fourth");
+  });
+
+  setInterval(() => {
+    currentTime.value = getCurrentTime();
+  }, 10000000);
+});
 </script>
 
 <style scoped>

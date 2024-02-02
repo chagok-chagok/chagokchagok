@@ -10,6 +10,7 @@
         alt="주차확인증"
         class="ticket-image"
       />
+      <!-- 할당된 주차 구역 번호를 직접 참조 -->
       <div class="ticket">{{ parkingStore.allocatedLocation }}</div>
     </div>
     <div class="welcome-message">환영합니다.</div>
@@ -19,37 +20,11 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from "vue";
 import router from "@/router";
-import { useParkingStore } from "@/stores/parkingStore"; // Pinia store 임포트
+import { useParkingStore } from "@/stores/parkingStore";
 
 const currentTime = ref("");
-const parkingStore = useParkingStore(); // 할당된 주차 구역 번호를 저장할 ref 변수
-
-// 주차 구역을 요청하고 할당된 주차 구역 번호를 업데이트하는 함수
-// function fetchParkingAllocation() {
-//   axios
-//     .post(
-//       "http://localhost:8080/park/allocation",
-//       {
-//         car_no: "10가1234",
-//         is_disabled: true,
-//       },
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     )
-//     .then((response) => {
-//       // 서버로부터 할당된 주차 구역 번호를 업데이트
-//       allocatedLocation.value = response.data.allocatedLocation;
-//     })
-//     .catch((error) => {
-//       console.error("Error fetching parking allocation:", error);
-//       allocatedLocation.value = "";
-//       // 에러가 발생했을 때 'Secondscreen.vue'로 라우트 이동
-//       router.push("/second");
-//     });
-// }
+const parkingStore = useParkingStore(); // Pinia store 사용
+// const allocatedLocation =parkingStore.allocatedLocation; // 할당된 주차 구역 번호
 
 // 현재 시간을 24시간 형식으로 업데이트하는 함수
 function updateCurrentTime() {
@@ -57,18 +32,20 @@ function updateCurrentTime() {
   currentTime.value = now.toTimeString().substring(0, 5);
 }
 
-// 마운트될 때와 매초마다 현재 시간을 업데이트하고 주차 구역을 요청
+let intervalId = null; // 인터벌 ID를 저장할 변수
+
+// 마운트될 때와 매초마다 현재 시간을 업데이트
 onMounted(() => {
   updateCurrentTime();
-  setInterval(updateCurrentTime, 1000);
+  intervalId = setInterval(updateCurrentTime, 1000); // 인터벌 ID 저장
   setTimeout(() => {
-    router.push("/");
-  }, 1000000);
+    router.push("/"); // 일정 시간 후 홈으로 리디렉션
+  }, 10000); // 시간을 1000000에서 10000(예: 10초)으로 조정하여 실제 사용 시나리오에 더 적합하게 조정
 });
 
-// 컴포넌트가 언마운트될 때 인터벌을 클리어
+// 컴포넌트가 언마운트될 때 인터벌 클리어
 onUnmounted(() => {
-  clearInterval(updateCurrentTime);
+  clearInterval(intervalId);
 });
 </script>
 
@@ -88,13 +65,30 @@ onUnmounted(() => {
   flex-direction: column;
   justify-content: center; /* Centers content vertically */
 }
+.screen-container::before {
+  content: ""; /* 가상 요소에는 내용이 필요하지 않으므로 비워둡니다. */
+  position: absolute; /* 상대 위치인 .screen-container에 대해 절대 위치를 설정합니다. */
+  top: 0; /* 상단에서 0px 위치 */
+  left: 0; /* 왼쪽에서 0px 위치 */
+  width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정합니다. */
+  height: 60px; /* 색상 바의 높이를 설정합니다. 이것은 시간 표시를 포함하기에 충분한 높이여야 합니다. */
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.2) 100%
+  );
+  border-top-left-radius: 10px; /* 왼쪽 상단 모서리 둥글게 처리 */
+  border-top-right-radius: 10px; /* 오른쪽 상단 모서리 둥글게 처리 */
+  z-index: 1; /* 다른 요소들보다 앞에 표시되도록 z-index 값을 설정합니다. */
+}
 
 .time-display {
-  position: absolute; /* 절대 위치 사용 */
-  top: 16px; /* 이미지와 동일한 여백으로 조정 */
-  right: 16px;
-  font-size: 2rem;
-  color: #000; /* 검은색으로 변경 */
+  position: absolute;
+  top: 10px; /* 상단 바의 더 가까운 위치로 조정합니다. */
+  right: 10px; /* 오른쪽 가장자리와의 거리를 줄입니다. */
+  font-size: 2em;
+  color: #333;
+  z-index: 2; /* .screen-container::before 요소 위에 표시되도록 z-index 값을 더 높게 설정합니다. */
 }
 
 .assignment-message,

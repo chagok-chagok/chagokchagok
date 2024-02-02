@@ -3,11 +3,11 @@ import { defineStore } from "pinia";
 
 export const useParkingStore = defineStore("parking", {
   state: () => ({
-    allocatedLocation: "",
+    allocated_location: "",
   }),
   actions: {
     setAllocatedLocation(location) {
-      this.allocatedLocation = location;
+      this.allocated_location = location;
     },
   },
 });
