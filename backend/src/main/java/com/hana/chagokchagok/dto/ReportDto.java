@@ -31,6 +31,7 @@ public class ReportDto {
         this.errorCode = report.getErrorCode();
         this.status = report.getReportStatus();
         this.note = report.getNote();
+        this.fullName = report.getParkingInfo().getFullName();
     }
     @JsonProperty("report_id")
     private Long reportId; // 신고번호
@@ -46,4 +47,6 @@ public class ReportDto {
     private ReportStatus status; // 처리 상태
     @JsonProperty("note")
     private String note; // 비고
+    @JsonProperty("full_name")
+    private String fullName; // 주차장 풀네임
 }
