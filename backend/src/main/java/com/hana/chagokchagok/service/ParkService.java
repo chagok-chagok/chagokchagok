@@ -6,8 +6,12 @@ import com.hana.chagokchagok.dto.ValidationParkingInfoDto;
 import com.hana.chagokchagok.dto.request.AllocateCarRequest;
 import com.hana.chagokchagok.dto.request.GetCarlocRequest;
 import com.hana.chagokchagok.dto.request.OpenBarRequest;
+import com.hana.chagokchagok.dto.request.SearchInfoRequest;
 import com.hana.chagokchagok.dto.request.ValidateAreaRequest;
 import com.hana.chagokchagok.dto.response.AllocateCarResponse;
+import com.hana.chagokchagok.dto.response.GetCarlocResponse;
+import com.hana.chagokchagok.dto.response.RealtimeCarsResponse;
+import com.hana.chagokchagok.dto.response.SearchInfoResponse;
 import com.hana.chagokchagok.dto.response.GetCarlocResponse;
 import com.hana.chagokchagok.dto.response.RealtimeCarsResponse;
 import com.hana.chagokchagok.dto.response.ValidateAreaResponse;
@@ -16,6 +20,7 @@ import com.hana.chagokchagok.entity.ParkingInfo;
 import com.hana.chagokchagok.entity.RealtimeParking;
 import com.hana.chagokchagok.entity.Report;
 import com.hana.chagokchagok.enums.ReportStatus;
+import com.hana.chagokchagok.enums.SearchType;
 import com.hana.chagokchagok.exception.CustomException;
 import com.hana.chagokchagok.exception.ErrorType;
 import com.hana.chagokchagok.repository.AllocationLogRepository;
@@ -30,6 +35,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static com.hana.chagokchagok.enums.ErrorCode.*;
 import java.util.List;
 
 import static com.hana.chagokchagok.enums.ErrorCode.AUTO_REPORT;
@@ -188,10 +199,28 @@ public class ParkService {
 
     public GetCarlocResponse getCarLocation(GetCarlocRequest getCarlocRequest){
         String[] location = separateLocationInput(getCarlocRequest.getArea());
-        System.out.println("=======================테스트==============================");
-        System.out.printf("location[0] : %s, location[1] = %s%n", location[0], location[1]);
-        ParkingInfo parkingInfo = parkingInfoRepository.findByAreaCode(getCarlocRequest.getArea());
+        ParkingInfo parkingInfo = parkingInfoRepository.findByParkNoAndAreaCode(Integer.valueOf(location[1]),location[0]);
         AllocationLog allocationLog = allocationLogRepository.findByParkingInfo(parkingInfo);
         return new GetCarlocResponse(allocationLog.getCarNo(), allocationLog.getEntryTime());
+    }
+
+    public SearchInfoResponse searchInfo(SearchInfoRequest searchInfoRequest) {
+        String area = null;
+        String car_no = null;
+        LocalDateTime entryTime = null;
+        if(searchInfoRequest.getType() == SearchType.CAR_NUMBER){
+            car_no = searchInfoRequest.getValue();
+            AllocationLog allocationLog = allocationLogRepository.findByCarNo(searchInfoRequest.getValue());
+            area = allocationLog.getParkingInfo().getAreaCode().concat(allocationLog.getParkingInfo().getParkNo().toString());
+            entryTime = allocationLog.getEntryTime();
+        }else if(searchInfoRequest.getType() == SearchType.SPOT_NUMBER){
+            area = searchInfoRequest.getValue();
+            String[] location = separateLocationInput(searchInfoRequest.getValue());
+            ParkingInfo parkingInfo = parkingInfoRepository.findByParkNoAndAreaCode(Integer.valueOf(location[1]),location[0]);
+            AllocationLog allocationLog = allocationLogRepository.findByParkingInfo(parkingInfo);
+            car_no = allocationLog.getCarNo();
+            entryTime = allocationLog.getEntryTime();
+        }
+        return new SearchInfoResponse(area, car_no, entryTime);
     }
 }

@@ -8,6 +8,7 @@ const reportStore = useReportStore();
 const page = ref(1);
 const { total_page_cnt, reports } = storeToRefs(reportStore);
 const titles = ref([]);
+
 reportStore.getReportList(page.value);
 
 const search = async () => {
@@ -31,6 +32,19 @@ const basicPaginationProps = ref({
   pageSize: 5,
 });
 
+const getStatus = (status) => {
+  switch (status) {
+    case "COMPLETED":
+      return "DONE";
+    case "IN_PROGRESS":
+      return "In Progress";
+    case "UNRESOLVED":
+      return "Not Started";
+    default:
+      return status;
+  }
+};
+
 onMounted(async () => {
   await search(); // 컴포넌트가 마운트될 때 초기 total_page_cnt를 가져옴
   if (reports.value[0] != null) {
@@ -45,7 +59,7 @@ onMounted(async () => {
     <report-count-bar></report-count-bar>
     <div>page : {{ page }}</div>
     <div>total_page_count : {{ total_page_cnt }}</div>
-    <div>
+    <div class="table-container">
       <table class="custom-table">
         <thead>
           <th>NO</th>
@@ -59,9 +73,20 @@ onMounted(async () => {
           <tr v-for="(item, index) in reports" :key="index">
             <td><input type="checkbox" /></td>
             <td>{{ item.report_time.replace("T", " ") }}</td>
-            <td>{{ item.error_code.split("_")[0] }}</td>
+            <td>{{ item.error_code }}</td>
             <td>{{ item.full_name }}</td>
-            <td>{{ item.status }}</td>
+            <td>
+              <div
+                :class="{
+                  'status-style': true,
+                  'background-blue': item.status === 'COMPLETED',
+                  'background-red': item.status === 'UNRESOLVED',
+                  'background-green': item.status === 'IN_PROGRESS',
+                }"
+              >
+                {{ getStatus(item.status) }}
+              </div>
+            </td>
             <td>{{ item.note }}</td>
           </tr>
         </tbody>
@@ -77,11 +102,24 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.table-container {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgb(234, 236, 240);
+}
+
 .custom-table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
   border: 1px solid rgb(234, 236, 240);
+  border-collapse: collapse;
 }
 
 .custom-table th,
@@ -93,7 +131,7 @@ onMounted(async () => {
 }
 
 .custom-table th {
-  background-color: #f2f2f2;
+  background-color: #f9fafb;
 }
 
 button {
@@ -104,5 +142,25 @@ button {
 li {
   list-style: none;
   list-style-type: none;
+}
+
+.status-style {
+  color: white;
+  font-size: smaller;
+  padding: 4px 15px;
+  border-radius: 30px 30px 30px 30px;
+  display: inline-block;
+}
+
+.background-green {
+  background-color: #71dd76;
+}
+
+.background-blue {
+  background-color: #5f93fb;
+}
+
+.background-red {
+  background-color: #fb5f5f;
 }
 </style>
