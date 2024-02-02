@@ -39,6 +39,11 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.hana.chagokchagok.enums.ErrorCode.*;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import static com.hana.chagokchagok.enums.ErrorCode.AUTO_REPORT;
+import static com.hana.chagokchagok.enums.ErrorCode.SENSOR_ERROR;
 import static com.hana.chagokchagok.util.SeparateLocation.separateLocationInput;
 
 @Service

@@ -18,7 +18,7 @@ public interface ParkingInfoRepository extends JpaRepository<ParkingInfo, Intege
      * @param carNumber 차량 번호
      * @return parkId, areaCode를 가진 ValidationParkingInfoDto
      */
-    @Query("SELECT NEW com.hana.chagokchagok.dto.ValidationParkingInfoDto(pi.parkId, pi.areaCode) " +
+    @Query("SELECT NEW com.hana.chagokchagok.dto.ValidationParkingInfoDto(pi.parkNo, pi.areaCode) " +
             "FROM ParkingInfo pi " +
             "JOIN RealtimeParking rp ON pi.parkId = rp.parkId " +
             "JOIN AllocationLog al ON rp.allocationLog = al " +
