@@ -9,10 +9,6 @@ import lombok.ToString;
 @ToString
 @Getter @Setter
 public class ValidationParkingInfoDto {
-    private Integer parkNo; // 주차장 구역 번호
+    private Integer parkId; // 주차장 번호
     private String areaCode; // 구역 코드
-
-    public String getFullName() {
-        return (areaCode + parkNo);
-    }
 }

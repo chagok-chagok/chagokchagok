@@ -2,18 +2,17 @@ package com.hana.chagokchagok.util;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
-//    private final JwtInterceptor jwtInterceptor;
-//
-//    public WebConfiguration(JwtInterceptor jwtInterceptor) {
-//        super();
-//        this.jwtInterceptor = jwtInterceptor;
-//    }
+    private final JwtInterceptor jwtInterceptor;
+
+    public WebConfiguration(JwtInterceptor jwtInterceptor) {
+        super();
+        this.jwtInterceptor = jwtInterceptor;
+    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -35,9 +34,9 @@ public class WebConfiguration implements WebMvcConfigurer {
                 .maxAge(1800); // Pre-flight Caching
     }
 
-//	@Override
-//	public void addInterceptors(InterceptorRegistry registry) {
-//		registry.addInterceptor(jwtInterceptor);
-//	}
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(jwtInterceptor);
+	}
 
 }
