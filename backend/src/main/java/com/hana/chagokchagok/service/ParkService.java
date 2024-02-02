@@ -12,8 +12,6 @@ import com.hana.chagokchagok.dto.response.AllocateCarResponse;
 import com.hana.chagokchagok.dto.response.GetCarlocResponse;
 import com.hana.chagokchagok.dto.response.RealtimeCarsResponse;
 import com.hana.chagokchagok.dto.response.SearchInfoResponse;
-import com.hana.chagokchagok.dto.response.GetCarlocResponse;
-import com.hana.chagokchagok.dto.response.RealtimeCarsResponse;
 import com.hana.chagokchagok.dto.response.ValidateAreaResponse;
 import com.hana.chagokchagok.entity.AllocationLog;
 import com.hana.chagokchagok.entity.ParkingInfo;
@@ -36,11 +34,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import static com.hana.chagokchagok.enums.ErrorCode.*;
 import java.util.List;
 
 import static com.hana.chagokchagok.enums.ErrorCode.AUTO_REPORT;

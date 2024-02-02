@@ -71,7 +71,7 @@ onMounted(async () => {
         </thead>
         <tbody>
           <tr v-for="(item, index) in reports" :key="index">
-            <td><input type="checkbox" /></td>
+            <td>{{ item.report_id }}</td>
             <td>{{ item.report_time.replace("T", " ") }}</td>
             <td>{{ item.error_code }}</td>
             <td>{{ item.full_name }}</td>
@@ -88,16 +88,19 @@ onMounted(async () => {
               </div>
             </td>
             <td>{{ item.note }}</td>
+            <td>
+              <font-awesome-icon icon="pen-to-square" class="modify-icon" />
+            </td>
           </tr>
         </tbody>
       </table>
+      <app-pagination
+        :current-page="basicPaginationProps.currentPage"
+        :total-pages="basicPaginationProps.totalPages"
+        :page-size="basicPaginationProps.pageSize"
+        @page-change="(pageNumber) => changePage(pageNumber)"
+      ></app-pagination>
     </div>
-    <app-pagination
-      :current-page="basicPaginationProps.currentPage"
-      :total-pages="basicPaginationProps.totalPages"
-      :page-size="basicPaginationProps.pageSize"
-      @page-change="(pageNumber) => changePage(pageNumber)"
-    ></app-pagination>
   </div>
 </template>
 
@@ -124,7 +127,7 @@ onMounted(async () => {
 
 .custom-table th,
 .custom-table td {
-  border: 1px solid #ddd;
+  border-top: 1px solid #ddd;
   padding: 8px;
   text-align: left;
   text-align: center;
@@ -144,6 +147,9 @@ li {
   list-style-type: none;
 }
 
+.modify-icon {
+  color: #667085;
+}
 .status-style {
   color: white;
   font-size: smaller;
