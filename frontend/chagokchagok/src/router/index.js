@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
+import DashBoardView from "../views/admin/DashBoard.vue";
+import AdminView from "../views/Admin.vue";
 import HomeView from "../views/HomeView.vue";
 
 const router = createRouter({
@@ -12,9 +14,13 @@ const router = createRouter({
     {
       path: "/admin",
       name: "admin",
-      component: () => import("@/views/admin/AdminView.vue"),
+      component: AdminView,
       children: [
-        // BoardList
+        {
+          path: "dashboard",
+          name: "admin-dashboard",
+          component: DashBoardView
+        },
         {
           path: "report",
           name: "report-list",
