@@ -24,25 +24,6 @@ def capture_image(ret, frame):
     return base64.b64decode(base64_str)
 
 
-"""
-def entrance(data):
-    distance = data[2]
-    print(distance)
-    if distance <= 10:
-        ret, frame = cap1.read()
-        image_source = capture_image(ret, frame)
-        entrance_url = 'http://192.168.31.17:8000/api/v1/entrance/'
-        entrance_response = requests.post(entrance_url, data=image_source)
-        entrance_result = entrance_response.json()
-        print(entrance_result)
-        if entrance_result:
-            board.servo_write(motor_entrance, 90)
-        time.sleep(10)
-    else:
-        board.servo_write(motor_entrance, 0)
-"""
-
-
 def call_back(data):
     dis = data[2]
 
