@@ -34,9 +34,9 @@ public class WebConfiguration implements WebMvcConfigurer {
                 .maxAge(1800); // Pre-flight Caching
     }
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(jwtInterceptor);
-	}
+//	@Override
+//	public void addInterceptors(InterceptorRegistry registry) {
+//		registry.addInterceptor(jwtInterceptor);
+//	}
 
 }
