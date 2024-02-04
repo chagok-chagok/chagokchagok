@@ -1,10 +1,11 @@
 from django.http import JsonResponse
+from django.conf import settings
 from . import utils
 import requests
 import json
 
 
-# test
+# for testing
 def plate_recog(request):
     car_data = utils.plate_recog(request.body)
     return JsonResponse({'cardata':car_data})
@@ -12,11 +13,20 @@ def plate_recog(request):
 
 def entrance(request):
     if request.method == 'POST':
+        # data pre-processing
         car_data = utils.plate_recog(request.body)
+
+        # request to spring server
+        # header
         headers = {'Content-type': 'application/json', 'charset': 'utf8'}
-        entrance_url = 'http://192.168.31.251:8080/park/validate/carnum'
+        # url
+        entrance_url = f'{settings.SPRING_URL}park/validate/carnum'
+        # data
         json_data = json.dumps({'car_no': car_data[0]})
+        # request
         response = requests.post(entrance_url, data=json_data, headers=headers)
+
+        # convert response data to json for responsing to rasp
         result = response.json()
         return JsonResponse({'response': result})
     else:
@@ -25,11 +35,24 @@ def entrance(request):
 
 def hall(request):
     if request.method == 'POST':
+        # data pre-processing
         car_data = utils.plate_recog(request.body)
+
+        # request to spring server
+        # header
         headers = {'Content-type': 'application/json', 'charset': 'utf8'}
-        park_url = 'http://192.168.31.251:8080/park/validation/'
-        response = requests.post(park_url, data=car_data, headers=headers)
+        # url
+        park_url = f'{settings.SPRING_URL}park/validation'
+        # data
+        # fixed section as A
+        json_data = json.dumps({'car_no': car_data[0], 'area': 'A'})
+        # request
+        response = requests.post(park_url, data=json_data, headers=headers)
+
+        # convert response data to json for responsing to rasp
         result = response.json()
+
+        # need to check ####
         park_id = result['park_id'][0]
         return JsonResponse({'park_id':park_id})
     else:
@@ -38,17 +61,38 @@ def hall(request):
 
 def exit_way(request):
     if request.method == 'POST':
+        # data pre-processing
         car_data = utils.plate_recog(request.body)
+
+        # request to spring server
+        # header
         headers = {'Content-type': 'application/json', 'charset': 'utf8'}
-        exit_url = 'http://192.168.31.251:8080/park/out/'
-        response = requests.post(exit_url, data=car_data, headers=headers)
+        # url
+        exit_url = f'{settings.SPRING_URL}park/out'
+        # data
+        json_data = json.dumps({'car_no': car_data[0]})
+        # request
+        response = requests.post(exit_url, data=json_data, headers=headers)
+
+        # convert response data to json for responsing to rasp
         result = response.json()
-        return JsonResponse()
+        # if available, result should be processed
+        return JsonResponse({'response': result})
     else:
         return JsonResponse({'response': 'fail'})
 
 
-### 예외처리하는 파트 추후 수정할거임
+# will make later
+def auto_report(request):
+    if request.method == 'POST':
+        # request to spring server
+        # header
+        headers = {'Content-type': 'application/json', 'charset': 'utf8'}
+
+    return
+
+
+### will add managing system after completing others
 park_list = []
 def bar(request):
     if request.method == 'POST':
