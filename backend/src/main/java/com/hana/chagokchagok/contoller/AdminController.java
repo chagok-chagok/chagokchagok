@@ -25,12 +25,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -102,6 +105,7 @@ public class AdminController {
      */
     @PutMapping("/report")
     public void updateReport(@RequestBody ReportDto reportDto) {
+        System.out.println("들어옴" + reportDto);
         boolean isNowDoneReport = adminService.updateReport(reportDto);
         if (isNowDoneReport) sseService.sendRealtimeCommon(ADMIN_KEY);
 

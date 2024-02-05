@@ -8,12 +8,20 @@ import { mdiArrowDown } from "@mdi/js";
 import { mdiFilterVariant } from "@mdi/js";
 import MdiIcon from "@/components/icons/MdiIcon.vue";
 import MdiIconButton from "@/components/icons/MdiIconButton.vue";
+import ModalDetailReportVue from "@/components/admin/modal/ModalDetailReport.vue";
 
 const reportStore = useReportStore();
 const page = ref(1);
 const { total_page_cnt, reports } = storeToRefs(reportStore);
 const titles = ref([]);
-
+const isModalVisible = ref(false);
+const modalReport = ref({});
+const errorCode = ref(["HUMAN_ERROR", "SENSOR_ERROR", "AUTO_REPORT"]);
+const status = ref([
+  { show: "DONE", value: "COMPLETED" },
+  { show: "In Progress", value: "IN_PROGRESS" },
+  { show: "Not Started", value: "UNRESOLVED" },
+]);
 reportStore.getReportList(page.value);
 
 const search = async () => {
@@ -50,6 +58,23 @@ const getStatus = (status) => {
   }
 };
 
+// filter button 클릭 시 이벤트 작성
+const filterClick = () => {
+  console.log("filter click");
+};
+
+const openModal = (report) => {
+  console.log("report : ", report);
+  modalReport.value = report;
+  isModalVisible.value = true;
+};
+
+const closeModal = () => {
+  reportStore.getReportList(page.value);
+  search();
+  isModalVisible.value = false;
+};
+
 onMounted(async () => {
   await search(); // 컴포넌트가 마운트될 때 초기 total_page_cnt를 가져옴
   if (reports.value[0] != null) {
@@ -60,14 +85,22 @@ onMounted(async () => {
 </script>
 
 <template>
+  <div v-if="isModalVisible">
+    <modal-detail-report-vue
+      @close="closeModal"
+      :report="modalReport"
+      :error-code="errorCode"
+      :status="status"
+    ></modal-detail-report-vue>
+  </div>
   <div>
     <report-count-bar></report-count-bar>
-    <div>
-      <button class="filter-button">
-        <mdi-icon-button :path="mdiFilterVariant" size="14"></mdi-icon-button
-        ><span class="filter-span">Filters</span>
-      </button>
-    </div>
+    <button class="filter-button" @click="filterClick">
+      <div class="filter-button-div">
+        <mdi-icon-button :path="mdiFilterVariant" size="14"></mdi-icon-button>
+        <span class="filter-span">Filters</span>
+      </div>
+    </button>
     <div class="table-container">
       <table class="custom-table">
         <thead>
@@ -132,7 +165,11 @@ onMounted(async () => {
           <th class="update-button"><span></span></th>
         </thead>
         <tbody class="report-item">
-          <tr v-for="(item, index) in reports" :key="index">
+          <tr
+            v-for="(item, index) in reports"
+            :key="index"
+            @click="openModal(item)"
+          >
             <td class="report-no">{{ item.report_id }}</td>
             <td class="report-time">
               {{ item.report_time.replace("T", " ") }}
@@ -181,16 +218,29 @@ button :hover {
   cursor: pointer;
 }
 .filter-button {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
   background-color: #fff;
+  /* background-color: black; */
   border-radius: 7px 7px 7px 7px;
   border: 1px solid #d0d5dd;
   width: 73px;
   height: 30px;
   margin: 10px 0;
+  border-collapse: collapse;
+}
+.filter-button :hover {
+  cursor: pointer;
+}
+
+.filter-button-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px 7px 7px 7px;
+  border: 1px solid #d0d5dd;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
 }
 .filter-span {
   margin-left: 7px;
