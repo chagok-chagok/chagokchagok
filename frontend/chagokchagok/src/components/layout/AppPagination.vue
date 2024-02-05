@@ -1,5 +1,10 @@
 <script setup>
 import { ref, computed, defineProps, defineEmits, watch } from "vue";
+import MdiIconButton from "../icons/MdiIconButton.vue";
+import { mdiChevronLeft } from "@mdi/js";
+import { mdiChevronDoubleLeft } from "@mdi/js";
+import { mdiChevronRight } from "@mdi/js";
+import { mdiChevronDoubleRight } from "@mdi/js";
 
 const props = defineProps({
   currentPage: Number,
@@ -92,8 +97,20 @@ const nextPage = () => {
 
 <template>
   <div class="pagination">
-    <button @click="gotoPage(1)" :disabled="currentPage === 1">First</button>
-    <button @click="prevPage" :disabled="currentPage === 1">Previous</button>
+    <button @click="gotoPage(1)" :disabled="currentPage === 1">
+      <mdi-icon-button
+        :path="mdiChevronDoubleLeft"
+        size="12"
+        class="mdi-icon"
+      ></mdi-icon-button>
+    </button>
+    <button @click="prevPage" :disabled="currentPage === 1">
+      <mdi-icon-button
+        :path="mdiChevronLeft"
+        size="12"
+        class="mdi-icon"
+      ></mdi-icon-button>
+    </button>
 
     <span v-if="start.value > 1">
       <!-- 1보다 큰 경우에만 표시 -->
@@ -119,28 +136,51 @@ const nextPage = () => {
     </span>
 
     <button @click="nextPage" :disabled="currentPage === totalPages">
-      Next
+      <mdi-icon-button
+        :path="mdiChevronRight"
+        size="12"
+        class="mdi-icon"
+      ></mdi-icon-button>
     </button>
     <button
       @click="gotoPage(totalPages)"
       :disabled="currentPage === totalPages"
     >
-      Last
+      <mdi-icon-button
+        :path="mdiChevronDoubleRight"
+        size="12"
+        class="mdi-icon"
+      ></mdi-icon-button>
     </button>
   </div>
 </template>
 
 <style scoped>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 .pagination {
+  border-top: 1px solid #ddd;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
+  /* margin: 10px 0; */
+  padding: 10px 0;
 }
 
 button {
-  margin: 0 5px;
-  padding: 5px 10px;
+  font-family: "Open Sans";
+  background-color: #fff;
+  min-width: 28px;
+  min-height: 28px;
+  font-weight: 700;
+  font-size: 8px;
+  margin: 0 2px;
+  padding: 5px 5px;
+  border: 2.5px solid #f1f1f1;
+  border-radius: 30%;
   cursor: pointer;
 }
 
@@ -151,6 +191,8 @@ button:disabled {
 
 button.active {
   background-color: #007bff;
+  border: 2.5px solid #007bff;
+
   color: #fff;
 }
 </style>
