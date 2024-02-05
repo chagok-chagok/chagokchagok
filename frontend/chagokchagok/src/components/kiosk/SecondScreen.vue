@@ -14,8 +14,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import router from "@/router";
-import axios from "axios";
-import { useParkingStore } from "@/stores/parkingStore";
 
 // 현재 시간을 가져오는 함수
 function getCurrentTime() {
@@ -26,61 +24,35 @@ function getCurrentTime() {
 // 현재 시간을 HH:MM 형식으로 반환하는 함수
 const currentTime = ref(getCurrentTime());
 const kioskUrl = "http://localhost:8080/sse/kiosk";
-const parkingStore = useParkingStore();
 
 // 인터벌을 설정하여 현재 시간을 매초마다 업데이트
 onMounted(() => {
   const sseEvent = new EventSource(kioskUrl);
 
-  // 연결 리스너
+  //연결 리스너
   sseEvent.addEventListener("open", function (e) {
+    //캐치할 에러코드를 써줌
     console.log("open");
     console.log(e.data);
   });
 
-  // 에러 리스너
+  //에러 리스너
   sseEvent.addEventListener("error", function (e) {
     console.log("error");
     console.log(e);
   });
 
-  // CONGESTION_CLEAR 상태코드 리스너
+  // SENSOR_REPORT 상태코드 리스너 << 이런식으로 등록하면 됨
   sseEvent.addEventListener("CONGESTION_CLEAR", function (e) {
+    //캐치할 상태코드를 써줌
     console.log("catch");
     console.log(e.data);
-    console.log(e);
-
-    // Axios POST 요청
-    axios
-      .post(
-        "http://localhost:8080/park/allocation",
-        {
-          car_no: carNumber,
-          is_disabled: false, // 예시로 false를 사용, 실제 애플리케이션에 맞게 조정 필요
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        console.log(response);
-        console.log(response.data.allocated_location);
-        // 성공 로직 처리, 예: 상태 업데이트 또는 라우팅
-        parkingStore.allocatedLocation = response.data.allocated_location;
-        router.push("/fourth");
-      })
-      .catch((error) => {
-        console.error("자리 없음:", error);
-        // 실패 로직 처리, 예: 오류 메시지 표시 또는 다른 페이지로 라우팅
-        router.push("/second");
-      });
+    router.push("/fourth");
   });
 
   setInterval(() => {
     currentTime.value = getCurrentTime();
-  }, 1000); // 10000000에서 1000으로 변경하여 1초마다 현재 시간 업데이트
+  }, 10000000);
 });
 </script>
 

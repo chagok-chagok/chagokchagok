@@ -27,43 +27,16 @@ import axios from "axios";
 import router from "@/router";
 import { useParkingStore } from "@/stores/parkingStore";
 
-const kioskUrl = "http://localhost:8080/sse/kiosk";
 const currentTime = ref(getCurrentTime());
 const allocatedLocation = ref("");
 const parkingStore = useParkingStore();
 
 onMounted(() => {
-  const sseEvent = new EventSource(kioskUrl);
-  //연결 리스너
-  sseEvent.addEventListener("open", function (e) {
-    //캐치할 에러코드를 써줌
-    console.log(e.data);
-  });
-
-  //에러 리스너
-  sseEvent.addEventListener("error", function (e) {
-    console.log(e);
-  });
-
-  //SENSOR_REPORT 상태코드 리스너 << 이런식으로 등록하면 됨
-  sseEvent.addEventListener("VALID_CAR_NUM", function (e) {
-    const carNumber = e.data; // e.data가 차 번호를 포함하고 있다고 가정합니다.
-    console.log(carNumber);
-    selectParking(true, carNumber); // selectParking에 carNumber를 전달합니다.
-  });
-
-  //SENSOR_REPORT 상태코드 리스너 << 이런식으로 등록하면 됨
-  sseEvent.addEventListener("INVALID_CAR_NUM", function (e) {
-    //캐치할 상태코드를 써줌
-    console.log(e.data);
-    router.push("/third");
-  });
   const interval = setInterval(() => {
     currentTime.value = getCurrentTime();
   }, 10000);
 
   onUnmounted(() => {
-    const sseEvent = new EventSource(kioskUrl);
     clearInterval(interval);
   });
 });
@@ -73,12 +46,12 @@ function getCurrentTime() {
   return now.toTimeString().substring(0, 5);
 }
 
-function selectParking(isDisabled, carNumber) {
+function selectParking(isDisabled) {
   axios
     .post(
       "http://localhost:8080/park/allocation",
       {
-        car_no: carNumber,
+        car_no: "10가1234",
         is_disabled: isDisabled,
       },
       {
@@ -102,11 +75,6 @@ function selectParking(isDisabled, carNumber) {
 </script>
 
 <style scoped>
-@font-face {
-  font-family: "NotoSansKR";
-  src: url("@/assets/NotoSansKR-Bold.ttf");
-}
-
 .screen-container {
   position: relative;
   font-family: "Arial", sans-serif;
@@ -149,7 +117,6 @@ function selectParking(isDisabled, carNumber) {
 }
 
 .message {
-  font-family: "NotoSansKR";
   color: #000;
   font-size: 2em;
   text-align: center;
