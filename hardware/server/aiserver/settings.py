@@ -30,7 +30,8 @@ DEBUG = True
 SPRING_URL = 'http://192.168.31.251:8080/'
 
 ALLOWED_HOSTS = [
-    '192.168.31.17'
+    '192.168.31.17',
+    '*',
 ]
 
 # Application definition
