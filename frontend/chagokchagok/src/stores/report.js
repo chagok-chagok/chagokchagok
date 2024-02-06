@@ -3,10 +3,7 @@ import { defineStore } from "pinia";
 import instance from "@/utils/mainAxios";
 
 export const useReportStore = defineStore("report", () => {
-<<<<<<< HEAD
-=======
   /* ============= 신고 리스트 받아오는 요청 ============= */
->>>>>>> b331b5536179a0aa05ef71b6fc285685325dbe7a
   const reports = ref([]);
   const today_cnt = ref(0);
   const total_page_cnt = ref(0);
@@ -15,10 +12,6 @@ export const useReportStore = defineStore("report", () => {
   const sensor_cnt = ref(0);
   const autosystem_cnt = ref(0);
 
-<<<<<<< HEAD
-  /* ============= 신고 리스트 받아오는 요청 ============= */
-=======
->>>>>>> b331b5536179a0aa05ef71b6fc285685325dbe7a
   const getReportList = async (page) => {
     const { data } = await instance.get("admin/report", { params: { page } });
     reports.value = data.board;
@@ -30,13 +23,6 @@ export const useReportStore = defineStore("report", () => {
     total_page_cnt.value = data.total_page_cnt;
   };
 
-<<<<<<< HEAD
-  const modifyReport = async (report) => {
-    await instance.put("admin/report", report);
-  };
-
-=======
->>>>>>> b331b5536179a0aa05ef71b6fc285685325dbe7a
   return {
     reports,
     today_cnt,
@@ -46,9 +32,5 @@ export const useReportStore = defineStore("report", () => {
     sensor_cnt,
     autosystem_cnt,
     getReportList,
-<<<<<<< HEAD
-    modifyReport,
-=======
->>>>>>> b331b5536179a0aa05ef71b6fc285685325dbe7a
   };
 });

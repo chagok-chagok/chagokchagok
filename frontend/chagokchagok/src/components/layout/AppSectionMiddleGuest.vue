@@ -1,14 +1,9 @@
 <script setup>
-import AppLocation from "./AppLocation.vue";
+import AppLocationGuest from "./AppLocationGuest.vue";
 
 const props = defineProps({
   parkings: Array, // name: String, isDisabled: Boolean
 });
-const emit = defineEmits("location-select");
-const locationSelect = (message) => {
-  console.log("AppSection message : ", message);
-  emit("location-select", message);
-};
 </script>
 
 <template>
@@ -16,18 +11,16 @@ const locationSelect = (message) => {
     <table class="section-container">
       <tr v-for="i in 4" class="section">
         <td>
-          <app-location
-            :location="parkings[i - 1]"
+          <app-location-guest
+            :park-spot="parkings[i - 1].name"
             :class="['location', 'right']"
-            @click-location="locationSelect"
-          ></app-location>
+          ></app-location-guest>
         </td>
         <td>
-          <app-location
-            :location="parkings[i + 3]"
+          <app-location-guest
+            :park-spot="parkings[i + 3].name"
             class="location"
-            @click-location="locationSelect"
-          ></app-location>
+          ></app-location-guest>
         </td>
       </tr>
     </table>

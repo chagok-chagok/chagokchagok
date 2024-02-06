@@ -38,6 +38,11 @@ const router = createRouter({
     { path: "/third", component: ThirdScreen },
     { path: "/fourth", component: FourthScreen },
     { path: "/section", component: ParkingSection },
+    {
+      path: "/guest",
+      name: "guest",
+      component: () => import("@/views/guest/GuestView.vue"),
+    },
   ],
 });
 
