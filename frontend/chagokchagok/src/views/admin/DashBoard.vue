@@ -2,6 +2,7 @@
 import { RouterLink, RouterView } from "vue-router";
 import AppPageHeader from "@/components/admin/AppPageHeader.vue";
 import { ref, onMounted } from "vue";
+import moment from "moment";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -320,7 +321,7 @@ function startAnimation() {
               </tr>
               <tr v-for="item in unresolvedReport" :key="item.no">
                 <td>{{ item.no }}</td>
-                <td>{{ item.time }}</td>
+                <td>{{ moment(item.time).format("YYYY-MM-DD HH:mm:ss") }}</td>
                 <td>{{ item.code }}</td>
                 <td>{{ item.note }}</td>
               </tr>
@@ -450,10 +451,10 @@ p {
 
 .horizontal-line {
   width: 60px;
-  height: 2px;
-  border: 1px solid black;
+  height: 3px;
+  /* border: 1px solid black; */
   border-radius: 40px;
-  background-color: black;
+  background-color: #edeaf2;
   margin-top: 12px;
 }
 
