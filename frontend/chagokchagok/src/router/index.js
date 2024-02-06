@@ -2,6 +2,11 @@ import { createRouter, createWebHistory } from "vue-router";
 import DashBoardView from "../views/admin/DashBoard.vue";
 import AdminView from "../views/Admin.vue";
 import HomeView from "../views/HomeView.vue";
+import FirstScreen from "../components/kiosk/FirstScreen.vue";
+import SecondScreen from "../components/kiosk/SecondScreen.vue";
+import ThirdScreen from "../components/kiosk/ThirdScreen.vue";
+import FourthScreen from "../components/kiosk/FourthScreen.vue";
+import ParkingSection from "../views/admin/ParkingSection.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,7 +24,7 @@ const router = createRouter({
         {
           path: "dashboard",
           name: "admin-dashboard",
-          component: DashBoardView
+          component: DashBoardView,
         },
         {
           path: "report",
@@ -28,6 +33,11 @@ const router = createRouter({
         },
       ],
     },
+    { path: "/", component: FirstScreen },
+    { path: "/second", component: SecondScreen },
+    { path: "/third", component: ThirdScreen },
+    { path: "/fourth", component: FourthScreen },
+    { path: "/section", component: ParkingSection },
   ],
 });
 
