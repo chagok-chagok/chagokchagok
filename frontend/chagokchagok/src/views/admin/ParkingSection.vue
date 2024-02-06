@@ -1,262 +1,291 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
-import navbarVue from "@/components/admin/navbar.vue";
-import AppPageHeader from "@/components/admin/AppPageHeader.vue";
-import { ref, onMounted } from "vue";
+import AppSection from "@/components/layout/AppSection.vue";
+import AppSectionMiddleVue from "@/components/layout/AppSectionMiddle.vue";
+
+import { ref, watch } from "vue";
+
+const queryType = ref("CAR_NUMBER");
+const queryValue = ref("");
+
+// name: String, isDisabled: Boolean
+// 위쪽
+const parkingLeftUp = ref([
+  { name: "A01", isDisabled: false },
+  { name: "A02", isDisabled: false },
+  { name: "A03", isDisabled: true },
+]);
+const parkingMiddleInfoLU = ref([
+  { name: "A07", isDisabled: false },
+  { name: "A08", isDisabled: false },
+  { name: "A09", isDisabled: false },
+  { name: "A10", isDisabled: false },
+  { name: "B01", isDisabled: false },
+  { name: "B02", isDisabled: false },
+  { name: "B03", isDisabled: false },
+  { name: "B04", isDisabled: false },
+]);
+const parkingMiddleInfoRU = ref([
+  { name: "B09", isDisabled: false },
+  { name: "B10", isDisabled: false },
+  { name: "B11", isDisabled: false },
+  { name: "B12", isDisabled: false },
+  { name: "C01", isDisabled: false },
+  { name: "C02", isDisabled: false },
+  { name: "C03", isDisabled: false },
+  { name: "C04", isDisabled: false },
+]);
+const parkingRightUp = ref([
+  { name: "C04", isDisabled: false },
+  { name: "C05", isDisabled: false },
+  { name: "C06", isDisabled: false },
+  { name: "C07", isDisabled: false },
+]);
+
+// 아래쪽
+const parkingLeftDown = ref([
+  { name: "A04", isDisabled: true },
+  { name: "A05", isDisabled: false },
+  { name: "A06", isDisabled: false },
+]);
+const parkingMiddleInfoLD = ref([
+  { name: "A11", isDisabled: false },
+  { name: "A12", isDisabled: false },
+  { name: "A13", isDisabled: false },
+  { name: "A14", isDisabled: false },
+  { name: "B05", isDisabled: false },
+  { name: "B06", isDisabled: false },
+  { name: "B07", isDisabled: false },
+  { name: "B08", isDisabled: false },
+]);
+const parkingMiddleInfoRD = ref([
+  { name: "B13", isDisabled: false },
+  { name: "B14", isDisabled: false },
+  { name: "B15", isDisabled: false },
+  { name: "B16", isDisabled: false },
+  { name: "C05", isDisabled: false },
+  { name: "C06", isDisabled: false },
+  { name: "C07", isDisabled: false },
+  { name: "C08", isDisabled: false },
+]);
+const parkingRightDown = ref([
+  { name: "C13", isDisabled: false },
+  { name: "C14", isDisabled: false },
+  { name: "C15", isDisabled: false },
+  { name: "C16", isDisabled: false },
+]);
+
+const selectLocation = (message) => {
+  console.log("ParkingSection emit 도달 : ", message);
+};
+
+const searchQuery = () => {
+  console.log("검색조건 : ", queryType.value, "검색어 : ", queryValue.value);
+};
 </script>
 
 <template>
-  <main>
-    <div class="contents">
-      <div class="parking-img ml-30">
-        <img />
-        <p>차량 배정 현황</p>
+  <div>
+    <div class="parking-title-div">
+      <div class="parking-logo">P</div>
+      <h3 class="page-title">차량 배정 현황</h3>
+    </div>
+    <div>
+      <span
+        >각 자리 클릭 시 차단바 제어, 자리 변경 등의 동작이 가능합니다.</span
+      >
+      <form @submit.prevent="searchQuery">
+        <select name="search" id="search" v-model="queryType">
+          <option value="CAR_NUMBER">차 번호</option>
+          <option value="SPOT_NUMBER">주차 위치</option>
+        </select>
+        <input type="text" v-model="queryValue" />
+      </form>
+    </div>
+    <div class="area-div">
+      <div></div>
+      <div class="end-width"></div>
+      <div>
+        <div class="area">A</div>
       </div>
-      <div class="parking-desc ml-60">
-        <span
-          >각 자리 클릭 시 차단바 제어, 자리변경 등의 동작이 가능합니다.</span
-        >
+      <div class="middle-width"></div>
+      <div class="area"><div class="area">B</div></div>
+      <div class="middle-width"></div>
+      <div><div class="area">C</div></div>
+      <div class="end-width"></div>
+      <div></div>
+    </div>
+    <div class="section-container">
+      <app-section
+        :parkings="parkingLeftUp"
+        :is-left="true"
+        @location-select="selectLocation"
+      ></app-section>
+      <app-section-middle-vue
+        :parkings="parkingMiddleInfoLU"
+        @location-select="selectLocation"
+      ></app-section-middle-vue>
+      <app-section-middle-vue
+        :parkings="parkingMiddleInfoRU"
+        @location-select="selectLocation"
+      ></app-section-middle-vue>
+      <app-section
+        :parkings="parkingRightUp"
+        :is-left="false"
+        @location-select="selectLocation"
+      ></app-section>
+    </div>
+    <div class="section-container">
+      <app-section
+        :parkings="parkingLeftDown"
+        :is-left="true"
+        @location-select="selectLocation"
+      ></app-section>
+      <app-section-middle-vue
+        :parkings="parkingMiddleInfoLD"
+        @location-select="selectLocation"
+      ></app-section-middle-vue>
+      <app-section-middle-vue
+        :parkings="parkingMiddleInfoRD"
+        @location-select="selectLocation"
+      ></app-section-middle-vue>
+      <app-section
+        :parkings="parkingRightDown"
+        :is-left="false"
+        @location-select="selectLocation"
+      ></app-section>
+    </div>
+    <div class="color-info-div-container">
+      <div class="color-info-div">
+        <div :class="['color-info', 'yes-car']"></div>
+        <span>주차됨</span>
       </div>
-      <div class="parking-sect ml-60 mb-60 mt-10">
-        <div class="parking-sect-info">
-          <select class="parking-select">
-            <option>차 번호</option>
-            <option>구역 번호</option>
-          </select>
-          <input class="parking-select-input" type="text" value="30가 3425" />
-        </div>
-      </div>
-      <div class="parking-area ml-100">
-        <table class="table">
-          <tbody>
-            <tr>
-              <td><a href="#" class="btn rounded blue">A01</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">A07</a></td>
-              <td><a href="#" class="btn rounded gray">B01</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">B09</a></td>
-              <td><a href="#" class="btn rounded blue">C01</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">C09</a></td>
-            </tr>
-            <tr>
-              <td><a href="#" class="btn rounded blue">A02</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded blue">A08</a></td>
-              <td><a href="#" class="btn rounded blue">B02</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">B10</a></td>
-              <td><a href="#" class="btn rounded blue">C02</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded blue">C10</a></td>
-            </tr>
-            <tr>
-              <td rowspan="2">
-                <div class="disability-person">
-                  <a href="#">A3</a>
-                  <img src="@/assets/disabled_icon.png" alt="장애인 이미지" />
-                </div>
-              </td>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">A09</a></td>
-              <td><a href="#" class="btn rounded gray">B03</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">B11</a></td>
-              <td><a href="#" class="btn rounded gray">C03</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">C11</a></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td><a href="#" class="btn rounded blue">A10</a></td>
-              <td><a href="#" class="btn rounded green">B04</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded blue">B12</a></td>
-              <td><a href="#" class="btn rounded blue">C04</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded blue">C12</a></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-              <td rowspan="2">
-                <div class="disability-person">
-                  <a href="#">A04</a>
-                  <img src="@/assets/disabled_icon.png" alt="장애인 이미지" />
-                </div>
-                s
-              </td>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">A11</a></td>
-              <td><a href="#" class="btn rounded blue">B05</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">B13</a></td>
-              <td><a href="#" class="btn rounded blue">C05</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">C13</a></td>
-            </tr>
-            <tr>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">A12</a></td>
-              <td><a href="#" class="btn rounded gray">B06</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">B14</a></td>
-              <td><a href="#" class="btn rounded gray">C06</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">C14</a></td>
-            </tr>
-            <tr>
-              <td><a href="#" class="btn rounded gray">A05</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">A13</a></td>
-              <td><a href="#" class="btn rounded gray">B07</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded blue">B15</a></td>
-              <td><a href="#" class="btn rounded blue">C07</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">C15</a></td>
-            </tr>
-            <tr>
-              <td><a href="#" class="btn rounded gray">A06</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">A14</a></td>
-              <td><a href="#" class="btn rounded gray">B08</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">B16</a></td>
-              <td><a href="#" class="btn rounded gray">C08</a></td>
-              <td></td>
-              <td><a href="#" class="btn rounded gray">C16</a></td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="color-info-div">
+        <div :class="['color-info', 'no-car']"></div>
+        <span>빈자리</span>
       </div>
     </div>
-  </main>
+    <div class="exit-div">
+      <div class="pink-circle"></div>
+      <button class="exit-button">Exit</button>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-main {
+* {
   margin: 0;
   padding: 0;
-  background-color: #f2f2f7;
+  box-sizing: border-box;
+  border-collapse: collapse;
+}
+.parking-title-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: baseline;
+  align-items: center;
+}
+.page-title {
+  margin-left: 10px;
+}
+.parking-logo {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  width: 25px;
+  height: 25px;
+  border: 3.5px solid black;
+  border-radius: 3px;
+  font-weight: bolder;
 }
-
-.ml-30 {
-  margin-left: 30px;
-}
-.ml-60 {
-  margin-left: 60px;
-}
-.ml-100 {
-  margin-left: 100px;
-}
-
-.mb-30 {
-  margin-bottom: 30px;
-}
-
-.mt-10 {
-  margin-top: 10px;
-}
-
-.mb-40 {
-  margin-bottom: 40px;
-}
-
-.mb-60 {
-  margin-bottom: 60px;
-}
-
-.parking-sect-info {
-  width: 100%;
-  height: 90%;
-}
-
-.parking-select {
-  position: absolute;
-  z-index: 2;
-  margin: 6px;
-}
-
-.parking-select-input {
-  position: absolute;
-  width: 30%;
-  height: 2%;
-  text-align: center;
-  border-radius: 8px;
-}
-
-.table {
-  border-collapse: separate;
-  border-spacing: 10px 10px;
-}
-
-.rounded {
-  border-radius: 10px;
-}
-
-/* default button style */
-.btn {
-  position: relative;
-  border: 0;
-  padding: 15px 25px;
-  display: inline-block;
-  text-align: center;
-  color: black;
-}
-
-/* color classes for .btn */
-.btn.blue {
-  background-color: #84adff;
-  box-shadow: 0px 4px #6e9cf8;
-}
-.btn.green {
-  background-color: #84ff9f;
-  box-shadow: 0px 4px 0px #6ffc8e;
-}
-.btn.gray {
-  background-color: #e1e1e1;
-  box-shadow: 0px 4px 0px #bcbcbc;
-}
-
-.disability-person {
+.area-div {
+  height: 50px;
   display: flex;
-  flex-direction: column;
-  position: absolute;
-  /* height: 86px; */
-  border-radius: 10px;
-  border: azure;
-  background: #84adff;
-  width: 77px;
-  box-shadow: 0px 3px;
-  text-align: center;
-  font-size: 20px;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: flex-end;
+  padding: 0 20px; /* 구역 표시 정렬 안맞으면 패딩값 조정 */
 }
 
-.blue {
+.area {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  background-color: #eff5ff;
+  color: #5f93fb;
+  border-radius: 5px;
+}
+.end-width {
+  width: 90px;
+}
+.middle-width {
+  width: 180px;
+}
+
+.section-container {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+  justify-content: space-evenly;
+}
+
+.color-info-div-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-right: 30px;
+}
+.color-info-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 15px;
+}
+.color-info-div span {
+  margin-left: 5px;
+  font-size: 14px;
+}
+.color-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 15px;
+  border-radius: 5px;
+}
+
+.yes-car {
   background-color: #84adff;
-  box-shadow: 0px 4px #6e9cf8;
 }
-.green {
-  background-color: #84ff9f;
-  box-shadow: 0px 4px 0px #6ffc8e;
-}
-.gray {
+.no-car {
   background-color: #e1e1e1;
-  box-shadow: 0px 4px 0px #bcbcbc;
+}
+
+.exit-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+
+  margin: 20px 50px 0 0;
+}
+
+.pink-circle {
+  width: 12.48px;
+  height: 12.48px;
+  border: 4px solid #ff5a5f;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+.exit-button {
+  width: 117px;
+  height: 37px;
+  background-color: #ffefef;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: #ff5a5f;
 }
 </style>
