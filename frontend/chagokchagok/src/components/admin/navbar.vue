@@ -2,9 +2,11 @@
   <!-- router link 랑 setting icon 링크 설정 해줘야함 -->
   <nav class="navbar-container">
     <div class="links-container">
-      <RouterLink to="/" class="router-link">Dashboard</RouterLink>
+      <RouterLink to="/admin/dashboard" class="router-link"
+        >Dashboard</RouterLink
+      >
       <RouterLink to="about" class="router-link">차량배정현황</RouterLink>
-      <RouterLink to="about" class="router-link">신고기록</RouterLink>
+      <RouterLink to="/admin/report" class="router-link">신고기록</RouterLink>
     </div>
     <div class="admin-container">
       <div class="admin-name">Admin(관리자) 님</div>
@@ -32,7 +34,7 @@ import { RouterLink } from "vue-router";
 
 <style scoped>
 .navbar-container {
-  height: 80px;
+  /* height: 80px; */
   width: 100%;
   background: var(--Light-White-T1, #fff);
   display: flex;

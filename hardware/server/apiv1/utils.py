@@ -1,4 +1,3 @@
-from glob import glob
 import numpy as np
 import cv2
 from PIL import ImageFont, ImageDraw, Image
@@ -28,14 +27,9 @@ def detect(car_m, lp_m, reader, image_path):
 
     im = Image.open(image_path)
     to_draw = np.array(im)
-    # results = car_m(im)
-    # locs = results.xyxy[0]
-    
         
     result_text = []
 
-    # if len(locs) == 0:
-        
     result = lp_m(im)
     if len(result) == 0:
         result_text.append('Car was not detected')
