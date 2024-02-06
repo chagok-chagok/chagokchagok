@@ -50,6 +50,7 @@ public class AdminController {
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest adminInfoDto){
+        System.out.println("로그인 처리중");
         LoginResponse loginResponse  = adminService.login(adminInfoDto);
         return loginResponse;
     }

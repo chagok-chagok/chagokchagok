@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import DashBoardView from "../views/admin/DashBoard.vue";
 import AdminView from "../views/Admin.vue";
 import HomeView from "../views/HomeView.vue";
+import MainView from "../views/Main.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,12 +20,29 @@ const router = createRouter({
         {
           path: "dashboard",
           name: "admin-dashboard",
-          component: DashBoardView
+          component: DashBoardView,
         },
         {
           path: "report",
           name: "report-list",
           component: () => import("@/components/admin/report/ReportList.vue"),
+        },
+      ],
+    },
+    {
+      path: "/main",
+      name: "main",
+      component: MainView,
+      children: [
+        {
+          path: "login",
+          name: "admin-login",
+          component: () => import("@/components/main/LoginPage.vue"),
+        },
+        {
+          path: "changePassword",
+          name: "change-password",
+          component: () => import("@/components/main/ChangePassword.vue"),
         },
       ],
     },
