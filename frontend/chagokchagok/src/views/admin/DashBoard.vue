@@ -450,10 +450,10 @@ p {
 
 .horizontal-line {
   width: 60px;
-  height: 2px;
-  border: 1px solid black;
+  height: 3px;
+  /* border: 1px solid black; */
   border-radius: 40px;
-  background-color: black;
+  background-color: #edeaf2;
   margin-top: 12px;
 }
 

@@ -49,22 +49,24 @@ import { RouterLink } from "vue-router";
   font-weight: bold;
 }
 .router-link {
-  font-weight: 16px;
+  font-size: 1rem;
   color: var(--Grey-50, #d0d1d2);
   padding-right: 40px;
   &:hover {
     background-color: transparent;
   }
+
+  text-decoration: none;
 }
 .admin-container {
   display: inline-flex;
   align-items: center;
   gap: 20px;
+  margin-right: 20px;
 }
 .admin-name {
-  font-weight: 700;
-  line-height: 26px;
-  font-size: 18px;
+  font-size: 1.1rem;
+  font-weight: bold;
 }
 .setting-icon {
   &:hover {
