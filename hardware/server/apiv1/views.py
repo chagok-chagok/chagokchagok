@@ -1,26 +1,11 @@
 from django.http import JsonResponse
-from io import BytesIO
-from PIL import Image
+from django.conf import settings
 from . import utils
 import requests
+import json
 
 
-""" utils 에 있는 plate_recog 함수로 대체
-# Create your views here.
-def plate_recog(request):
-    if request.method == 'POST':
-        img_out = Image.open(BytesIO(request.body))
-        img_out = np.array(img_out)
-        img_out = cv2.cvtColor(img_out, cv2.COLOR_BGR2RGB)
-        
-        cv2.imwrite('./image.png', img_out)
-        text = utils.main('./image.png')
-        return JsonResponse({'text':text})
-    else:
-        return JsonResponse({'error':'error'})
-"""
-
-# test
+# for testing
 def plate_recog(request):
     car_data = utils.plate_recog(request.body)
     return JsonResponse({'cardata':car_data})
@@ -28,33 +13,86 @@ def plate_recog(request):
 
 def entrance(request):
     if request.method == 'POST':
+        # data pre-processing
         car_data = utils.plate_recog(request.body)
-        entrance_url = 'http://localhost:8080/park/allocation/'
-        response = requests.post(entrance_url, data=car_data)
+
+        # request to spring server
+        # header
+        headers = {'Content-type': 'application/json', 'charset': 'utf8'}
+        # url
+        entrance_url = f'{settings.SPRING_URL}park/validate/carnum'
+        # data
+        json_data = json.dumps({'car_no': car_data[0]})
+        # request
+        response = requests.post(entrance_url, data=json_data, headers=headers)
+
+        # convert response data to json for responsing to rasp
         result = response.json()
-        return JsonResponse()
+        return JsonResponse({'response': result})
+    else:
+        return JsonResponse({'response': 'fail'})
 
 
 def hall(request):
     if request.method == 'POST':
+        # data pre-processing
         car_data = utils.plate_recog(request.body)
-        park_url = 'http://localhost:8080/park/validation/'
-        response = requests.post(park_url, data=car_data)
+
+        # request to spring server
+        # header
+        headers = {'Content-type': 'application/json', 'charset': 'utf8'}
+        # url
+        park_url = f'{settings.SPRING_URL}park/validation'
+        # data
+        # fixed section as A
+        json_data = json.dumps({'car_no': car_data[0], 'area': 'A'})
+        # request
+        response = requests.post(park_url, data=json_data, headers=headers)
+
+        # convert response data to json for responsing to rasp
         result = response.json()
+
+        # need to check ####
         park_id = result['park_id'][0]
         return JsonResponse({'park_id':park_id})
+    else:
+        return JsonResponse({'response': 'fail'})
 
 
 def exit_way(request):
     if request.method == 'POST':
+        # data pre-processing
         car_data = utils.plate_recog(request.body)
-        exit_url = 'http://localhost:8080/park/out/'
-        response = requests.post(exit_url, data=car_data)
+
+        # request to spring server
+        # header
+        headers = {'Content-type': 'application/json', 'charset': 'utf8'}
+        # url
+        exit_url = f'{settings.SPRING_URL}park/out'
+        # data
+        json_data = json.dumps({'car_no': car_data[0]})
+        # request
+        response = requests.post(exit_url, data=json_data, headers=headers)
+
+        # convert response data to json for responsing to rasp
         result = response.json()
-        return JsonResponse()
+        # if available, result should be processed
+        return JsonResponse({'response': result})
+    else:
+        return JsonResponse({'response': 'fail'})
 
 
+# will make later
+def auto_report(request):
+    if request.method == 'POST':
+        # request to spring server
+        # header
+        headers = {'Content-type': 'application/json', 'charset': 'utf8'}
 
+    return
+
+
+### will add managing system after completing others
 park_list = []
 def bar(request):
     if request.method == 'POST':
@@ -62,6 +100,8 @@ def bar(request):
         park_no = result['park_no'][0]
         park_list.append(park_no)
         return JsonResponse({'okay': 'okay'})
+    else:
+        return JsonResponse({'response': 'fail'})
     
 
 def bar_open(request):
@@ -69,3 +109,5 @@ def bar_open(request):
         if park_list:
             park_no = park_list.pop(0)
             return JsonResponse({'park_no': park_no})
+    else:
+        return JsonResponse({'response': 'fail'})

@@ -11,8 +11,12 @@ import VueSSE from "vue-sse";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import vuetify from "./plugins/vuetify";
 import { loadFonts } from "./plugins/webfontloader";
+import "@/assets/font.css";
+// mdi import
+// import mdiVue from "mdi-vue/v3";
+// import * as mdijs from "@mdi/js";
+
 loadFonts();
 
 library.add(fas);
@@ -24,5 +28,5 @@ app.component("font-awesome-icon", FontAwesomeIcon);
 app.use(createPinia());
 app.use(router);
 app.use(VueSSE);
-app.use(vuetify);
+
 app.mount("#app");

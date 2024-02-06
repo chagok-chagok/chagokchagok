@@ -26,8 +26,13 @@ SECRET_KEY = 'django-insecure-j1ay%^i^le5f=sllprm71+%zn&y(a*=vm7w1&s3x*(n)r#of7y
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# spring url
+SPRING_URL = 'http://192.168.31.251:8080/'
 
+ALLOWED_HOSTS = [
+    '192.168.31.17',
+    '*',
+]
 
 # Application definition
 
@@ -85,8 +90,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-ALLOWED_HOSTS=['192.168.31.17']
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
