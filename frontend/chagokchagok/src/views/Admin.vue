@@ -4,7 +4,6 @@ import { RouterLink, RouterView } from "vue-router";
 import NavbarVue from "@/components/admin/navbar.vue";
 import AppCommonBar from "@/components/admin/AppCommonBar.vue";
 import AppFloatingAlert from "@/components/admin/AppFloatingAlert.vue";
-import { storeToRefs } from "pinia";
 import { notificationStore } from "@/stores/alert.js";
 const store = notificationStore();
 
@@ -96,14 +95,14 @@ main {
 /* 탭마다 다른 컨텐츠가 들어가는 블록 */
 .content {
   /* background-color: antiquewhite; */
-  width: 78%;
+  width: 76%;
   height: 100%;
   padding: 1.5vh 1.5vw;
 }
 
 /* 공통바 */
 .common-bar {
-  width: 22%;
+  width: 24%;
   height: 100%;
   background-color: #f2f2f7;
 }

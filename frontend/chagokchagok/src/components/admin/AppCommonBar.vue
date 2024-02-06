@@ -4,6 +4,7 @@ import { ref, onMounted } from "vue";
 import { Chart as ChartJS } from "chart.js/auto";
 import { notificationStore } from "@/stores/alert.js";
 import { storeToRefs } from "pinia";
+import moment from "moment";
 const store = notificationStore();
 const { total_cnt, current_cnt, parks, processing_details } =
   storeToRefs(store);
@@ -88,7 +89,7 @@ function drawDoughtnut() {
           <div v-for="item in processing_details" :key="item.id">
             <div class="processing-box" v-if="item.code === 'SENSOR_ERROR'">
               <img
-                src="/public/icon/hotline.png"
+                src="/icon/hotline.png"
                 alt="Sensor Error Icon"
                 class="processing-icon"
               />
@@ -99,18 +100,18 @@ function drawDoughtnut() {
             </div>
             <div class="processing-box" v-if="item.code === 'AUTO_REPORT'">
               <img
-                src="/public/icon/sensor.png"
+                src="/icon/sensor.png"
                 alt="Hotline Icon"
                 class="processing-icon"
               />
               <div class="processing-text">
-                <div>{{ item.time }}</div>
+                <div>{{ moment(item.time).format("YYYY-MM-DD HH:mm:ss") }}</div>
                 <div>[{{ item.location }}] 자동신고 가동</div>
               </div>
             </div>
             <div class="processing-box" v-if="item.code === 'HUMAN_ERROR'">
               <img
-                src="/public/icon/hotline.png"
+                src="/icon/hotline.png"
                 alt="Hotline Icon"
                 class="processing-icon"
               />
@@ -148,7 +149,7 @@ h3 {
   margin: 0 0 10px 0;
 }
 .bar-content {
-  /* border: 10px solid black; */
+  /* border: 1px solid black; */
   padding: 3vh 1vw;
   width: 100%;
   height: 100%;
@@ -162,8 +163,8 @@ h3 {
 }
 
 .rate-box {
-  width: 100%;
   height: 60px; /* 적절한 픽셀 값으로 조정 */
+  width: 88%;
   background-color: rgb(255, 255, 255);
   border-radius: 5px;
   position: relative;
@@ -188,13 +189,12 @@ canvas {
 }
 .rate-box h2 {
   position: absolute;
-  left: 135px; /* 적절한 픽셀 값으로 조정 */
-  top: 30px; /* 적절한 픽셀 값으로 조정 */
+  left: 130px; /* 적절한 픽셀 값으로 조정 */
+  top: 10px; /* 적절한 픽셀 값으로 조정 */
   transform: translateY(-50%);
 }
 
 .white-box {
-  width: 100%;
   background-color: white;
   border-radius: 25px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -202,6 +202,7 @@ canvas {
   display: flex;
   flex-direction: column;
   gap: 13px;
+  width: 80%;
 }
 ul,
 ol {
@@ -226,10 +227,6 @@ ol {
   font-size: 0.9rem;
   font-weight: bold;
 }
-
-/* .processing-text {
-  border-bottom: 1px solid rgb(224, 224, 224);
-} */
 
 #chart-percent {
   position: absolute;
