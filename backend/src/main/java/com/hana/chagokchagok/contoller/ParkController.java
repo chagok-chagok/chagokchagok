@@ -39,6 +39,7 @@ public class ParkController {
      */
     @PostMapping("/allocation")
     public ResponseEntity<AllocateCarResponse> allocateCar(@RequestBody AllocateCarRequest allocateCarRequest) {
+        System.out.println(allocateCarRequest);
         ResponseEntity<AllocateCarResponse> response = parkService.getAllocatedInfo(allocateCarRequest);
         sseService.sendRealtimeCommon(ADMIN_KEY);
         return response;

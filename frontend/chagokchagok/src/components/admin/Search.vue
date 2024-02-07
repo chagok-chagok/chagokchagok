@@ -46,6 +46,12 @@ const search = async () => {
 </template>
 
 <style>
+#app {
+  max-width: 640px;
+  margin: 0 auto;
+  height: auto;
+}
+
 .search-bar {
   display: flex;
   align-items: center;
@@ -63,13 +69,5 @@ const search = async () => {
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 100%;
-}
-</style>
-
-<style scoped>
-#app {
-  max-width: 640px;
-  margin: 0 auto;
-  height: auto;
 }
 </style>

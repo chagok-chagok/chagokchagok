@@ -126,7 +126,6 @@ public class ParkService {
         AllocationLog allocationLog = realtimeParking.getAllocationLog();
         allocationLog.pullOut();
 
-
         //만차였던 경우 빈자리가 생겼으므로 키오스크 서버로 SSE알림
         if(!realTimeParkingRepository.existsByAllocationLogIsNull()){
             sseService.congestionClear(KIOSK_KEY);

@@ -58,9 +58,11 @@ s
   border-collapse: collapse;
 }
 .location {
+  height: 100%;
   /* background-color: cadetblue; */
 }
 .disabled {
+  height: 100%;
   /* background-color: yellow; */
 }
 .car {

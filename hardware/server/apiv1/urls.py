@@ -16,7 +16,7 @@ urlpatterns = [
     
     # auto report system
     # check lately exit car's parking section is empty
-    path('auto-report/', views.autu_report),
+    path('auto-report/', views.auto_report),
 
     path('bar', views.bar),
 ]

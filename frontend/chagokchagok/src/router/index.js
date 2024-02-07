@@ -35,6 +35,7 @@ const router = createRouter({
         },
       ],
     },
+<<<<<<< HEAD
     {
       path: "/choice",
       name: "choice",
@@ -69,6 +70,17 @@ const router = createRouter({
       path: "/tooltip",
       name: "tooltip",
       component: Tooltip,
+=======
+    { path: "/first", name: "fisrt", component: FirstScreen },
+    { path: "/second", name: "second", component: SecondScreen },
+    { path: "/third", name: "third", component: ThirdScreen },
+    { path: "/fourth", name: "fourth", component: FourthScreen },
+    { path: "/section", name: "section", component: ParkingSection },
+    {
+      path: "/guest",
+      name: "guest",
+      component: () => import("@/views/guest/GuestView.vue"),
+>>>>>>> develop
     },
   ],
 });
