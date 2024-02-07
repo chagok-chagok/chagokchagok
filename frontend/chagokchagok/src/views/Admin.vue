@@ -15,11 +15,13 @@ onMounted(() => {
   sseEvent.addEventListener("open", function (e) {
     //캐치할 에러코드를 써줌
     console.log(e.data);
+    store.updateSSEStatus("connected");
   });
 
   //에러 리스너
   sseEvent.addEventListener("error", function (e) {
     console.log(e);
+    store.updateSSEStatus("disconnected");
   });
 
   //자동신고시스템 - 플로팅알림
@@ -31,6 +33,7 @@ onMounted(() => {
   //공통바 업데이트
   sseEvent.addEventListener("REALTIME_COMMON", function (e) {
     store.updateBar();
+    store.updateVisitChart();
   });
 });
 </script>
@@ -71,7 +74,8 @@ main {
   height: 90vh;
   background-color: #ffffff;
   border-radius: 20px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
   overflow: hidden;
   /* padding: 20px; */
   position: relative;

@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
 import AppPageHeader from "@/components/admin/AppPageHeader.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watchEffect } from "vue";
 import moment from "moment";
 import {
   Chart as ChartJS,
@@ -14,6 +14,22 @@ import {
   Legend,
 } from "chart.js/auto"; // Chart.js를 가져옴
 import axios from "axios";
+import { notificationStore } from "@/stores/alert.js";
+import { storeToRefs } from "pinia";
+const store = notificationStore();
+const {
+  percent,
+  currentPercent,
+  labels,
+  today_visits,
+  pre_visits,
+  sensorErrorCnt,
+  humanErrortCnt,
+  autoReportCnt,
+  totalReportCnt,
+  unresolvedCnt,
+  unresolvedReport,
+} = storeToRefs(store);
 
 ChartJS.register(
   CategoryScale,
@@ -25,72 +41,41 @@ ChartJS.register(
 
 const lineChart = ref(null);
 const doughnutChart = ref(null);
-const percent = ref();
-const currentPercent = ref(0);
 
-const labels = ref([
-  "00",
-  "01",
-  "02",
-  "03",
-  "04",
-  "05",
-  "06",
-  "07",
-  "08",
-  "09",
-  "10",
-  "11",
-  "12",
-  "13",
-  "14",
-  "15",
-  "16",
-  "17",
-  "18",
-  "19",
-  "20",
-  "21",
-  "22",
-  "23",
-]);
-const today_visits = ref([]);
-const pre_visits = ref([]);
-const sensorErrorCnt = ref(0);
-const humanErrortCnt = ref(0);
-const autoReportCnt = ref(0);
-const totalReportCnt = ref(0);
-const unresolvedCnt = ref(0);
-const unresolvedReport = ref(null);
+//update를 위한 변수
+let lineChartRef = null;
+let doughnutChartRef = null;
 
-onMounted(() => {
-  //값 셋팅
-  axios.get("http://localhost:8080/admin/dashboard").then((resp) => {
-    const dashboardData = resp.data;
-    console.log(dashboardData);
-    today_visits.value = dashboardData.today_visits;
-    pre_visits.value = dashboardData.previous_visits;
-    sensorErrorCnt.value = dashboardData.report_rate.sensor;
-    humanErrortCnt.value = dashboardData.report_rate.human;
-    autoReportCnt.value = dashboardData.report_rate.auto;
-    totalReportCnt.value = dashboardData.total_report;
-    unresolvedCnt.value = dashboardData.unresolvedDto.cnt;
-    unresolvedReport.value = dashboardData.unresolvedDto.report_data;
-    percent.value =
-      (dashboardData.unresolvedDto.cnt / dashboardData.total_report) * 100;
-    //라인차트
-    drawLine();
-    //도넛차트
-    drawDoughtnut();
-    //프로그래스바
-    startAnimation();
+onMounted(async () => {
+  await store.updateVisitChart();
+  //라인차트
+  drawLine();
+  //도넛차트
+  drawDoughtnut();
+  //프로그래스바
+  startAnimation();
+
+  //실시간 변화시 차트 업데이트
+  watchEffect(() => {
+    //라인차트 업데이트
+    lineChartRef.data.datasets[0].data = today_visits.value;
+    lineChartRef.data.datasets[1].data = pre_visits.value;
+    lineChartRef.update();
+
+    //도넛차트 업데이트
+    doughnutChartRef.data.datasets[0].data = [
+      autoReportCnt.value,
+      humanErrortCnt.value,
+      sensorErrorCnt.value,
+    ];
+    doughnutChartRef.update();
   });
 });
 
 function drawDoughtnut() {
   const ctx = doughnutChart.value.getContext("2d");
 
-  new ChartJS(ctx, {
+  doughnutChartRef = new ChartJS(ctx, {
     type: "doughnut",
     data: {
       labels: ["AUTO-REPORT", "HUMAN_ERROR", "SEONSOR_ERROR"],
@@ -159,7 +144,7 @@ function drawLine() {
     ],
   };
 
-  new ChartJS(ctx, {
+  lineChartRef = new ChartJS(ctx, {
     type: "line",
     data: data,
     options: {
@@ -323,7 +308,7 @@ function startAnimation() {
                 <td>{{ item.no }}</td>
                 <td>{{ moment(item.time).format("YYYY-MM-DD HH:mm:ss") }}</td>
                 <td>{{ item.code }}</td>
-                <td>{{ item.note }}</td>
+                <td>{{ item.note || "-" }}</td>
               </tr>
             </table>
           </div>
