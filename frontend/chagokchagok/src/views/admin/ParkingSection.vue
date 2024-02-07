@@ -4,6 +4,7 @@ import AppSectionMiddleVue from "@/components/layout/AppSectionMiddle.vue";
 import { computed, ref } from "vue";
 import searchComp from "@/components/admin/Search.vue";
 import axios from "axios";
+import navbar from "@/components/admin/navbar.vue";
 // import { useParkingSectionStore } from "@/stores/parkingSectionStore";
 
 const carInfo = ref(null);
@@ -104,7 +105,7 @@ const searchQuery = () => {
 </script>
 
 <template>
-  <VDropdown placement="right-start" :distance="6">
+  <!-- <VDropdown placement="right-start" :distance="6">
     <template #popper>
       <div class="dropdown-content" v-if="isTooltipOpen">
         <p>[{{ carInfo.carNo }}]</p>
@@ -117,8 +118,9 @@ const searchQuery = () => {
         >
       </div>
     </template>
-  </VDropdown>
+  </VDropdown> -->
   <div>
+    <navbar />
     <div class="parking-title-div">
       <div class="parking-logo">P</div>
       <h3 class="page-title">차량 배정 현황</h3>

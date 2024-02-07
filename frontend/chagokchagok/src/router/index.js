@@ -2,10 +2,10 @@ import { createRouter, createWebHistory } from "vue-router";
 import DashBoardView from "../views/admin/DashBoard.vue";
 import AdminView from "../views/Admin.vue";
 import HomeView from "../views/HomeView.vue";
-import FirstScreen from "../components/kiosk/FirstScreen.vue";
-import SecondScreen from "../components/kiosk/SecondScreen.vue";
-import ThirdScreen from "../components/kiosk/ThirdScreen.vue";
-import FourthScreen from "../components/kiosk/FourthScreen.vue";
+import ChoiceScreen from "@/views/kiosk/ChoiceScreen.vue";
+import NoplaceScreen from "@/views/kiosk/NoplaceScreen.vue";
+import RecognitionErrorScreen from "@/views/kiosk/RecognitionErrorScreen.vue";
+import AllocationScreen from "@/views/kiosk/AllocationScreen.vue";
 import ParkingSection from "../views/admin/ParkingSection.vue";
 import Search from "../components/admin/Search.vue";
 import Tooltip from "../components/admin/Tooltip.vue";
@@ -35,13 +35,41 @@ const router = createRouter({
         },
       ],
     },
-    { path: "/", component: FirstScreen },
-    { path: "/second", component: SecondScreen },
-    { path: "/third", component: ThirdScreen },
-    { path: "/fourth", component: FourthScreen },
-    { path: "/section", component: ParkingSection },
-    { path: "/search", component: Search },
-    { path: "/tooltip", component: Tooltip },
+    {
+      path: "/choice",
+      name: "choice",
+      component: ChoiceScreen,
+    },
+    {
+      path: "/no-place",
+      name: "no-place",
+      component: NoplaceScreen,
+    },
+    {
+      path: "/recognition-error",
+      name: "recognition-error",
+      component: RecognitionErrorScreen,
+    },
+    {
+      path: "/allocation",
+      name: "allocation",
+      component: AllocationScreen,
+    },
+    {
+      path: "/section",
+      name: "section",
+      component: ParkingSection,
+    },
+    {
+      path: "/search",
+      name: "search",
+      component: Search,
+    },
+    {
+      path: "/tooltip",
+      name: "tooltip",
+      component: Tooltip,
+    },
   ],
 });
 

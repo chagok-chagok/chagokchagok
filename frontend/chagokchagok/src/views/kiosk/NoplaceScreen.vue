@@ -47,7 +47,7 @@ onMounted(() => {
     //캐치할 상태코드를 써줌
     console.log("catch");
     console.log(e.data);
-    router.push("/fourth");
+    router.push({ name: "allocation" });
   });
 
   setInterval(() => {

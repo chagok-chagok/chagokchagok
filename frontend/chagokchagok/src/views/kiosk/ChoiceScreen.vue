@@ -64,12 +64,12 @@ function selectParking(isDisabled) {
       console.log(response);
       console.log(response.data.allocated_location);
       parkingStore.allocatedLocation = response.data.allocated_location;
-      router.push("/fourth");
+      router.push({ name: "allocation" });
     })
     .catch((error) => {
       console.error("자리 없음:", error);
       allocatedLocation.value = "";
-      router.push("/second");
+      router.push({ name: "no-place" });
     });
 }
 </script>
