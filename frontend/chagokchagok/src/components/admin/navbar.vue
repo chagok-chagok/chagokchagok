@@ -170,7 +170,7 @@ const closeModalOnOutsideClick = (event) => {
 .modal::before {
   content: "";
   position: absolute;
-  top: -20px;
+  top: -18px;
   left: 115px;
   margin-left: -10px; /* 꼬리의 폭 조절 */
   border: 10px solid transparent;
