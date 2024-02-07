@@ -81,4 +81,8 @@ td {
   height: 100%;
   padding: 5px;
 }
+
+td {
+  width: 50%;
+}
 </style>

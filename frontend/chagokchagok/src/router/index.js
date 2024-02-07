@@ -7,6 +7,8 @@ import SecondScreen from "../components/kiosk/SecondScreen.vue";
 import ThirdScreen from "../components/kiosk/ThirdScreen.vue";
 import FourthScreen from "../components/kiosk/FourthScreen.vue";
 import ParkingSection from "../views/admin/ParkingSection.vue";
+import Search from "../components/admin/Search.vue";
+import Tooltip from "../components/admin/Tooltip.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

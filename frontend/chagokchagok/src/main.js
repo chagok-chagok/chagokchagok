@@ -6,6 +6,7 @@ import { createPinia } from "pinia";
 import App from "./App.vue";
 import router from "./router";
 import VueSSE from "vue-sse";
+import FloatingVue from "floating-vue";
 
 // fontawesome import
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -28,5 +29,6 @@ app.component("font-awesome-icon", FontAwesomeIcon);
 app.use(createPinia());
 app.use(router);
 app.use(VueSSE);
+app.use(FloatingVue);
 
 app.mount("#app");
