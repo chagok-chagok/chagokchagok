@@ -8,8 +8,8 @@ import axios from "axios";
 
 const carInfo = ref(null);
 const sectionName = ref("");
-const queryType = ref("CAR_NUMBER");
-const queryValue = ref("");
+// const queryType = ref("CAR_NUMBER");
+// const queryValue = ref("");
 const isTooltipOpen = ref(false);
 // const parkingSectionStore = useParkingSectionStore();
 const fetchCarInfo = async (message) => {
@@ -92,15 +92,6 @@ const parkingRightDown = ref([
   { name: "C15", isDisabled: false },
   { name: "C16", isDisabled: false },
 ]);
-
-const check = (message) => {
-  console.log("ParkingSection emit 도달 : ", message);
-  // fetchCarInfo(message);
-};
-
-const searchQuery = () => {
-  console.log("검색조건 : ", queryType.value, "검색어 : ", queryValue.value);
-};
 </script>
 
 <template>

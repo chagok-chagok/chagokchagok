@@ -46,12 +46,6 @@ const search = async () => {
 </template>
 
 <style>
-#app {
-  max-width: 640px;
-  margin: 0 auto;
-  height: auto;
-}
-
 .search-bar {
   display: flex;
   align-items: center;
