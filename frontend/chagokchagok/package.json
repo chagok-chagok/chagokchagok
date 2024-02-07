@@ -21,6 +21,7 @@
     "@vuejs-community/vue-filter-numeric-format": "^1.1.0",
     "axios": "^1.6.7",
     "chart.js": "^4.4.1",
+    "floating": "^3.0.0",
     "flowbite": "^2.2.1",
     "flowbite-vue": "^0.1.2",
     "k-progress": "^1.5.0",
@@ -42,5 +43,8 @@
     "vue-sse": "^2.5.2",
     "webfontloader": "^1.0.0"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "sass": "^1.70.0"
+  }
 }
