@@ -17,6 +17,7 @@ export const notificationStore = defineStore("notificationStore", () => {
 
   //플로팅 알림 띄우기
   const sendNotification = async (data) => {
+    console.log("플로팅 알림을 띄우자");
     showNotification.value = true;
     location.value = data.park;
     time.value = data.time;

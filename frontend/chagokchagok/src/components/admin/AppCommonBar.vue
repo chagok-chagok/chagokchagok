@@ -13,7 +13,6 @@ const doughnutChart = ref(null);
 onMounted(async () => {
   console.log("==========");
   await store.updateBar();
-  console.log("alert.js store 업데이트 끝 : ", current_cnt.value);
   drawDoughtnut();
 });
 
@@ -168,7 +167,8 @@ h3 {
   background-color: rgb(255, 255, 255);
   border-radius: 5px;
   position: relative;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
 }
 
 .circle {
@@ -197,7 +197,8 @@ canvas {
 .white-box {
   background-color: white;
   border-radius: 25px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
   padding: 10px;
   display: flex;
   flex-direction: column;

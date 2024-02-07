@@ -71,7 +71,8 @@ main {
   height: 90vh;
   background-color: #ffffff;
   border-radius: 20px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
   overflow: hidden;
   /* padding: 20px; */
   position: relative;
