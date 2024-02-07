@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import instance from "@/utils/mainAxios";
+import { instance } from "@/utils/mainAxios";
 import { ref } from "vue";
 
 export const useGuestStore = defineStore("guest", () => {
