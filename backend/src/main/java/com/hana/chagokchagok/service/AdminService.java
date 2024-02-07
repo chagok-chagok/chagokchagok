@@ -203,7 +203,7 @@ public class AdminService {
      */
     public CommonAlertResponse getCommonAlertData() {
         List<RealtimeParking> realtimeParkingInfo = realtimeParkingRepository.findAll();
-        List<Report> reports = reportRepository.findTop5ByOrderByDoneTimeDesc();
+        List<Report> reports = reportRepository.findTop4ByOrderByDoneTimeDesc();
         return new CommonAlertResponse(realtimeParkingInfo, reports);
     }
 
@@ -221,7 +221,7 @@ public class AdminService {
     
     public DashBoardResponse getDashboard() {
         //오늘 방문 차량 조회
-        int[] today_visits = new int[24];
+        int[] today_visits = new int[LocalDateTime.now().getHour()+1];
         findEnteredCarInDay(LocalDate.now(), today_visits);
 
         //어제 방문 차량 조회
@@ -240,7 +240,7 @@ public class AdminService {
             else if(report.getErrorCode() == ErrorCode.SENSOR_ERROR) report_rate.setSensor(report_rate.getSensor()+1);
             if(report.getReportStatus() == ReportStatus.UNRESOLVED)  {
                 unresolved.setCnt(unresolved.getCnt()+1);
-                if(ReportDataDto.size() >= 3) continue;
+                if(ReportDataDto.size() >= 2) continue;
                 ReportDataDto.add(new ReportDataDto(report.getReportId(), report.getReportTime(), report.getErrorCode(), report.getNote()));
             }
         }
@@ -252,6 +252,9 @@ public class AdminService {
         LocalDateTime startOfDay = LocalDateTime.of(enterDay, LocalTime.MIN); // 오늘 0시 0분
         LocalDateTime endOfDay = LocalDateTime.of(enterDay, LocalTime.MAX);
         List<AllocationLog> todayVisits = allocationLogRepository.findAllByEntryTimeBetween(startOfDay, endOfDay);
-        for(AllocationLog allocationLog : todayVisits) today_visits[allocationLog.getEntryTime().getHour()]++;
+        for(AllocationLog allocationLog : todayVisits){
+            if(LocalDate.now().getDayOfMonth() == allocationLog.getEntryTime().getDayOfMonth() && LocalDateTime.now().getHour() < allocationLog.getEntryTime().getHour()) continue;
+            today_visits[allocationLog.getEntryTime().getHour()]++;
+        }
     }
 }
