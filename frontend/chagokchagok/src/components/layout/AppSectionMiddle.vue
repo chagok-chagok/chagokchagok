@@ -18,14 +18,23 @@ const locationSelect = (message) => {
         <td>
           <app-location
             :location="parkings[i - 1]"
-            :class="['location', 'right']"
+            :class="{
+              location: true,
+              right: true,
+              disabled: location.isDisabled,
+              'not-disabled': !location.isDisabled,
+            }"
             @click-location="locationSelect"
           ></app-location>
         </td>
         <td>
           <app-location
             :location="parkings[i + 3]"
-            class="location"
+            :class="{
+              location: true,
+              disabled: location.isDisabled,
+              'not-disabled': !location.isDisabled,
+            }"
             @click-location="locationSelect"
           ></app-location>
         </td>
@@ -56,12 +65,12 @@ td {
   border-bottom: 2px dashed black;
 }
 
-/* .not-disabled {
+.not-disabled {
   height: 25%;
 }
 .disabled {
   height: 50%;
-} */
+}
 /* .left {
   border-left: 2px dashed black;
 } */

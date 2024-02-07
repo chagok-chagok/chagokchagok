@@ -1,3 +1,83 @@
+<script setup>
+import { ref, onMounted, onUnmounted } from "vue";
+import axios from "axios";
+import router from "@/router";
+import { useParkingStore } from "@/stores/parkingStore";
+
+const kioskUrl = "http://localhost:8080/sse/kiosk"; //kiosk의 sse접속 url입니다.
+const currentTime = ref(getCurrentTime());
+const allocatedLocation = ref("");
+const parkingStore = useParkingStore();
+const carNumber = ref("");
+
+onMounted(() => {
+  const sseEvent = new EventSource(kioskUrl);
+
+  //연결 리스너
+  sseEvent.addEventListener("open", function (e) {
+    //캐치할 에러코드를 써줌
+    console.log("carNumber : ", e.data);
+  });
+
+  //에러 리스너
+  sseEvent.addEventListener("error", function (e) {
+    console.log(e);
+  });
+
+  // 자리 배정 이벤트
+  sseEvent.addEventListener("VALID_CAR_NUM", function (e) {
+    // 차 번호 입력받았으니 장애 여부 입력받고 자리 할당 api 호출
+    console.log(e.data);
+    carNumber.value = e.data;
+  });
+  // 정규식 틀렸을 경우
+  sseEvent.addEventListener("INVALID_CAR_NUM", function (e) {
+    // 잘못찍힘 화면으로 보냄
+    console.log(e.data);
+    router.push({ name: "third" });
+  });
+  const interval = setInterval(() => {
+    currentTime.value = getCurrentTime();
+  }, 10000);
+
+  onUnmounted(() => {
+    clearInterval(interval);
+  });
+});
+
+function getCurrentTime() {
+  const now = new Date();
+  return now.toTimeString().substring(0, 5);
+}
+
+function selectParking(isDisabled) {
+  axios
+    .post(
+      "http://localhost:8080/park/allocation",
+      {
+        car_no: carNumber.value,
+        is_disabled: isDisabled,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((response) => {
+      console.log(response);
+      console.log(response.data.allocated_location);
+      parkingStore.allocatedLocation = response.data.allocated_location;
+      router.push({ name: "fourth" });
+    })
+    .catch((error) => {
+      console.error("자리 없음:", error);
+      allocatedLocation.value = "";
+      router.push({ name: "second" });
+    });
+}
+</script>
+
 <template>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,59 +100,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref, onMounted, onUnmounted } from "vue";
-import axios from "axios";
-import router from "@/router";
-import { useParkingStore } from "@/stores/parkingStore";
-
-const currentTime = ref(getCurrentTime());
-const allocatedLocation = ref("");
-const parkingStore = useParkingStore();
-
-onMounted(() => {
-  const interval = setInterval(() => {
-    currentTime.value = getCurrentTime();
-  }, 10000);
-
-  onUnmounted(() => {
-    clearInterval(interval);
-  });
-});
-
-function getCurrentTime() {
-  const now = new Date();
-  return now.toTimeString().substring(0, 5);
-}
-
-function selectParking(isDisabled) {
-  axios
-    .post(
-      "http://localhost:8080/park/allocation",
-      {
-        car_no: "10가1234",
-        is_disabled: isDisabled,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-    .then((response) => {
-      console.log(response);
-      console.log(response.data.allocated_location);
-      parkingStore.allocatedLocation = response.data.allocated_location;
-      router.push("/fourth");
-    })
-    .catch((error) => {
-      console.error("자리 없음:", error);
-      allocatedLocation.value = "";
-      router.push("/second");
-    });
-}
-</script>
 
 <style scoped>
 .screen-container {

@@ -1,7 +1,8 @@
 <script setup>
 import { defineEmits, defineProps } from "vue";
 import { useReportStore } from "@/stores/report";
-
+import { mdiBellOutline } from "@mdi/js";
+import MdiIcon from "@/components/icons/MdiIcon.vue";
 const reportStore = useReportStore();
 const props = defineProps({
   errorCode: Array,

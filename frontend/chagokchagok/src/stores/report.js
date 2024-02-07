@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 import instance from "@/utils/mainAxios";
 
 export const useReportStore = defineStore("report", () => {
-  /* ============= 신고 리스트 받아오는 요청 ============= */
   const reports = ref([]);
   const today_cnt = ref(0);
   const total_page_cnt = ref(0);
@@ -12,6 +11,7 @@ export const useReportStore = defineStore("report", () => {
   const sensor_cnt = ref(0);
   const autosystem_cnt = ref(0);
 
+  /* ============= 신고 리스트 받아오는 요청 ============= */
   const getReportList = async (page) => {
     const { data } = await instance.get("admin/report", { params: { page } });
     reports.value = data.board;
@@ -23,6 +23,10 @@ export const useReportStore = defineStore("report", () => {
     total_page_cnt.value = data.total_page_cnt;
   };
 
+  const modifyReport = async (report) => {
+    await instance.put("admin/report", report);
+  };
+
   return {
     reports,
     today_cnt,
@@ -32,5 +36,6 @@ export const useReportStore = defineStore("report", () => {
     sensor_cnt,
     autosystem_cnt,
     getReportList,
+    modifyReport,
   };
 });

@@ -36,6 +36,8 @@ const props = defineProps({
 }
 
 td {
+  height: 25%;
+  /* height: 100%; */
   width: 50%;
 }
 .section-container {
@@ -49,12 +51,12 @@ td {
   border-bottom: 2px dashed black;
 }
 
-/* .not-disabled {
+.not-disabled {
   height: 25%;
 }
 .disabled {
   height: 50%;
-} */
+}
 /* .left {
   border-left: 2px dashed black;
 } */

@@ -4,7 +4,7 @@ const props = defineProps(["icon", "pageTitle"]);
 
 <template>
   <div class="header">
-    <font-awesome-icon class="fa-2x" icon="chart-line" />
+    <font-awesome-icon class="fa-2x" :icon="icon" style="color: #11263c" />
     <span class="pageTitle">{{ pageTitle }}</span>
   </div>
 </template>
@@ -14,7 +14,6 @@ const props = defineProps(["icon", "pageTitle"]);
   display: flex;
   align-items: center;
   padding: 10px;
-  /* background-color: #eee; */
   gap: 15px;
 }
 
