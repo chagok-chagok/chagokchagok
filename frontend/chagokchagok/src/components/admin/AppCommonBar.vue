@@ -1,19 +1,27 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watchEffect } from "vue";
 import { Chart as ChartJS } from "chart.js/auto";
 import { notificationStore } from "@/stores/alert.js";
 import { storeToRefs } from "pinia";
 import moment from "moment";
 const store = notificationStore();
-const { total_cnt, current_cnt, parks, processing_details } =
+const { total_cnt, current_cnt, parks, processing_details, sseStatus } =
   storeToRefs(store);
 const doughnutChart = ref(null);
 
+let chart = null;
+
 onMounted(async () => {
-  console.log("==========");
   await store.updateBar();
   drawDoughtnut();
+  watchEffect(() => {
+    chart.data.datasets[0].data = [
+      current_cnt.value,
+      total_cnt.value - current_cnt.value,
+    ];
+    chart.update();
+  });
 });
 
 function addColor() {
@@ -30,8 +38,7 @@ function addColor() {
 
 function drawDoughtnut() {
   const ctx = doughnutChart.value.getContext("2d");
-  console.log(total_cnt.value - current_cnt.value, current_cnt.value);
-  new ChartJS(ctx, {
+  chart = new ChartJS(ctx, {
     type: "doughnut",
     data: {
       datasets: [
@@ -50,7 +57,7 @@ function drawDoughtnut() {
           display: false,
         },
         tooltip: {
-          //enabled: false, // 튤팁 활성화 (기본값 true)
+          enabled: false, // 튤팁 활성화 (기본값 true)
         },
       },
       elements: {
@@ -65,7 +72,7 @@ function drawDoughtnut() {
 </script>
 <template>
   <div class="bar-content">
-    <div>
+    <div class="parking-rate">
       <h3>Parking Rate</h3>
       <div class="common-content">
         <div class="rate-box">
@@ -155,7 +162,7 @@ h3 {
   display: flex;
   flex-direction: column;
   /* align-items: center; */
-  gap: 7vh;
+  /* gap: 7vh; */
 }
 .common-content {
   width: 100%;
@@ -205,6 +212,10 @@ canvas {
   gap: 13px;
   width: 80%;
 }
+
+.parking-rate {
+  margin-bottom: 7vh;
+}
 ul,
 ol {
   list-style: none;
@@ -222,6 +233,7 @@ ol {
 .processing-text > div:first-child {
   color: rgb(216, 216, 216);
   font-size: 0.9rem;
+  margin-bottom: 2px;
 }
 .processing-text > div:nth-child(2) {
   color: rgb(46, 46, 46);
