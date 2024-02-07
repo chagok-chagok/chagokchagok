@@ -40,7 +40,8 @@
     "vue-router": "^4.2.5",
     "vue-simple-progress": "^1.1.1",
     "vue-sse": "^2.5.2",
-    "webfontloader": "^1.0.0"
+    "webfontloader": "^1.0.0",
+    "jwt-decode": "^4.0.0"
   },
   "type": "module"
 }

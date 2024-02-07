@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import instance from "@/utils/mainAxios";
+import { instance } from "@/utils/mainAxios";
 
 export const useReportStore = defineStore("report", () => {
   const reports = ref([]);

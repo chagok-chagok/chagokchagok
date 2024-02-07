@@ -53,8 +53,7 @@ public class AdminController {
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest adminInfoDto){
-        LoginResponse loginResponse  = adminService.login(adminInfoDto);
-        return loginResponse;
+        return adminService.login(adminInfoDto);
     }
 
     @GetMapping("/refresh")
