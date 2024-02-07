@@ -8,12 +8,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
-    private final JwtInterceptor jwtInterceptor;
+    // private final JwtInterceptor jwtInterceptor;
 
-    public WebConfiguration(JwtInterceptor jwtInterceptor) {
-        super();
-        this.jwtInterceptor = jwtInterceptor;
-    }
+    // public WebConfiguration(JwtInterceptor jwtInterceptor) {
+    //     super();
+    //     this.jwtInterceptor = jwtInterceptor;
+    // }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

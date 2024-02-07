@@ -71,6 +71,8 @@ public class SseService {
         try {
             if(sseEmitter == null) throw new SseEmitterIsNullException(keyValue+" 연결이 존재하지 않음");
             else{
+                System.out.println("carNum : " + carNum);
+                System.out.println("keyValue : " + keyValue);
                 String regax = "^[0-9]{2}[가-힣][0-9]{4}$";
                 Pattern pattern = Pattern.compile(regax);
                 Matcher matcher = pattern.matcher(carNum);
