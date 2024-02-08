@@ -1,3 +1,25 @@
+<script setup>
+import { useParkingSectionStore } from "@/stores/parkingSectionStore";
+import { storeToRefs } from "pinia";
+import { ref } from "vue";
+const parkingSectionStore = useParkingSectionStore();
+const { isExchangeModalOpen, inParkCarList, originalLocation } =
+  storeToRefs(parkingSectionStore);
+
+const targetCar = ref("");
+const closeModal = () => {
+  isExchangeModalOpen.value = false;
+};
+
+const exchange = async () => {
+  console.log("targetCar : ", targetCar.value);
+  console.log("originalLocation : ", originalLocation);
+  await parkingSectionStore.exchangeLocation(targetCar.value);
+  await parkingSectionStore.getParkList();
+  closeModal();
+};
+</script>
+
 <template>
   <div class="modal-overlay" @click="closeModal">
     <div class="modal-window" @click.stop>
@@ -9,7 +31,7 @@
           <img src="document-icon.png" alt="Document Icon" />
         </div> -->
         <div class="modal-title">
-          <h3>[B12]와 교환할 정보를 입력해주세요.</h3>
+          <h3>[{{ originalLocation }}]와 교환할 정보를 입력해주세요.</h3>
           <p>
             잘못 주차한 차량의 차번호를 입력해주세요.<br />시스템에서 자동으로
             해당 위치를 찾아 변경합니다.
@@ -19,7 +41,6 @@
           <div class="modal-form-group">
             <select id="number-choice" name="number-choice">
               <option value="car-number">차 번호</option>
-              <option value="seat-number">자리 번호</option>
             </select>
           </div>
 
@@ -29,27 +50,26 @@
               id="input-number"
               name="input-number"
               placeholder="번호를 입력하세요"
+              list="list"
+              v-model="targetCar"
             />
+            <datalist id="list">
+              <option
+                v-for="car in inParkCarList"
+                :key="car"
+                :value="car"
+              ></option>
+            </datalist>
           </div>
 
           <div class="modal-form-action">
-            <button class="confirm-button">교체</button>
+            <button class="confirm-button" @click="exchange">교체</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<script setup>
-import { useParkingSectionStore } from "@/stores/parkingSectionStore";
-import { storeToRefs } from "pinia";
-const parkingSectionStore = useParkingSectionStore();
-const { isExchangeModalOpen } = storeToRefs(parkingSectionStore);
-const closeModal = () => {
-  isExchangeModalOpen.value = false;
-};
-</script>
 
 <style scoped>
 .modal-overlay {

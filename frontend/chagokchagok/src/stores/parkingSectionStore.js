@@ -9,6 +9,8 @@ export const useParkingSectionStore = defineStore("parkingSection", () => {
   const carInfo = ref({});
   const targetLocation = ref({});
   const modalPosition = ref({ x: 0, y: 0 });
+  const inParkCarList = ref([]);
+  const originalLocation = ref("");
   const isModalOpen = ref(false);
   const isUnlockBarModalOpen = ref(false);
   const isExchangeModalOpen = ref(false);
@@ -33,6 +35,18 @@ export const useParkingSectionStore = defineStore("parkingSection", () => {
     });
     targetLocation.value = data;
   };
+
+  const getInParkCarList = async () => {
+    const { data } = await instance.get("/admin/cars");
+    inParkCarList.value = data.cars;
+  };
+
+  const exchangeLocation = async (carNum) => {
+    await instance.put("/admin/exchange", {
+      car_num: carNum,
+      original_location: originalLocation.value,
+    });
+  };
   return {
     parks,
     occupied,
@@ -42,8 +56,12 @@ export const useParkingSectionStore = defineStore("parkingSection", () => {
     isModalOpen,
     isUnlockBarModalOpen,
     isExchangeModalOpen,
+    originalLocation,
+    inParkCarList,
     getParkList,
     getCarInfo,
     searchLocation,
+    getInParkCarList,
+    exchangeLocation,
   };
 });
