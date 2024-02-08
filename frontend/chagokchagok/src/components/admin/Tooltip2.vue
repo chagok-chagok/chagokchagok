@@ -30,7 +30,8 @@ const makeTimeFormat = (dateObj) => {
 const openUnlockBarModal = () => {
   isUnlockBarModalOpen.value = true;
 };
-const openExchangeLocationModal = () => {
+const openExchangeLocationModal = async () => {
+  await parkingSectionStore.getInParkCarList();
   isExchangeModalOpen.value = true;
 };
 </script>
