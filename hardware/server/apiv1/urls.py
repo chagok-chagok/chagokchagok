@@ -19,7 +19,7 @@ urlpatterns = [
     # path('auto-report/', views.auto_report),
 
     # managing system via manager
-    path('open-area?area=<area>/', views.bar),
+    path('open-area/<str:area>/', views.bar),
 
     # check-Isneed to open
     path('bar-open/', views.bar_open)
