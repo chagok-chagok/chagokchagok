@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import instance from "@/utils/mainAxios";
+import { instance } from "@/utils/mainAxios";
 
 export const useParkingSectionStore = defineStore("parkingSection", () => {
   /* =========== 차량 현황 받아오는 요청 ============ */

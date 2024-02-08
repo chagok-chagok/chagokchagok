@@ -39,7 +39,7 @@ onMounted(() => {
   updateCurrentTime();
   intervalId = setInterval(updateCurrentTime, 1000); // 인터벌 ID 저장
   setTimeout(() => {
-    router.push("/"); // 일정 시간 후 홈으로 리디렉션
+    router.push({ name: "first" }); // 일정 시간 후 홈으로 리디렉션
   }, 10000); // 시간을 1000000에서 10000(예: 10초)으로 조정하여 실제 사용 시나리오에 더 적합하게 조정
 });
 
