@@ -31,7 +31,7 @@ s
     }"
     @click="clickLocation(props.location.name)"
   >
-    <div :class="{ car: true, active: searchRES.area == location }">
+    <div :class="{ car: true, active: searchRES.area == location.name }">
       <mdi-icon-button :path="mdiWheelchair" :size="50"></mdi-icon-button>
       <p>{{ location.name }}</p>
     </div>

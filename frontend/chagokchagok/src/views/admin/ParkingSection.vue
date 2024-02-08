@@ -4,6 +4,7 @@ import AppSectionMiddleVue from "@/components/layout/AppSectionMiddle.vue";
 import { computed, ref } from "vue";
 import searchComp from "@/components/admin/Search.vue";
 import axios from "axios";
+// import navbar from "@/components/admin/navbar.vue";
 // import { useParkingSectionStore } from "@/stores/parkingSectionStore";
 
 const carInfo = ref(null);
@@ -104,7 +105,7 @@ const searchQuery = () => {
 </script>
 
 <template>
-  <VDropdown placement="right-start" :distance="6">
+  <!-- <VDropdown placement="right-start" :distance="6">
     <template #popper>
       <div class="dropdown-content" v-if="isTooltipOpen">
         <p>[{{ carInfo.carNo }}]</p>
@@ -117,18 +118,21 @@ const searchQuery = () => {
         >
       </div>
     </template>
-  </VDropdown>
+  </VDropdown> -->
   <div>
-    <navbar />
-    <div class="parking-title-div">
-      <div class="parking-logo">P</div>
-      <h3 class="page-title">차량 배정 현황</h3>
-    </div>
-    <div>
-      <span
-        >각 자리 클릭 시 차단바 제어, 자리 변경 등의 동작이 가능합니다.</span
-      >
-      <searchComp />
+    <div class="top-bar">
+      <!-- <navbar /> -->
+      <div class="parking-title-div">
+        <div class="parking-logo">P</div>
+        <h3 class="page-title">차량 배정 현황</h3>
+      </div>
+      <div class="describtion-bar">
+        <span
+          >각 자리 클릭 시 차단바 제어, 자리 변경 등의 동작이 가능합니다.</span
+        >
+
+        <searchComp />
+      </div>
       <!-- <form @submit.prevent="searchQuery">
         <select name="search" id="search" v-model="queryType">
           <option value="CAR_NUMBER">차 번호</option>
@@ -137,72 +141,74 @@ const searchQuery = () => {
         <input type="text" v-model="queryValue" />
       </form> -->
     </div>
-    <div class="area-div">
-      <div></div>
-      <div class="end-width"></div>
-      <div>
-        <div class="area">A</div>
+    <div class="all-park-container">
+      <div class="area-div">
+        <div></div>
+        <div class="end-width"></div>
+        <div>
+          <div class="area">A</div>
+        </div>
+        <div class="middle-width"></div>
+        <div class="area"><div class="area">B</div></div>
+        <div class="middle-width"></div>
+        <div><div class="area">C</div></div>
+        <div class="end-width"></div>
+        <div></div>
       </div>
-      <div class="middle-width"></div>
-      <div class="area"><div class="area">B</div></div>
-      <div class="middle-width"></div>
-      <div><div class="area">C</div></div>
-      <div class="end-width"></div>
-      <div></div>
-    </div>
-    <div class="section-container">
-      <app-section
-        :parkings="parkingLeftUp"
-        :is-left="true"
-        @location-select="fetchCarInfo"
-      ></app-section>
-      <app-section-middle-vue
-        :parkings="parkingMiddleInfoLU"
-        @location-select="fetchCarInfo"
-      ></app-section-middle-vue>
-      <app-section-middle-vue
-        :parkings="parkingMiddleInfoRU"
-        @location-select="fetchCarInfo"
-      ></app-section-middle-vue>
-      <app-section
-        :parkings="parkingRightUp"
-        :is-left="false"
-        @location-select="fetchCarInfo"
-      ></app-section>
-    </div>
-    <div class="section-container">
-      <app-section
-        :parkings="parkingLeftDown"
-        :is-left="true"
-        @location-select="fetchCarInfo"
-      ></app-section>
-      <app-section-middle-vue
-        :parkings="parkingMiddleInfoLD"
-        @location-select="fetchCarInfo"
-      ></app-section-middle-vue>
-      <app-section-middle-vue
-        :parkings="parkingMiddleInfoRD"
-        @location-select="fetchCarInfo"
-      ></app-section-middle-vue>
-      <app-section
-        :parkings="parkingRightDown"
-        :is-left="false"
-        @location-select="fetchCarInfo"
-      ></app-section>
-    </div>
-    <div class="color-info-div-container">
-      <div class="color-info-div">
-        <div :class="['color-info', 'yes-car']"></div>
-        <span>주차됨</span>
+      <div class="section-container">
+        <app-section
+          :parkings="parkingLeftUp"
+          :is-left="true"
+          @location-select="fetchCarInfo"
+        ></app-section>
+        <app-section-middle-vue
+          :parkings="parkingMiddleInfoLU"
+          @location-select="fetchCarInfo"
+        ></app-section-middle-vue>
+        <app-section-middle-vue
+          :parkings="parkingMiddleInfoRU"
+          @location-select="fetchCarInfo"
+        ></app-section-middle-vue>
+        <app-section
+          :parkings="parkingRightUp"
+          :is-left="false"
+          @location-select="fetchCarInfo"
+        ></app-section>
       </div>
-      <div class="color-info-div">
-        <div :class="['color-info', 'no-car']"></div>
-        <span>빈자리</span>
+      <div class="section-container">
+        <app-section
+          :parkings="parkingLeftDown"
+          :is-left="true"
+          @location-select="fetchCarInfo"
+        ></app-section>
+        <app-section-middle-vue
+          :parkings="parkingMiddleInfoLD"
+          @location-select="fetchCarInfo"
+        ></app-section-middle-vue>
+        <app-section-middle-vue
+          :parkings="parkingMiddleInfoRD"
+          @location-select="fetchCarInfo"
+        ></app-section-middle-vue>
+        <app-section
+          :parkings="parkingRightDown"
+          :is-left="false"
+          @location-select="fetchCarInfo"
+        ></app-section>
       </div>
-    </div>
-    <div class="exit-div">
-      <div class="pink-circle"></div>
-      <button class="exit-button">Exit</button>
+      <div class="color-info-div-container">
+        <div class="color-info-div">
+          <div :class="['color-info', 'yes-car']"></div>
+          <span>주차됨</span>
+        </div>
+        <div class="color-info-div">
+          <div :class="['color-info', 'no-car']"></div>
+          <span>빈자리</span>
+        </div>
+      </div>
+      <div class="exit-div">
+        <div class="pink-circle"></div>
+        <button class="exit-button">Exit</button>
+      </div>
     </div>
   </div>
 </template>
@@ -221,7 +227,7 @@ const searchQuery = () => {
   align-items: center;
 }
 .page-title {
-  margin-left: 10px;
+  margin-left: 20px;
 }
 .parking-logo {
   display: flex;
@@ -234,7 +240,7 @@ const searchQuery = () => {
   font-weight: bolder;
 }
 .area-div {
-  height: 50px;
+  height: 40px;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -323,5 +329,20 @@ const searchQuery = () => {
   border: 1px solid transparent;
   border-radius: 3px;
   color: #ff5a5f;
+}
+
+.top-bar {
+  margin: 5px 0% 0% 2%;
+}
+
+.describtion-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 18px 0 0 45px;
+}
+
+.describtion-bar > #app {
+  margin: 15px 0 0 0;
 }
 </style>

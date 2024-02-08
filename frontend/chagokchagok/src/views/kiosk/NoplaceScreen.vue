@@ -76,8 +76,8 @@ onMounted(() => {
 
 .time-display {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 10px;
+  right: 10px;
   font-size: 2em;
   color: #333;
 }

@@ -34,7 +34,7 @@ onMounted(() => {
   sseEvent.addEventListener("INVALID_CAR_NUM", function (e) {
     // 잘못찍힘 화면으로 보냄
     console.log(e.data);
-    router.push({ name: "third" });
+    router.push({ name: "recognition-error" });
   });
   const interval = setInterval(() => {
     currentTime.value = getCurrentTime();
@@ -68,16 +68,17 @@ function selectParking(isDisabled) {
       console.log(response);
       console.log(response.data.allocated_location);
       parkingStore.allocatedLocation = response.data.allocated_location;
-      router.push({ name: "fourth" });
+      router.push({ name: "allocation" });
     })
     .catch((error) => {
       console.error("자리 없음:", error);
       allocatedLocation.value = "";
-      router.push({ name: "second" });
+      router.push({ name: "no-place" });
     });
 }
 </script>
 
++
 <template>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -101,62 +102,6 @@ function selectParking(isDisabled) {
   </div>
 </template>
 
-<<<<<<< HEAD:frontend/chagokchagok/src/views/kiosk/ChoiceScreen.vue
-<script setup>
-import { ref, onMounted, onUnmounted } from "vue";
-import axios from "axios";
-import router from "@/router";
-import { useParkingStore } from "@/stores/parkingStore";
-
-const currentTime = ref(getCurrentTime());
-const allocatedLocation = ref("");
-const parkingStore = useParkingStore();
-
-onMounted(() => {
-  const interval = setInterval(() => {
-    currentTime.value = getCurrentTime();
-  }, 10000);
-
-  onUnmounted(() => {
-    clearInterval(interval);
-  });
-});
-
-function getCurrentTime() {
-  const now = new Date();
-  return now.toTimeString().substring(0, 5);
-}
-
-function selectParking(isDisabled) {
-  axios
-    .post(
-      "http://localhost:8080/park/allocation",
-      {
-        car_no: "10가1234",
-        is_disabled: isDisabled,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-    .then((response) => {
-      console.log(response);
-      console.log(response.data.allocated_location);
-      parkingStore.allocatedLocation = response.data.allocated_location;
-      router.push({ name: "allocation" });
-    })
-    .catch((error) => {
-      console.error("자리 없음:", error);
-      allocatedLocation.value = "";
-      router.push({ name: "no-place" });
-    });
-}
-</script>
-
-=======
->>>>>>> develop:frontend/chagokchagok/src/components/kiosk/FirstScreen.vue
 <style scoped>
 .screen-container {
   position: relative;

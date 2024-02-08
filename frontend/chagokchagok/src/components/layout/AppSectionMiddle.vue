@@ -21,8 +21,8 @@ const locationSelect = (message) => {
             :class="{
               location: true,
               right: true,
-              disabled: location.isDisabled,
-              'not-disabled': !location.isDisabled,
+              disabled: parkings[i - 1].isDisabled,
+              'not-disabled': !parkings[i - 1].isDisabled,
             }"
             @click-location="locationSelect"
           ></app-location>
@@ -32,8 +32,8 @@ const locationSelect = (message) => {
             :location="parkings[i + 3]"
             :class="{
               location: true,
-              disabled: location.isDisabled,
-              'not-disabled': !location.isDisabled,
+              disabled: parkings[i + 3].isDisabled,
+              'not-disabled': !parkings[i + 3].isDisabled,
             }"
             @click-location="locationSelect"
           ></app-location>
@@ -55,6 +55,8 @@ td {
   width: 50%;
 }
 .section-container {
+  /* width: 100%; */
+  /* height: 100%; */
   width: 180px;
   height: 200px;
   /* background-color: blueviolet; */

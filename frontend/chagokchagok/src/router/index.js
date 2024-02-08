@@ -29,13 +29,17 @@ const router = createRouter({
           component: DashBoardView,
         },
         {
+          path: "section",
+          name: "parking-section",
+          component: ParkingSection,
+        },
+        {
           path: "report",
           name: "report-list",
           component: () => import("@/components/admin/report/ReportList.vue"),
         },
       ],
     },
-<<<<<<< HEAD
     {
       path: "/choice",
       name: "choice",
@@ -62,25 +66,14 @@ const router = createRouter({
       component: ParkingSection,
     },
     {
-      path: "/search",
-      name: "search",
-      component: Search,
-    },
-    {
       path: "/tooltip",
       name: "tooltip",
       component: Tooltip,
-=======
-    { path: "/first", name: "fisrt", component: FirstScreen },
-    { path: "/second", name: "second", component: SecondScreen },
-    { path: "/third", name: "third", component: ThirdScreen },
-    { path: "/fourth", name: "fourth", component: FourthScreen },
-    { path: "/section", name: "section", component: ParkingSection },
+    },
     {
       path: "/guest",
       name: "guest",
       component: () => import("@/views/guest/GuestView.vue"),
->>>>>>> develop
     },
   ],
 });
