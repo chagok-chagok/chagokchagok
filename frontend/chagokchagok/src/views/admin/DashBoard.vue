@@ -128,6 +128,7 @@ function drawLine() {
         pointBorderWidth: 5,
         pointHoverRadius: 5,
         pointHoverBorderWidth: 1,
+        pointBackgroundColor: "#3F66B5",
         fill: true,
         backgroundColor: gradientFill,
         borderWidth: 2.5,
