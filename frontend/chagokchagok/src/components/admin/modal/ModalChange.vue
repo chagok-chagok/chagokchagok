@@ -174,6 +174,7 @@ const exchange = async () => {
 }
 .description-text {
   font-size: 18px;
+  color: #6f6c90;
 }
 .search-bar-div {
   display: flex;
@@ -191,6 +192,7 @@ const exchange = async () => {
   align-items: center;
   width: 107px;
   border-right: 1px solid black;
+  color: #737373;
 }
 .border-smooth {
   border-radius: 10px;
@@ -212,6 +214,7 @@ const exchange = async () => {
   border: none;
   border-left: 1px solid #e6e6e6;
   border-right: 1px solid #e6e6e6;
+  color: #737373;
   /* outline: 1px solid black; */
   /* margin:px 0; */
 }
