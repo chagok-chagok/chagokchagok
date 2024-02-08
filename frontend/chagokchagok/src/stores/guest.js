@@ -4,10 +4,10 @@ import { ref } from "vue";
 
 export const useGuestStore = defineStore("guest", () => {
   /* =========== 차량 현황 받아오는 요청 ============ */
-  const parks = ref([]);
-  const occupied = ref([]);
-  const total_cnt = ref(0);
-  const current_cnt = ref(0);
+  const parks = ref([]); // 주차장 현재 정보, {park_spot:String, park_status=Boolean}
+  const occupied = ref([]); // 현재 차가 있는 주차장
+  const total_cnt = ref(0); // 전체 주차장 수
+  const current_cnt = ref(0); // 현재 차 수
   const getParkList = async () => {
     const { data } = await instance.get("/guest");
     parks.value = data.parks;

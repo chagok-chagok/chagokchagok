@@ -1,6 +1,6 @@
 <template>
-  <div class="modal-overlay">
-    <div class="modal-window">
+  <div class="modal-overlay" @click="closeModal">
+    <div class="modal-window" @click.stop>
       <div class="modal-header">
         <button class="close-button" @click="closeModal">&times;</button>
       </div>
@@ -20,12 +20,12 @@
 </template>
 
 <script setup>
-import { defineEmits } from 'vue';
-
-const emit = defineEmits(['close']);
-
+import { useParkingSectionStore } from "@/stores/parkingSectionStore";
+import { storeToRefs } from "pinia";
+const parkingSectionStore = useParkingSectionStore();
+const { isUnlockBarModalOpen } = storeToRefs(parkingSectionStore);
 const closeModal = () => {
-  emit('close');
+  isUnlockBarModalOpen.value = false;
 };
 </script>
 
@@ -40,6 +40,7 @@ const closeModal = () => {
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
 }
 
 .modal-window {
@@ -49,6 +50,7 @@ const closeModal = () => {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 300px;
   text-align: center;
+  z-index: 200;
 }
 
 .modal-header {

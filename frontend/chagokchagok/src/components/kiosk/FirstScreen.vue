@@ -3,8 +3,8 @@ import { ref, onMounted, onUnmounted } from "vue";
 import axios from "axios";
 import router from "@/router";
 import { useParkingStore } from "@/stores/parkingStore";
-
-const kioskUrl = "http://localhost:8080/sse/kiosk"; //kiosk의 sse접속 url입니다.
+const { VITE_VUE_SPRING_URL } = import.meta.env;
+const kioskUrl = `${VITE_VUE_SPRING_URL}sse/kiosk`; //kiosk의 sse접속 url입니다.
 const currentTime = ref(getCurrentTime());
 const allocatedLocation = ref("");
 const parkingStore = useParkingStore();

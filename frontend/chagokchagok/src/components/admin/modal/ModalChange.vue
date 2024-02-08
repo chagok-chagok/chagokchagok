@@ -1,6 +1,6 @@
 <template>
-  <div class="modal-overlay" >
-    <div class="modal-window">
+  <div class="modal-overlay" @click="closeModal">
+    <div class="modal-window" @click.stop>
       <div class="modal-header">
         <button class="close-button" @click="closeModal">&times;</button>
       </div>
@@ -10,36 +10,44 @@
         </div> -->
         <div class="modal-title">
           <h3>[B12]와 교환할 정보를 입력해주세요.</h3>
-          <p>잘못 주차한 차량의 차번호를 입력해주세요.<br>시스템에서 자동으로 해당 위치를 찾아 변경합니다.</p>
+          <p>
+            잘못 주차한 차량의 차번호를 입력해주세요.<br />시스템에서 자동으로
+            해당 위치를 찾아 변경합니다.
+          </p>
         </div>
         <div class="modal-form-row">
-        <div class="modal-form-group">
-          <select id="number-choice" name="number-choice">
-            <option value="car-number">차 번호</option>
-            <option value="seat-number">자리 번호</option>
-          </select>
-        </div>
+          <div class="modal-form-group">
+            <select id="number-choice" name="number-choice">
+              <option value="car-number">차 번호</option>
+              <option value="seat-number">자리 번호</option>
+            </select>
+          </div>
 
-        <div class="modal-form-group">
-          <input type="text" id="input-number" name="input-number" placeholder="번호를 입력하세요">
-        </div>
+          <div class="modal-form-group">
+            <input
+              type="text"
+              id="input-number"
+              name="input-number"
+              placeholder="번호를 입력하세요"
+            />
+          </div>
 
-        <div class="modal-form-action">
-          <button class="confirm-button">교체</button>
+          <div class="modal-form-action">
+            <button class="confirm-button">교체</button>
+          </div>
         </div>
-      </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineEmits } from 'vue';
-
-const emit = defineEmits(['close']);
-
+import { useParkingSectionStore } from "@/stores/parkingSectionStore";
+import { storeToRefs } from "pinia";
+const parkingSectionStore = useParkingSectionStore();
+const { isExchangeModalOpen } = storeToRefs(parkingSectionStore);
 const closeModal = () => {
-  emit('close');
+  isExchangeModalOpen.value = false;
 };
 </script>
 
@@ -54,6 +62,7 @@ const closeModal = () => {
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
 }
 
 .modal-window {
@@ -62,6 +71,7 @@ const closeModal = () => {
   border-radius: 10px;
   width: 400px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 200;
 }
 
 .modal-header {
