@@ -9,9 +9,9 @@ const { total_cnt, current_cnt } = storeToRefs(guestStore);
 <template>
   <div class="svg-container">
     <svg
-      width="215"
-      height="212"
-      viewBox="0 0 215 212"
+      width="250"
+      height="245"
+      viewBox="0 0 180 180"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -48,12 +48,12 @@ const { total_cnt, current_cnt } = storeToRefs(guestStore);
   display: flex;
   justify-content: center;
   /* height: 100%; */
-  width: 30%;
+  /* width: 30%; */
 }
 .overlay-div {
   position: absolute;
-  top: 47%;
-  left: 51%;
+  top: 54%;
+  left: 61%;
   transform: translate(-50%, -50%);
   /* background-color: rgba(255, 0, 0, 0.5);
   width: 100px;

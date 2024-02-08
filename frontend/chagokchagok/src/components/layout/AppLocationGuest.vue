@@ -12,7 +12,7 @@ const props = defineProps({
 
 <template>
   <div v-if="occupied.includes(parkSpot)" :class="['location']">
-    <car-guest></car-guest>
+    <car-guest size="41"></car-guest>
   </div>
   <div v-else :class="['location']"><div class="empty"></div></div>
 </template>

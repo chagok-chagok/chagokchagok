@@ -41,8 +41,8 @@ td {
   width: 50%;
 }
 .section-container {
-  width: 180px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
   /* background-color: blueviolet; */
 }
 .section {
@@ -65,6 +65,6 @@ td {
 }
 .location {
   height: 100%;
-  padding: 5px;
+  padding: 4%;
 }
 </style>
