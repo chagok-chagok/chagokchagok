@@ -34,7 +34,7 @@ onMounted(() => {
   sseEvent.addEventListener("INVALID_CAR_NUM", function (e) {
     // 잘못찍힘 화면으로 보냄
     console.log(e.data);
-    router.push({ name: "third" });
+    router.push({ name: "recognition-error" });
   });
   const interval = setInterval(() => {
     currentTime.value = getCurrentTime();
@@ -68,16 +68,17 @@ function selectParking(isDisabled) {
       console.log(response);
       console.log(response.data.allocated_location);
       parkingStore.allocatedLocation = response.data.allocated_location;
-      router.push({ name: "fourth" });
+      router.push({ name: "allocation" });
     })
     .catch((error) => {
       console.error("자리 없음:", error);
       allocatedLocation.value = "";
-      router.push({ name: "second" });
+      router.push({ name: "no-place" });
     });
 }
 </script>
 
++
 <template>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

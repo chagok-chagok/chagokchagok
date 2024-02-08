@@ -2,11 +2,10 @@ import { createRouter, createWebHistory } from "vue-router";
 import DashBoardView from "../views/admin/DashBoard.vue";
 import AdminView from "../views/Admin.vue";
 import HomeView from "../views/HomeView.vue";
-import MainView from "@/views/Main.vue";
-import FirstScreen from "../components/kiosk/FirstScreen.vue";
-import SecondScreen from "../components/kiosk/SecondScreen.vue";
-import ThirdScreen from "../components/kiosk/ThirdScreen.vue";
-import FourthScreen from "../components/kiosk/FourthScreen.vue";
+import ChoiceScreen from "@/views/kiosk/ChoiceScreen.vue";
+import NoplaceScreen from "@/views/kiosk/NoplaceScreen.vue";
+import RecognitionErrorScreen from "@/views/kiosk/RecognitionErrorScreen.vue";
+import AllocationScreen from "@/views/kiosk/AllocationScreen.vue";
 import ParkingSection from "../views/admin/ParkingSection.vue";
 
 const router = createRouter({
@@ -28,6 +27,11 @@ const router = createRouter({
           component: DashBoardView,
         },
         {
+          path: "section",
+          name: "parking-section",
+          component: ParkingSection,
+        },
+        {
           path: "report",
           name: "report-list",
           component: () => import("@/components/admin/report/ReportList.vue"),
@@ -35,27 +39,35 @@ const router = createRouter({
       ],
     },
     {
-      path: "/main",
-      name: "main",
-      component: MainView,
-      children: [
-        {
-          path: "login",
-          name: "admin-login",
-          component: () => import("@/components/main/LoginPage.vue"),
-        },
-        {
-          path: "changePassword",
-          name: "change-password",
-          component: () => import("@/components/main/ChangePassword.vue"),
-        },
-      ],
+      path: "/choice",
+      name: "choice",
+      component: ChoiceScreen,
     },
-    { path: "/first", name: "fisrt", component: FirstScreen },
-    { path: "/second", name: "second", component: SecondScreen },
-    { path: "/third", name: "third", component: ThirdScreen },
-    { path: "/fourth", name: "fourth", component: FourthScreen },
-    { path: "/section", name: "section", component: ParkingSection },
+    {
+      path: "/no-place",
+      name: "no-place",
+      component: NoplaceScreen,
+    },
+    {
+      path: "/recognition-error",
+      name: "recognition-error",
+      component: RecognitionErrorScreen,
+    },
+    {
+      path: "/allocation",
+      name: "allocation",
+      component: AllocationScreen,
+    },
+    {
+      path: "/section",
+      name: "section",
+      component: ParkingSection,
+    },
+    {
+      path: "/tooltip",
+      name: "tooltip",
+      component: Tooltip,
+    },
     {
       path: "/guest",
       name: "guest",

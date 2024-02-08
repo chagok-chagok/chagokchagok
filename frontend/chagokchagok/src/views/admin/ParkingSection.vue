@@ -131,11 +131,19 @@ onMounted(() => {
         <input type="text" v-model="queryValue" />
       </form>
     </div>
-    <div class="area-div">
-      <div></div>
-      <div class="end-width"></div>
-      <div>
-        <div class="area">A</div>
+    <div class="all-park-container">
+      <div class="area-div">
+        <div></div>
+        <div class="end-width"></div>
+        <div>
+          <div class="area">A</div>
+        </div>
+        <div class="middle-width"></div>
+        <div class="area"><div class="area">B</div></div>
+        <div class="middle-width"></div>
+        <div><div class="area">C</div></div>
+        <div class="end-width"></div>
+        <div></div>
       </div>
       <div class="middle-width"></div>
       <div class="area"><div class="area">B</div></div>
@@ -189,14 +197,40 @@ onMounted(() => {
         <div :class="['color-info', 'yes-car']"></div>
         <span>주차됨</span>
       </div>
-      <div class="color-info-div">
-        <div :class="['color-info', 'no-car']"></div>
-        <span>빈자리</span>
+      <div class="section-container">
+        <app-section
+          :parkings="parkingLeftDown"
+          :is-left="true"
+          @location-select="fetchCarInfo"
+        ></app-section>
+        <app-section-middle-vue
+          :parkings="parkingMiddleInfoLD"
+          @location-select="fetchCarInfo"
+        ></app-section-middle-vue>
+        <app-section-middle-vue
+          :parkings="parkingMiddleInfoRD"
+          @location-select="fetchCarInfo"
+        ></app-section-middle-vue>
+        <app-section
+          :parkings="parkingRightDown"
+          :is-left="false"
+          @location-select="fetchCarInfo"
+        ></app-section>
       </div>
-    </div>
-    <div class="exit-div">
-      <div class="pink-circle"></div>
-      <button class="exit-button">Exit</button>
+      <div class="color-info-div-container">
+        <div class="color-info-div">
+          <div :class="['color-info', 'yes-car']"></div>
+          <span>주차됨</span>
+        </div>
+        <div class="color-info-div">
+          <div :class="['color-info', 'no-car']"></div>
+          <span>빈자리</span>
+        </div>
+      </div>
+      <div class="exit-div">
+        <div class="pink-circle"></div>
+        <button class="exit-button">Exit</button>
+      </div>
     </div>
   </div>
 </template>
@@ -215,7 +249,7 @@ onMounted(() => {
   align-items: center;
 }
 .page-title {
-  margin-left: 10px;
+  margin-left: 20px;
 }
 .parking-logo {
   display: flex;
@@ -228,7 +262,7 @@ onMounted(() => {
   font-weight: bolder;
 }
 .area-div {
-  height: 50px;
+  height: 40px;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -317,5 +351,20 @@ onMounted(() => {
   border: 1px solid transparent;
   border-radius: 3px;
   color: #ff5a5f;
+}
+
+.top-bar {
+  margin: 5px 0% 0% 2%;
+}
+
+.describtion-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 18px 0 0 45px;
+}
+
+.describtion-bar > #app {
+  margin: 15px 0 0 0;
 }
 </style>

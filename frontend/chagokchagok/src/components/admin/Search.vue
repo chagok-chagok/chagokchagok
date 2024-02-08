@@ -27,15 +27,10 @@ const search = async () => {
   <div id="app">
     <div class="search-bar">
       <select v-model="selectedOption">
-        <option value="CAR_NUMBER">차량번호</option>
-        <option value="SPOT_NUMBER">구역번호</option>
+        <option value="CAR_NUMBER">차 번호</option>
+        <option value="SPOT_NUMBER">구역 번호</option>
       </select>
-      <input
-        type="text"
-        v-model="searchQuery"
-        placeholder="검색"
-        @keyup.enter="search"
-      />
+      <input type="text" v-model="searchQuery" @keyup.enter="search" />
     </div>
     <div v-if="searchResult">
       <p>구역번호: {{ searchResult.area }}</p>
@@ -49,19 +44,33 @@ const search = async () => {
 .search-bar {
   display: flex;
   align-items: center;
-  gap: 10px;
+  position: relative;
 }
 
 .search-bar select {
+  position: absolute;
   padding: 5px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 8px;
+  z-index: 1;
 }
 
 .search-bar input[type="text"] {
-  padding: 5px;
+  padding: 6px;
+  padding-left: 95px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 100%;
+  border-color: #eff0f6;
+  border-radius: 8px;
+  width: 38%;
+  background-color: #f7f7f7;
+  opacity: 0.8;
+}
+</style>
+
+<style scoped>
+#app {
+  max-width: 640px;
+  margin: 0 auto;
+  height: auto;
 }
 </style>

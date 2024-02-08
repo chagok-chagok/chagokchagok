@@ -47,7 +47,7 @@ onMounted(() => {
     //캐치할 상태코드를 써줌
     console.log("catch");
     console.log(e.data);
-    router.push("/fourth");
+    router.push({ name: "allocation" });
   });
 
   setInterval(() => {
@@ -76,8 +76,8 @@ onMounted(() => {
 
 .time-display {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 10px;
+  right: 10px;
   font-size: 2em;
   color: #333;
 }
