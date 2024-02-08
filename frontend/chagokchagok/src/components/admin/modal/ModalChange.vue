@@ -27,28 +27,32 @@ const exchange = async () => {
         <button class="close-button" @click="closeModal">&times;</button>
       </div>
       <div class="modal-content">
-        <!-- <div class="modal-icon">
-          <img src="document-icon.png" alt="Document Icon" />
-        </div> -->
-        <div class="modal-title">
-          <h3>[{{ originalLocation }}]와 교환할 정보를 입력해주세요.</h3>
-          <p>
-            잘못 주차한 차량의 차번호를 입력해주세요.<br />시스템에서 자동으로
-            해당 위치를 찾아 변경합니다.
-          </p>
+        <div class="image-div">
+          <img src="@/assets/exchange_car_image.png" alt="" />
         </div>
-        <div class="modal-form-row">
-          <div class="modal-form-group">
-            <select id="number-choice" name="number-choice">
-              <option value="car-number">차 번호</option>
-            </select>
+        <div class="modal-title">
+          <div class="title-text-div">
+            [{{ originalLocation }}]와 교환할 정보를 입력해주세요.
           </div>
-
-          <div class="modal-form-group">
+          <div class="description-text-div">
+            <p class="description-text">
+              잘못 주차한 차량의 번호를 입력해주세요.
+            </p>
+            <p class="description-text">
+              시스템에서 자동으로 해당 위치를 찾아 변경합니다.
+            </p>
+          </div>
+        </div>
+        <div :class="['search-bar-div', 'border-smooth', 'border-color']">
+          <div :class="['search-type-div', 'border-smooth', 'border-color']">
+            차 번호
+          </div>
+          <div class="input-div">
             <input
               type="text"
               id="input-number"
               name="input-number"
+              :class="['input-car-number', 'border-smooth', 'border-color']"
               placeholder="번호를 입력하세요"
               list="list"
               v-model="targetCar"
@@ -60,11 +64,18 @@ const exchange = async () => {
                 :value="car"
               ></option>
             </datalist>
+            <div class="confirm-button-div">
+              <button
+                :class="['confirm-button', 'border-smooth']"
+                @click="exchange"
+              >
+                교환
+              </button>
+            </div>
           </div>
+          <div class="modal-form-group"></div>
 
-          <div class="modal-form-action">
-            <button class="confirm-button" @click="exchange">교체</button>
-          </div>
+          <div class="modal-form-action"></div>
         </div>
       </div>
     </div>
@@ -72,6 +83,11 @@ const exchange = async () => {
 </template>
 
 <style scoped>
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -86,84 +102,136 @@ const exchange = async () => {
 }
 
 .modal-window {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background-color: white;
   padding: 20px;
   border-radius: 10px;
-  width: 400px;
+  height: 534px;
+  width: 690px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 200;
 }
 
 .modal-header {
   display: flex;
+  flex-direction: row;
   justify-content: flex-end;
+  align-items: flex-start;
+  width: 100%;
+  height: 10%;
 }
 
 .close-button {
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
+  color: #170f49;
 }
 
 .modal-content {
-  text-align: center;
-}
-
-.modal-icon img {
-  width: 60px;
-  height: 60px;
-}
-
-.modal-title h3 {
-  color: #333;
-  font-size: 1.2rem;
-}
-
-.modal-title p {
-  color: #666;
-  font-size: 0.9rem;
-  margin: 10px 0 20px;
-}
-
-.modal-form-row {
   display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 10px;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 90%;
 }
 
-.modal-form-group {
-  flex: 1;
+.image-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 140px;
+  height: 140px;
+  background-color: #edecff;
+  border-radius: 40px;
 }
 
-.modal-form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-size: 0.9rem;
+.mordal-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.modal-form-group select,
-.modal-form-group input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+.title-text-div {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 600;
+  margin: 10px 0;
 }
-
-.modal-form-action {
-  /* Adjust the width as necessary or keep it flexible */
-  margin-left: 10px;
-  align-self: flex-end;
+.description-text-div {
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  /* margin-bottom: 30px; */
 }
-
-.confirm-button {
-  background-color: #007bff;
+.description-text {
+  font-size: 18px;
+}
+.search-bar-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 560px;
+  height: 78px;
+  border: 1px solid black;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+  margin-bottom: 30px;
+}
+.search-type-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 107px;
+  border-right: 1px solid black;
+}
+.border-smooth {
+  border-radius: 10px;
+}
+.border-color {
+  border-color: #e6e6e6;
+}
+.input-div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* height: 100%; */
+}
+.input-car-number {
+  width: 331px;
+  height: 100%;
+  padding: 16px;
+  font-size: 16px;
   border: none;
-  padding: 10px 20px;
+  border-left: 1px solid #e6e6e6;
+  border-right: 1px solid #e6e6e6;
+  /* outline: 1px solid black; */
+  /* margin:px 0; */
+}
+
+.confirm-button-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 122px;
+  height: 100%;
+  padding: 12px;
+}
+.confirm-button {
+  border: none;
+  background-color: #4a3aff;
+  width: 100%;
+  height: 100%;
+  font-size: 18px;
+  font-weight: 600;
   color: white;
-  border-radius: 5px;
   cursor: pointer;
 }
 </style>
