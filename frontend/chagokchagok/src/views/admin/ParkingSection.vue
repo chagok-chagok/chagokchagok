@@ -131,27 +131,6 @@ onMounted(() => {
         <input type="text" v-model="queryValue" />
       </form>
     </div>
-    <div class="all-park-container">
-      <div class="area-div">
-        <div></div>
-        <div class="end-width"></div>
-        <div>
-          <div class="area">A</div>
-        </div>
-        <div class="middle-width"></div>
-        <div class="area"><div class="area">B</div></div>
-        <div class="middle-width"></div>
-        <div><div class="area">C</div></div>
-        <div class="end-width"></div>
-        <div></div>
-      </div>
-      <div class="middle-width"></div>
-      <div class="area"><div class="area">B</div></div>
-      <div class="middle-width"></div>
-      <div><div class="area">C</div></div>
-      <div class="end-width"></div>
-      <div></div>
-    </div>
     <div class="section-container">
       <app-section
         :parkings="parkingLeftUp"
@@ -197,40 +176,14 @@ onMounted(() => {
         <div :class="['color-info', 'yes-car']"></div>
         <span>주차됨</span>
       </div>
-      <div class="section-container">
-        <app-section
-          :parkings="parkingLeftDown"
-          :is-left="true"
-          @location-select="fetchCarInfo"
-        ></app-section>
-        <app-section-middle-vue
-          :parkings="parkingMiddleInfoLD"
-          @location-select="fetchCarInfo"
-        ></app-section-middle-vue>
-        <app-section-middle-vue
-          :parkings="parkingMiddleInfoRD"
-          @location-select="fetchCarInfo"
-        ></app-section-middle-vue>
-        <app-section
-          :parkings="parkingRightDown"
-          :is-left="false"
-          @location-select="fetchCarInfo"
-        ></app-section>
+      <div class="color-info-div">
+        <div :class="['color-info', 'no-car']"></div>
+        <span>빈자리</span>
       </div>
-      <div class="color-info-div-container">
-        <div class="color-info-div">
-          <div :class="['color-info', 'yes-car']"></div>
-          <span>주차됨</span>
-        </div>
-        <div class="color-info-div">
-          <div :class="['color-info', 'no-car']"></div>
-          <span>빈자리</span>
-        </div>
-      </div>
-      <div class="exit-div">
-        <div class="pink-circle"></div>
-        <button class="exit-button">Exit</button>
-      </div>
+    </div>
+    <div class="exit-div">
+      <div class="pink-circle"></div>
+      <button class="exit-button">Exit</button>
     </div>
   </div>
 </template>

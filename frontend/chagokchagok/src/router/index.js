@@ -58,16 +58,7 @@ const router = createRouter({
       name: "allocation",
       component: AllocationScreen,
     },
-    {
-      path: "/section",
-      name: "section",
-      component: ParkingSection,
-    },
-    {
-      path: "/tooltip",
-      name: "tooltip",
-      component: Tooltip,
-    },
+
     {
       path: "/guest",
       name: "guest",
