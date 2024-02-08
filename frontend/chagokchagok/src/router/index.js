@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import DashBoardView from "../views/admin/DashBoard.vue";
 import AdminView from "../views/Admin.vue";
 import HomeView from "../views/HomeView.vue";
+import MainView from "@/views/Main.vue";
 import FirstScreen from "../components/kiosk/FirstScreen.vue";
 import SecondScreen from "../components/kiosk/SecondScreen.vue";
 import ThirdScreen from "../components/kiosk/ThirdScreen.vue";
@@ -32,6 +33,23 @@ const router = createRouter({
           path: "report",
           name: "report-list",
           component: () => import("@/components/admin/report/ReportList.vue"),
+        },
+      ],
+    },
+    {
+      path: "/main",
+      name: "main",
+      component: MainView,
+      children: [
+        {
+          path: "login",
+          name: "admin-login",
+          component: () => import("@/components/main/LoginPage.vue"),
+        },
+        {
+          path: "changePassword",
+          name: "change-password",
+          component: () => import("@/components/main/ChangePassword.vue"),
         },
       ],
     },

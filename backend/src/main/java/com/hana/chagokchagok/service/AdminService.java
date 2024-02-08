@@ -76,16 +76,17 @@ public class AdminService {
                 loginResponse.setAccessToken(accessToken);
                 loginResponse.setRefreshToken(refreshToken);
 
-                //status = HttpStatus.CREATED;
+                loginResponse.setStatus(HttpStatus.CREATED.value());
             }else {
                 loginResponse.setMessage("아이디 또는 패스워드를 확인해주세요.");
-                //status = HttpStatus.UNAUTHORIZED;
+                loginResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
             }
         }catch (Exception e) {
             //로그인에러
             loginResponse.setMessage(e.getMessage());
-            //status = HttpStatus.INTERNAL_SERVER_ERROR;
+            loginResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
+        System.out.println(loginResponse);
         return loginResponse;
 
     }
