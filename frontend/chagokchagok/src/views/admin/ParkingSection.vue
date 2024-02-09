@@ -109,8 +109,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>주차장 정보 : {{ parks }}</div>
-  <div>주차 자리 정보 : {{ occupied }}</div>
   <modal-bar v-if="isUnlockBarModalOpen"></modal-bar>
   <modal-change v-if="isExchangeModalOpen"></modal-change>
   <Tooltip2></Tooltip2>

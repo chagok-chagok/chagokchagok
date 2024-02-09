@@ -29,11 +29,15 @@ export const useParkingSectionStore = defineStore("parkingSection", () => {
   };
 
   const searchLocation = async (queryType, queryValue) => {
-    const { data } = await instance.post("/admin/search", {
-      type: queryType.value,
-      value: queryValue.value,
-    });
-    targetLocation.value = data;
+    try {
+      const { data } = await instance.post("/admin/search", {
+        type: queryType.value,
+        value: queryValue.value.trim(),
+      });
+      targetLocation.value = data;
+    } catch (error) {
+      targetLocation.value = {};
+    }
   };
 
   const getInParkCarList = async () => {
@@ -43,14 +47,14 @@ export const useParkingSectionStore = defineStore("parkingSection", () => {
 
   const exchangeLocation = async (carNum) => {
     await instance.put("/admin/exchange", {
-      car_num: carNum,
+      car_num: carNum.trim(),
       original_location: originalLocation.value,
     });
   };
 
   const unlockBar = async (carNum) => {
     await instance.put("/admin/bar", {
-      car_no: carNum,
+      car_no: carNum.trim(),
       park_full_name: originalLocation.value,
     });
   };
