@@ -1,17 +1,15 @@
 <script setup>
 import { useGuestStore } from "@/stores/guest";
 import { storeToRefs } from "pinia";
-
 const guestStore = useGuestStore();
 const { total_cnt, current_cnt } = storeToRefs(guestStore);
 </script>
-
 <template>
   <div class="svg-container">
     <svg
-      width="250"
-      height="245"
-      viewBox="0 0 180 180"
+      width="200"
+      height="198"
+      viewBox="0 0 215 180"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -41,7 +39,6 @@ const { total_cnt, current_cnt } = storeToRefs(guestStore);
     </div>
   </div>
 </template>
-
 <style scoped>
 .svg-container {
   position: relative;
@@ -52,8 +49,8 @@ const { total_cnt, current_cnt } = storeToRefs(guestStore);
 }
 .overlay-div {
   position: absolute;
-  top: 54%;
-  left: 61%;
+  top: 53%;
+  left: 51%;
   transform: translate(-50%, -50%);
   /* background-color: rgba(255, 0, 0, 0.5);
   width: 100px;

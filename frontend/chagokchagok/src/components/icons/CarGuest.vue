@@ -1,15 +1,14 @@
 <script setup>
 import { defineProps } from "vue";
-const props = defineProps(["size"]);
+// const props = defineProps(["size"]);
 </script>
 
 <template>
   <div>
     <svg
-      :width="2 * size"
-      :height="size"
-      viewBox="0 20 80 40"
-      fill="none"
+      width="77"
+      height="34"
+      viewBox="5 18 67 40"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g filter="url(#filter0_d_30_949)">

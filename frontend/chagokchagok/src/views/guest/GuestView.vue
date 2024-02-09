@@ -85,7 +85,7 @@ const parkingRightDown = ref([
 ]);
 </script>
 
-<template>
+<template class="test">
   <div class="all-container">
     <div class="head-div">
       <div class="parking-title-div">
@@ -169,17 +169,26 @@ const parkingRightDown = ref([
   box-sizing: border-box;
   border-collapse: collapse;
 }
+.test {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .all-container {
   width: 100vw;
+  max-width: 1920px;
   height: 100vh;
+  max-height: 800px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: white;
 }
 .head-div {
-  width: 85%;
-  height: 20%;
+  width: 70%;
+  max-width: 1240px;
+  height: 15%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -209,14 +218,14 @@ const parkingRightDown = ref([
 }
 
 .content-body {
-  height: 70%;
-  width: 80%;
+  height: 85%;
+  width: 65%;
 }
 .entry-div {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  margin-bottom: 3%;
+  /* margin-bottom: 3%; */
   height: 7%;
 }
 .exit-div {
