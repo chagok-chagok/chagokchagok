@@ -22,5 +22,8 @@ urlpatterns = [
     path('open-area/<str:area>/', views.bar),
 
     # check-Isneed to open
-    path('bar-open/', views.bar_open)
+    path('bar-open/', views.bar_open),
+
+    # open entrance
+    path('ent-open/', views.entrance_barricate),
 ]

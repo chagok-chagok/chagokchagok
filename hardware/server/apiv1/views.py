@@ -33,7 +33,8 @@ def entrance(request):
 
             # convert response data to json for responsing to rasp
             result = response.json()
-            return JsonResponse({'response': 'ok'})
+            # need to check key name later
+            return JsonResponse({'response': result['validate']})
         except:
             return JsonResponse({'response': 'fail to recog or via spring'})
     else:
@@ -125,3 +126,21 @@ def bar_open(request):
             return JsonResponse({'response': 'empty'})
     else:
         return JsonResponse({'response': 'fail'})
+
+
+# open sign
+open_entrance_sign = False
+def entrance_barricate(request):
+    global open_entrance_sign
+
+    if request.method == 'GET':
+        open_entrance_sign = True
+        return JsonResponse({'response': 'ok'})
+    
+    elif request.method == 'POST':
+        if open_entrance_sign:
+            open_entrance_sign = False
+            return JsonResponse({'response': 'open'})
+        else:
+            return JsonResponse({'response': 'close'})
+    return JsonResponse({'response': 'wrong access way'})
