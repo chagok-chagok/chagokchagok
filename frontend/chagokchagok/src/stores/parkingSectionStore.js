@@ -47,6 +47,21 @@ export const useParkingSectionStore = defineStore("parkingSection", () => {
       original_location: originalLocation.value,
     });
   };
+
+  const unlockBar = async (carNum) => {
+    await instance.put("/admin/bar", {
+      car_no: carNum,
+      park_full_name: originalLocation.value,
+    });
+  };
+
+  const openTooltip = () => {
+    isModalOpen.value = true;
+  };
+  const closeTooltip = () => {
+    isModalOpen.value = false;
+  };
+
   return {
     parks,
     occupied,
@@ -63,5 +78,8 @@ export const useParkingSectionStore = defineStore("parkingSection", () => {
     searchLocation,
     getInParkCarList,
     exchangeLocation,
+    unlockBar,
+    openTooltip,
+    closeTooltip,
   };
 });

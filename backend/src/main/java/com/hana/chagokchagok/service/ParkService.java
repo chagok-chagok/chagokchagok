@@ -166,7 +166,7 @@ public class ParkService {
     public ResponseEntity<Void> openBar(OpenBarRequest openBarRequest) {
         String[] location = SeparateLocation.separateLocationInput(openBarRequest.getParkFullName());
         RealtimeParking searchedRealTimeParking = realTimeParkingRepository
-                .findByParkingInfo_ParkNoAndParkingInfo_AreaCode(Integer.parseInt(location[0]), location[1]);
+                .findByParkingInfo_ParkNoAndParkingInfo_AreaCode(Integer.parseInt(location[1]), location[0]);
 
         AllocationLog allocationLog = searchedRealTimeParking.getAllocationLog();
         // 입출차기록에 저장된 차량 번호를 입력받은 차량 번호로 변경

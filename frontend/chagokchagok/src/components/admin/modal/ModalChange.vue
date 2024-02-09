@@ -1,7 +1,7 @@
 <script setup>
 import { useParkingSectionStore } from "@/stores/parkingSectionStore";
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 const parkingSectionStore = useParkingSectionStore();
 const { isExchangeModalOpen, inParkCarList, originalLocation } =
   storeToRefs(parkingSectionStore);
@@ -12,12 +12,23 @@ const closeModal = () => {
 };
 
 const exchange = async () => {
-  console.log("targetCar : ", targetCar.value);
-  console.log("originalLocation : ", originalLocation);
   await parkingSectionStore.exchangeLocation(targetCar.value);
   await parkingSectionStore.getParkList();
   closeModal();
+  parkingSectionStore.closeTooltip();
 };
+
+// datalist 목록을 inParkCarList에 있는 요소로 그려주는 함수
+// 이렇게 안하면 차단바 해제 기능으로 변경되기 전 번호가 계속 datalist에 있음
+watch(inParkCarList, (newList) => {
+  const datalist = document.getElementById("list");
+  datalist.innerHTML = "";
+  for (let i = 0; i < newList.length; i++) {
+    const option = document.createElement("option");
+    option.value = newList[i];
+    datalist.appendChild(option);
+  }
+});
 </script>
 
 <template>
@@ -73,9 +84,6 @@ const exchange = async () => {
               </button>
             </div>
           </div>
-          <div class="modal-form-group"></div>
-
-          <div class="modal-form-action"></div>
         </div>
       </div>
     </div>

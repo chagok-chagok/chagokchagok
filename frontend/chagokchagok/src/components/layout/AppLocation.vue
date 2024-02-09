@@ -25,7 +25,8 @@ const clickLocation = (locationName) => {
     targetLocation.value = "";
     modalPosition.value.x = event.clientX;
     modalPosition.value.y = event.clientY;
-    isModalOpen.value = true;
+    // isModalOpen.value = true;
+    parkingSectionStore.openTooltip();
     console.log("x : ", modalPosition.value.x, "y : ", modalPosition.value.y);
     emit("click-location", locationName);
   }

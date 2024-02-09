@@ -12,7 +12,7 @@ const {
   isExchangeModalOpen,
 } = storeToRefs(parkingSectionStore);
 const closeModal = () => {
-  isModalOpen.value = false;
+  parkingSectionStore.closeTooltip();
 };
 
 const makeTimeFormat = (dateObj) => {
