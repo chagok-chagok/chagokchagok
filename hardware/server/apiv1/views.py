@@ -36,8 +36,8 @@ def entrance(request):
             print(result)
             # need to check key name later
             return JsonResponse({'response': result['validate']})
-        except Exception:
-            print(Exception)
+        except Exception as e:
+            print(e)
             return JsonResponse({'response': 'fail to recog or via spring'})
     else:
         return JsonResponse({'response': 'fail'})
