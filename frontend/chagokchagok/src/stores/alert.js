@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import axios from "axios";
 import moment from "moment";
+import { instance } from "@/utils/mainAxios";
 
 export const notificationStore = defineStore("notificationStore", () => {
   //플로팅알림 변수
@@ -76,8 +77,8 @@ export const notificationStore = defineStore("notificationStore", () => {
 
   //공통바 업데이트
   const updateBar = async () => {
-    const resp = await axios.get("http://localhost:8080/admin/common");
-    const commonData = resp.data;
+    const { data } = await instance.get("/admin/common");
+    const commonData = data;
     total_cnt.value = commonData.total_cnt;
     current_cnt.value = commonData.curr_cnt;
     parks.value = commonData.parks;
@@ -90,8 +91,8 @@ export const notificationStore = defineStore("notificationStore", () => {
 
   //대시보드 차트 업데이트
   const updateVisitChart = async () => {
-    const resp = await axios.get("http://localhost:8080/admin/dashboard");
-    const dashboardData = resp.data;
+    const { data } = await instance.get("/admin/dashboard");
+    const dashboardData = data;
     today_visits.value = dashboardData.today_visits;
     pre_visits.value = dashboardData.previous_visits;
     sensorErrorCnt.value = dashboardData.report_rate.sensor;

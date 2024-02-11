@@ -85,67 +85,79 @@ const parkingRightDown = ref([
 ]);
 </script>
 
-<template>
-  <div>
+<template class="test">
+  <div class="all-container">
     <div class="head-div">
       <div class="parking-title-div">
         <div class="parking-logo">P</div>
-        <h3 class="page-title">차량 배정 현황</h3>
+        <span class="page-title">차량 배정 현황</span>
       </div>
       <question-bubble></question-bubble>
     </div>
-    <div class="entry-div">
-      <button class="entry-button">Entry</button>
-    </div>
-    <div class="area-div">
-      <div></div>
-      <div class="end-width"></div>
-      <div>
-        <div class="area">A</div>
+    <div class="content-body">
+      <div class="entry-div">
+        <button :class="['entry', 'button']">Entry</button>
       </div>
-      <div class="middle-width"></div>
-      <div class="area"><div class="area">B</div></div>
-      <div class="middle-width"></div>
-      <div><div class="area">C</div></div>
-      <div class="end-width"></div>
-      <div></div>
-    </div>
-    <div class="section-container">
-      <app-section-guest
-        :parkings="parkingLeftUp"
-        :is-left="true"
-      ></app-section-guest>
-      <app-section-middle-guest-vue
-        :parkings="parkingMiddleInfoLU"
-      ></app-section-middle-guest-vue>
-      <app-section-middle-guest-vue
-        :parkings="parkingMiddleInfoRU"
-      ></app-section-middle-guest-vue>
-      <app-section-guest
-        :parkings="parkingRightUp"
-        :is-left="false"
-      ></app-section-guest>
-    </div>
-    <div class="section-container">
-      <app-section-guest
-        :parkings="parkingLeftDown"
-        :is-left="true"
-      ></app-section-guest>
-      <app-section-middle-guest-vue
-        :parkings="parkingMiddleInfoLD"
-      ></app-section-middle-guest-vue>
-      <app-section-middle-guest-vue
-        :parkings="parkingMiddleInfoRD"
-      ></app-section-middle-guest-vue>
-      <app-section-guest
-        :parkings="parkingRightDown"
-        :is-left="false"
-      ></app-section-guest>
-    </div>
 
-    <div class="exit-div">
-      <!-- <div class="pink-circle"></div> -->
-      <button class="exit-button">Exit</button>
+      <div class="area-div">
+        <div class="end-width"></div>
+        <div>
+          <div class="area">A</div>
+        </div>
+        <div class="middle-width"></div>
+        <div class="area"><div class="area">B</div></div>
+        <div class="middle-width"></div>
+        <div><div class="area">C</div></div>
+        <div class="end-width"></div>
+      </div>
+
+      <div class="parking-div">
+        <div class="section-container">
+          <app-section-guest
+            :parkings="parkingLeftUp"
+            :is-left="true"
+            :class="['end-width', 'flex-row-center']"
+          ></app-section-guest>
+          <app-section-middle-guest-vue
+            :parkings="parkingMiddleInfoLU"
+            :class="['middle-width', 'flex-row-center']"
+          ></app-section-middle-guest-vue>
+          <app-section-middle-guest-vue
+            :parkings="parkingMiddleInfoRU"
+            :class="['middle-width', 'flex-row-center']"
+          ></app-section-middle-guest-vue>
+          <app-section-guest
+            :parkings="parkingRightUp"
+            :is-left="false"
+            :class="['end-width', 'flex-row-center']"
+          ></app-section-guest>
+        </div>
+        <div class="section-container">
+          <app-section-guest
+            :parkings="parkingLeftDown"
+            :is-left="true"
+            :class="['end-width', 'flex-row-center']"
+          ></app-section-guest>
+          <app-section-middle-guest-vue
+            :parkings="parkingMiddleInfoLD"
+            :class="['middle-width', 'flex-row-center']"
+          ></app-section-middle-guest-vue>
+          <app-section-middle-guest-vue
+            :parkings="parkingMiddleInfoRD"
+            :class="['middle-width', 'flex-row-center']"
+          ></app-section-middle-guest-vue>
+          <app-section-guest
+            :parkings="parkingRightDown"
+            :is-left="false"
+            :class="['end-width', 'flex-row-center']"
+          ></app-section-guest>
+        </div>
+      </div>
+
+      <div class="exit-div">
+        <!-- <div class="pink-circle"></div> -->
+        <button :class="['exit', 'button']">Exit</button>
+      </div>
     </div>
   </div>
 </template>
@@ -157,53 +169,100 @@ const parkingRightDown = ref([
   box-sizing: border-box;
   border-collapse: collapse;
 }
+.test {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.all-container {
+  width: 100vw;
+  max-width: 1920px;
+  height: 100vh;
+  max-height: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
 .head-div {
+  width: 70%;
+  max-width: 1240px;
+  height: 15%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
 }
 .parking-title-div {
   display: flex;
   flex-direction: row;
   justify-content: baseline;
   align-items: center;
-  margin-top: 50px;
+  margin-left: 2%;
 }
 .page-title {
   margin-left: 10px;
+  font-size: 24px;
+  font-weight: bold;
 }
 .parking-logo {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 25px;
-  height: 25px;
+  width: 32px;
+  height: 32px;
   border: 3.5px solid black;
   border-radius: 3px;
   font-weight: bolder;
 }
 
+.content-body {
+  height: 85%;
+  width: 65%;
+}
 .entry-div {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  /* margin-bottom: 3%; */
+  height: 7%;
 }
-.entry-button {
-  width: 117px;
-  height: 37px;
-  background-color: #eff5ff;
-  border: 1px solid transparent;
-  border-radius: 3px;
-  color: #5f93fb;
-}
-.area-div {
-  height: 50px;
+.exit-div {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 3%;
+  height: 7%;
+}
+.entry {
+  background-color: #eff5ff;
+  color: #5f93fb;
+}
+.exit {
+  background-color: #ffefef;
+  color: #ff5a5f;
+}
+
+.button {
+  width: 13%;
+  height: 100%;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.area-div {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: flex-end;
-  padding: 0 20px; /* 구역 표시 정렬 안맞으면 패딩값 조정 */
+  height: 6%;
+  /* padding: 0 px;  */
+  /* 구역 표시 정렬 안맞으면 패딩값 조정 */
 }
 
 .area {
@@ -211,24 +270,41 @@ const parkingRightDown = ref([
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 20px;
-  height: 20px;
+  width: 3.5vh;
+  max-width: 50px;
+  height: 3.5vh;
+  max-height: 50px;
   background-color: #eff5ff;
   color: #5f93fb;
   border-radius: 5px;
+  font-size: 1.3rem;
+  font-weight: 500;
 }
 .end-width {
-  width: 90px;
+  width: 12%;
+  height: 80%;
 }
 .middle-width {
-  width: 180px;
+  width: 24%;
+  height: 80%;
 }
-
+.flex-row-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.parking-div {
+  width: 100%;
+  height: 74%;
+}
 .section-container {
   display: flex;
   flex-direction: row;
-  margin-bottom: 20px;
-  justify-content: space-evenly;
+  /* margin-bottom: 20px; */
+  height: 50%;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .color-info {
@@ -239,23 +315,5 @@ const parkingRightDown = ref([
   width: 30px;
   height: 15px;
   border-radius: 5px;
-}
-
-.exit-div {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-
-  margin: 20px 50px 0 0;
-}
-
-.exit-button {
-  width: 117px;
-  height: 37px;
-  background-color: #ffefef;
-  border: 1px solid transparent;
-  border-radius: 3px;
-  color: #ff5a5f;
 }
 </style>

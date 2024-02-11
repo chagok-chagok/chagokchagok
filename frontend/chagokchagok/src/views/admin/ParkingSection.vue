@@ -1,31 +1,26 @@
 <script setup>
 import AppSection from "@/components/layout/AppSection.vue";
 import AppSectionMiddleVue from "@/components/layout/AppSectionMiddle.vue";
-import { computed, ref } from "vue";
-import searchComp from "@/components/admin/Search.vue";
-import axios from "axios";
-// import { useParkingSectionStore } from "@/stores/parkingSectionStore";
+import { ref, onMounted } from "vue";
+import { useParkingSectionStore } from "@/stores/parkingSectionStore";
+import { storeToRefs } from "pinia";
+import Tooltip2 from "@/components/admin/Tooltip2.vue";
+import ModalBar from "@/components/admin/modal/ModalBar.vue";
+import ModalChange from "@/components/admin/modal/ModalChange.vue";
 
-const carInfo = ref(null);
-const sectionName = ref("");
-// const queryType = ref("CAR_NUMBER");
-// const queryValue = ref("");
-const isTooltipOpen = ref(false);
-// const parkingSectionStore = useParkingSectionStore();
-const fetchCarInfo = async (message) => {
-  console.log("asd", message);
-  try {
-    const response = await axios.post("http://localhost:8080/admin/caloc", {
-      area: message,
-    });
-    carInfo.value = response.data;
-    isTooltipOpen.value = true;
-    console.log(carInfo.value);
-  } catch (error) {
-    console.error("차량 정보를 가져오는데 에러가 발생했습니다:", error);
-    // 여기에 에러 처리 로직을 추가합니다.
-  }
-};
+const parkingSectionStore = useParkingSectionStore();
+const {
+  parks,
+  occupied,
+  carInfo,
+  targetLocation,
+  isUnlockBarModalOpen,
+  isExchangeModalOpen,
+} = storeToRefs(parkingSectionStore);
+
+const queryType = ref("CAR_NUMBER");
+const queryValue = ref("");
+
 // name: String, isDisabled: Boolean
 // 위쪽
 const parkingLeftUp = ref([
@@ -92,41 +87,57 @@ const parkingRightDown = ref([
   { name: "C15", isDisabled: false },
   { name: "C16", isDisabled: false },
 ]);
+
+const searchQuery = async () => {
+  console.log("검색조건 : ", queryType.value, "검색어 : ", queryValue.value);
+  await parkingSectionStore.searchLocation(queryType, queryValue);
+  console.log("위치 검색 결과", targetLocation.value);
+};
+
+const showTooltip = async (message) => {
+  console.log("location : ", message);
+  await parkingSectionStore.getCarInfo(message);
+  console.log("검색해온 차 정보 : ", carInfo.value);
+  console.log("carInfo.car_no", carInfo);
+};
+
+onMounted(() => {
+  parkingSectionStore.getParkList();
+  console.log("주차장 정보 : ", parks.value);
+  console.log("주차 자리 정보 : ", occupied.value);
+});
 </script>
 
 <template>
-  <VDropdown placement="right-start" :distance="6">
-    <template #popper>
-      <div class="dropdown-content" v-if="isTooltipOpen">
-        <p>[{{ carInfo.carNo }}]</p>
-        <p>입차시간:{{ carInfo.entryTime }}</p>
-        <router-link to="/barrier-release" class="dropdown-button"
-          >차단바 해제</router-link
-        >
-        <router-link to="/spot-swap" class="dropdown-button"
-          >자리 교환하기</router-link
-        >
-      </div>
-    </template>
-  </VDropdown>
-  <div>
+  <!-- <div>주차장 정보 : {{ parks }}</div> -->
+  <!-- <div>주차 자리 정보 : {{ occupied }}</div> -->
+  <modal-bar v-if="isUnlockBarModalOpen"></modal-bar>
+  <modal-change v-if="isExchangeModalOpen"></modal-change>
+  <Tooltip2></Tooltip2>
+
+  <div class="top-bar">
     <div class="parking-title-div">
       <div class="parking-logo">P</div>
       <h3 class="page-title">차량 배정 현황</h3>
     </div>
-    <div>
+    <div class="describtion-bar">
       <span
         >각 자리 클릭 시 차단바 제어, 자리 변경 등의 동작이 가능합니다.</span
       >
-      <searchComp />
-      <!-- <form @submit.prevent="searchQuery">
-        <select name="search" id="search" v-model="queryType">
-          <option value="CAR_NUMBER">차 번호</option>
-          <option value="SPOT_NUMBER">주차 위치</option>
-        </select>
-        <input type="text" v-model="queryValue" />
-      </form> -->
+      <div id="app">
+        <div class="search-bar">
+          <form @submit.prevent="searchQuery">
+            <select name="search" id="search" v-model="queryType">
+              <option value="CAR_NUMBER">차 번호</option>
+              <option value="SPOT_NUMBER">주차 위치</option>
+            </select>
+            <input type="text" v-model="queryValue" />
+          </form>
+        </div>
+      </div>
     </div>
+  </div>
+  <div class="all-park-container">
     <div class="area-div">
       <div></div>
       <div class="end-width"></div>
@@ -140,44 +151,53 @@ const parkingRightDown = ref([
       <div class="end-width"></div>
       <div></div>
     </div>
+    <!-- <form @submit.prevent="searchQuery">
+        <select name="search" id="search" v-model="queryType">
+          <option value="CAR_NUMBER">차 번호</option>
+          <option value="SPOT_NUMBER">주차 위치</option>
+        </select>
+        <input type="text" v-model="queryValue" />
+      </form>
+    </div> -->
+
     <div class="section-container">
       <app-section
         :parkings="parkingLeftUp"
         :is-left="true"
-        @location-select="fetchCarInfo"
+        @location-select="showTooltip"
       ></app-section>
       <app-section-middle-vue
         :parkings="parkingMiddleInfoLU"
-        @location-select="fetchCarInfo"
+        @location-select="showTooltip"
       ></app-section-middle-vue>
       <app-section-middle-vue
         :parkings="parkingMiddleInfoRU"
-        @location-select="fetchCarInfo"
+        @location-select="showTooltip"
       ></app-section-middle-vue>
       <app-section
         :parkings="parkingRightUp"
         :is-left="false"
-        @location-select="fetchCarInfo"
+        @location-select="showTooltip"
       ></app-section>
     </div>
     <div class="section-container">
       <app-section
         :parkings="parkingLeftDown"
         :is-left="true"
-        @location-select="fetchCarInfo"
+        @location-select="showTooltip"
       ></app-section>
       <app-section-middle-vue
         :parkings="parkingMiddleInfoLD"
-        @location-select="fetchCarInfo"
+        @location-select="showTooltip"
       ></app-section-middle-vue>
       <app-section-middle-vue
         :parkings="parkingMiddleInfoRD"
-        @location-select="fetchCarInfo"
+        @location-select="showTooltip"
       ></app-section-middle-vue>
       <app-section
         :parkings="parkingRightDown"
         :is-left="false"
-        @location-select="fetchCarInfo"
+        @location-select="showTooltip"
       ></app-section>
     </div>
     <div class="color-info-div-container">
@@ -211,7 +231,7 @@ const parkingRightDown = ref([
   align-items: center;
 }
 .page-title {
-  margin-left: 10px;
+  margin-left: 20px;
 }
 .parking-logo {
   display: flex;
@@ -224,7 +244,7 @@ const parkingRightDown = ref([
   font-weight: bolder;
 }
 .area-div {
-  height: 50px;
+  height: 40px;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -313,5 +333,51 @@ const parkingRightDown = ref([
   border: 1px solid transparent;
   border-radius: 3px;
   color: #ff5a5f;
+}
+
+.top-bar {
+  margin: 5px 0% 0% 2%;
+}
+
+.describtion-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 18px 0 0 45px;
+}
+
+.describtion-bar > #app {
+  margin: 15px 0 0 0;
+}
+
+#app {
+  max-width: 640px;
+  margin: 0 auto;
+  height: auto;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.search-bar select {
+  position: absolute;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.search-bar input[type="text"] {
+  padding: 6px;
+  padding-left: 95px;
+  border: 1px solid #ccc;
+  border-color: #eff0f6;
+  border-radius: 8px;
+  width: 100%;
+  background-color: #f7f7f7;
+  opacity: 0.8;
 }
 </style>

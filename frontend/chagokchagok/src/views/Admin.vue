@@ -6,9 +6,10 @@ import AppCommonBar from "@/components/admin/AppCommonBar.vue";
 import AppFloatingAlert from "@/components/admin/AppFloatingAlert.vue";
 import { notificationStore } from "@/stores/alert.js";
 const store = notificationStore();
+const { VITE_VUE_SPRING_URL } = import.meta.env;
 
 //SSE 알림이 발생할때마다 공통바 업데이트
-const adminUrl = "http://localhost:8080/sse/admin";
+const adminUrl = `${VITE_VUE_SPRING_URL}sse/admin`;
 const sseEvent = new EventSource(adminUrl);
 onMounted(() => {
   //연결 리스너

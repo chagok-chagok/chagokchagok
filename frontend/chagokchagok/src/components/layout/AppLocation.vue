@@ -4,11 +4,14 @@ import MdiIconButton from "../icons/MdiIconButton.vue";
 import { useParkingSectionStore } from "@/stores/parkingSectionStore";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
-
 const parkingSectionStore = useParkingSectionStore();
-const { searchRES } = storeToRefs(parkingSectionStore);
-const parkingarea = ref("");
-parkingarea.value = searchRES.value.area;
+const {
+  occupied,
+  targetLocation,
+  modalPosition,
+  isModalOpen,
+  originalLocation,
+} = storeToRefs(parkingSectionStore);
 
 const props = defineProps({
   location: Object, // name: String, isDisabled: Boolean
@@ -16,11 +19,19 @@ const props = defineProps({
 
 const emit = defineEmits(["click-location"]);
 const clickLocation = (locationName) => {
-  console.log("locationName : ", locationName);
-  emit("click-location", locationName);
+  // console.log("locationName : ", locationName);
+  if (occupied.value.includes(locationName)) {
+    originalLocation.value = locationName;
+    targetLocation.value = "";
+    modalPosition.value.x = event.clientX;
+    modalPosition.value.y = event.clientY;
+    // isModalOpen.value = true;
+    parkingSectionStore.openTooltip();
+    console.log("x : ", modalPosition.value.x, "y : ", modalPosition.value.y);
+    emit("click-location", locationName);
+  }
 };
 </script>
-s
 
 <template>
   <div
@@ -31,7 +42,14 @@ s
     }"
     @click="clickLocation(props.location.name)"
   >
-    <div :class="{ car: true, active: searchRES.area == location }">
+    <div
+      :class="{
+        car: true,
+        'yes-car': occupied.includes(location.name),
+        'no-car': !occupied.includes(location.name),
+        active: targetLocation.area == location.name,
+      }"
+    >
       <mdi-icon-button :path="mdiWheelchair" :size="50"></mdi-icon-button>
       <p>{{ location.name }}</p>
     </div>
@@ -44,7 +62,14 @@ s
     }"
     @click="clickLocation(props.location.name)"
   >
-    <div :class="{ car: true, active: searchRES.area == location.name }">
+    <div
+      :class="{
+        car: true,
+        'yes-car': occupied.includes(location.name),
+        'no-car': !occupied.includes(location.name),
+        active: targetLocation.area == location.name,
+      }"
+    >
       <p>{{ location.name }}</p>
     </div>
   </div>
@@ -58,11 +83,11 @@ s
   border-collapse: collapse;
 }
 .location {
-  height: 100%;
+  /* height: 100%; */
   /* background-color: cadetblue; */
 }
 .disabled {
-  height: 100%;
+  /* height: 100%; */
   /* background-color: yellow; */
 }
 .car {
@@ -76,6 +101,12 @@ s
   border-radius: 10px;
 }
 
+.yes-car {
+  background-color: #84adff;
+}
+.no-car {
+  background-color: #e1e1e1;
+}
 .active {
   background-color: #84ff9f;
 }

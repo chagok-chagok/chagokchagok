@@ -52,7 +52,9 @@ const closeModalOnOutsideClick = (event) => {
       <RouterLink to="/admin/dashboard" class="router-link"
         >Dashboard</RouterLink
       >
-      <RouterLink to="about" class="router-link">차량배정현황</RouterLink>
+      <RouterLink to="/admin/section" class="router-link"
+        >차량배정현황</RouterLink
+      >
       <RouterLink to="/admin/report" class="router-link">신고기록</RouterLink>
     </div>
     <div class="admin-container">

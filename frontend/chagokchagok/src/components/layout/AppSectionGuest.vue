@@ -36,9 +36,10 @@ const emit = defineEmits("location-select");
   box-sizing: border-box;
   border-collapse: collapse;
 }
+
 .section-container {
-  width: 90px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
 }
 .section {
   border-top: 2px dashed black;
@@ -59,6 +60,6 @@ const emit = defineEmits("location-select");
 }
 .location {
   height: 100%;
-  padding: 5px;
+  padding: 4%;
 }
 </style>
