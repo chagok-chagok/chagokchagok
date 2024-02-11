@@ -155,9 +155,11 @@ public class AdminController {
     }
 
     @PostMapping("/changePassword")
-    public void changePassword(HttpServletRequest request, @RequestBody ChangePasswordRequest changePasswordRequest){
+    public void changePassword(@RequestBody ChangePasswordRequest changePasswordRequest, HttpServletRequest request){
+        System.out.println("비밀번호 변경시작");
         String token = request.getHeader("Authorization");
         String id = jwtUtil.getUserId(token);
-        adminService.changePassword(id, changePasswordRequest);
+        System.out.println(id);
+        adminService.changePassword(id, changePasswordRequest.getNewPassword());
     }
 }

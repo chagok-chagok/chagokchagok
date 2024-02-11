@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from "vue";
-import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { useAdminStore } from "@/stores/admin";
 import IconBlue from "@/components/icons/IconMainBlue.vue";
@@ -9,24 +8,23 @@ import IconWhite from "@/components/icons/IconMainWhtite.vue";
 const router = useRouter();
 const adminStore = useAdminStore();
 
-const { isLogin } = storeToRefs(adminStore);
-const { adminLogin, adminInfo } = adminStore;
+const { changePassword, adminLogout } = adminStore;
 
-const loginAdmin = ref({
-  id: "",
-  pass: "",
-});
+const newPassword = ref("");
+const confirmPassword = ref("");
+const passwordsMatch = ref(false);
 
-const login = async () => {
-  await adminLogin(loginAdmin.value);
-  let token = sessionStorage.getItem("accessToken");
-  console.log(token);
-  if (token !== null) {
-    window.alert(sessionStorage.getItem("id") + "님 환영합니다.");
-    router.push("/admin/dashboard");
-  } else {
-    window.alert("아이디 또는 비밀번호가 잘못되었습니다.");
-  }
+const checkPasswordsMatch = () => {
+  passwordsMatch.value =
+    newPassword.value === confirmPassword.value && confirmPassword.value !== "";
+};
+
+const changePW = async () => {
+  // changePassword 함수가 비동기로 작동하도록 가정
+  await changePassword(newPassword.value);
+  await adminLogout();
+  window.alert("비밀번호 변경을 성공했습니다. 다시 로그인 해주세요");
+  router.replace("/main/login");
 };
 </script>
 
@@ -41,91 +39,63 @@ const login = async () => {
           <div id="inner-container">
             <div id="contentCenter">
               <span class="service-title">
-                <iconBlue />
+                <IconBlue />
                 <b>차곡차곡 관리 시스템</b>
               </span>
               <div id="test">
-                <h1 class="login-title">Sign In</h1>
+                <h1 class="login-title">Reset Password</h1>
                 <article id="mainContent" class="content-article">
                   <div class="cont_login">
                     <div class="login-main">
                       <form class="login-form">
                         <div class="form-group">
-                          <label class="bold" for="id">ID</label>
+                          <label class="bold" for="password"
+                            >새 비밀번호:</label
+                          >
                           <input
-                            type="text"
-                            v-model="loginAdmin.id"
-                            id="id"
+                            type="password"
+                            v-model="newPassword"
+                            id="password"
                             class="input"
+                            @input="checkPasswordsMatch"
                             required
                           />
                         </div>
                         <div class="form-group">
-                          <label class="bold" for="password">Password</label>
+                          <label class="bold" for="confirmPassword"
+                            >비밀번호 확인:</label
+                          >
                           <input
                             type="password"
-                            v-model="loginAdmin.pass"
+                            v-model="confirmPassword"
                             @keyup.enter="login"
-                            id="password"
+                            id="confirmPassword"
                             class="input"
+                            @input="checkPasswordsMatch"
                             required
                           />
-                          <div class="form-options">
-                            <div class="remember-me">
-                              <input type="checkbox" id="remember-me" />
-                              <label for="remember-me">Remember me?</label>
-                            </div>
-                          </div>
 
                           <div
-                            class="login_error_wrap"
-                            id="err_capslock"
-                            style="display: none"
+                            v-if="
+                              newPassword && confirmPassword && !passwordsMatch
+                            "
+                            class="error-message"
                           >
-                            <div class="error_message">
-                              <strong>CapsLock</strong>
-                              "이 켜져 있습니다. "
-                            </div>
+                            비밀번호가 서로 다릅니다.
                           </div>
-
-                          <div
-                            class="login_error_wrap"
-                            id="err_empty_id"
-                            style="display: none"
-                          >
-                            <div class="error_message">
-                              <strong>아이디</strong>
-                              "를 입력해 주세요. "
-                            </div>
-                          </div>
-
-                          <div
-                            class="login_error_wrap"
-                            id="err_empty_pw"
-                            style="display: none"
-                          >
-                            <div class="error_message">
-                              <strong>비밀번호</strong>
-                              "를 입력해 주세요. "
-                            </div>
-                          </div>
-
-                          <div
-                            class="login_error_wrap"
-                            id="err_common"
-                            style="display: none"
-                          >
-                            <div class="error_message" style="width: 90%"></div>
+                          <div v-if="passwordsMatch" class="success-message">
+                            비밀번호가 일치합니다.
                           </div>
                         </div>
 
                         <div id="login-button">
                           <button
+                            :disabled="!passwordsMatch"
                             type="button"
                             class="sign-in-button"
-                            @click="login"
+                            @click="changePW"
                           >
-                            Sign in
+                            변경하기
                           </button>
                         </div>
                       </form>
@@ -354,5 +324,25 @@ h1 {
     color: #ff003e;
     vertical-align: middle;
   }
+}
+
+.success-message {
+  color: green;
+}
+
+.error-message {
+  color: red;
+}
+
+button:disabled {
+  background-color: #f1f1f1; /* Light grey */
+  color: #999999;
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
+  background-color: #f1f1f1; /* Light grey */
+  color: #999999;
+  cursor: not-allowed;
 }
 </style>

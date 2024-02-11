@@ -262,6 +262,30 @@ if (isObjExist("pw")) {
 </script>
 
 <template>
+  <div class="login_error_wrap" id="err_capslock" style="display: none">
+    <div class="error_message">
+      <strong>CapsLock</strong>
+      "이 켜져 있습니다. "
+    </div>
+  </div>
+
+  <div class="login_error_wrap" id="err_empty_id" style="display: none">
+    <div class="error_message">
+      <strong>아이디</strong>
+      "를 입력해 주세요. "
+    </div>
+  </div>
+
+  <div class="login_error_wrap" id="err_empty_pw" style="display: none">
+    <div class="error_message">
+      <strong>비밀번호</strong>
+      "를 입력해 주세요. "
+    </div>
+  </div>
+
+  <div class="login_error_wrap" id="err_common" style="display: none">
+    <div class="error_message" style="width: 90%"></div>
+  </div>
   <div></div>
 </template>
 

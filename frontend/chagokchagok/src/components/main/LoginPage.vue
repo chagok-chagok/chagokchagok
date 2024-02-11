@@ -1,10 +1,13 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { useAdminStore } from "@/stores/admin";
 import IconBlue from "@/components/icons/IconMainBlue.vue";
 import IconWhite from "@/components/icons/IconMainWhtite.vue";
+import vueCookies from "vue-cookies";
+
+vueCookies.config("7d");
 
 const router = useRouter();
 const adminStore = useAdminStore();
@@ -13,21 +16,40 @@ const { isLogin } = storeToRefs(adminStore);
 const { adminLogin, adminInfo } = adminStore;
 
 const loginAdmin = ref({
-  id: "",
+  id: vueCookies.get("rememberedId") || "",
   pass: "",
 });
+
+const rememberMe = ref(true);
 
 const login = async () => {
   await adminLogin(loginAdmin.value);
   let token = sessionStorage.getItem("accessToken");
   console.log(token);
   if (token !== null) {
+    console.log(rememberMe.value);
+    if (rememberMe.value == true) {
+      console.log("쿠키등록");
+      // emailSave가 true인 경우에만 쿠키를 설정합니다.
+      vueCookies.set("rememberId", loginAdmin.value.id);
+      vueCookies.set("rememberMe", rememberMe.value);
+    } else {
+      console.log("쿠키삭제");
+      vueCookies.remove("rememberId");
+      vueCookies.remove("rememberMe");
+    }
     window.alert(sessionStorage.getItem("id") + "님 환영합니다.");
     router.push("/admin/dashboard");
   } else {
     window.alert("아이디 또는 비밀번호가 잘못되었습니다.");
   }
 };
+
+onMounted(() => {
+  // 컴포넌트가 로드될 때 쿠키에서 값을 가져와서 loginAdmin.id에 설정
+  loginAdmin.value.id = vueCookies.get("rememberId") || "";
+  rememberMe.value = vueCookies.get("rememberMe") || "";
+});
 </script>
 
 <template>
@@ -41,7 +63,7 @@ const login = async () => {
           <div id="inner-container">
             <div id="contentCenter">
               <span class="service-title">
-                <iconBlue />
+                <IconBlue />
                 <b>차곡차곡 관리 시스템</b>
               </span>
               <div id="test">
@@ -72,7 +94,11 @@ const login = async () => {
                           />
                           <div class="form-options">
                             <div class="remember-me">
-                              <input type="checkbox" id="remember-me" />
+                              <input
+                                type="checkbox"
+                                id="remember-me"
+                                v-model="rememberMe"
+                              />
                               <label for="remember-me">Remember me?</label>
                             </div>
                           </div>

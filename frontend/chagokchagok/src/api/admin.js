@@ -26,9 +26,15 @@ async function logout(success, fail) {
 }
 
 async function changePW(newPassword, success, fail) {
+  console.log("newPassword", newPassword);
   local.defaults.headers["Authorization"] =
     sessionStorage.getItem("accessToken");
-  await local.post(`/admin/logout`, newPassword).then(success).catch(fail);
+  console.log("비밀번호 바꾸러가자");
+  console.log(newPassword);
+  await local
+    .post(`/admin/changePassword`, newPassword)
+    .then(success)
+    .catch(fail);
 }
 
 export { adminConfirm, tokenRegeneration, logout, changePW };

@@ -261,12 +261,15 @@ public class AdminService {
         }
     }
 
-    public void changePassword(String id, ChangePasswordRequest changePasswordRequest){
+    public void changePassword(String id, String newPassword){
         Admin admin = adminRepository.findById(id);
+        System.out.println(admin);
+
         SHA256 sha256 = new SHA256();
         try {
-            String newPassword = sha256.encrypt(changePasswordRequest.getNewPassword());
-            admin.changePassword(newPassword);
+            String hashPass = sha256.encrypt(newPassword);
+            admin.changePassword(hashPass);
+            adminRepository.save(admin);
         } catch (NoSuchAlgorithmException e) {
             System.out.println(e);
             throw new RuntimeException(e);

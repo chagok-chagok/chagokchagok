@@ -100,15 +100,19 @@ export const useAdminStore = defineStore("adminStore", () => {
     );
   };
 
-  const changePassword = async (newPassword) => {
+  const changePassword = async (newPass) => {
     await changePW(
-      newPassword,
-      (response) => {
+      {
+        newPassword: newPass,
+      },
+      () => {
         console.log("변경성공");
+        return true;
       },
       (error) => {
         console.log(error);
         console.log("실패ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ");
+        return false;
       }
     );
   };
