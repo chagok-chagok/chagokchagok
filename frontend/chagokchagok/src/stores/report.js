@@ -38,6 +38,5 @@ export const useReportStore = defineStore("report", () => {
     autosystem_cnt,
     getReportList,
     modifyReport,
-    searchRES,
   };
 });

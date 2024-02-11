@@ -49,6 +49,21 @@ def capture():
     return base64.b64decode(base64_str)
 
 
+def open_barricate():
+    entrance_url = f'{apiurl}/ent-open/succes/'
+    while True:
+        try:
+            time.sleep(1)
+            ent_response = requests.post(entrance_url)
+            ent_res = ent_response.json()
+            if ent_res['response'] == 'open':
+                board.servo_write(motor_entrance, 0)
+                time.sleep(5)
+                return
+        except:
+            pass
+
+
 def main():
     while 1:
         try:
@@ -60,11 +75,15 @@ def main():
                 entrance_url = f'{apiurl}entrance/'
                 entrance_response = requests.post(entrance_url, data=image_source)
                 entrance_result = entrance_response.json()
-                print(entrance_result)
 
-                if entrance_result:
-                    board.servo_write(motor_entrance, 0)
-                time.sleep(5)
+                # if success to recognize carplate number
+                if entrance_result['response'] == 'True':
+                    # start to check
+                    open_barricate()
+                    
+                # if entrance_result:
+                #     board.servo_write(motor_entrance, 0)
+                # time.sleep(5)
             board.servo_write(motor_entrance, 90)
         except Exception:
             board.shutdown()

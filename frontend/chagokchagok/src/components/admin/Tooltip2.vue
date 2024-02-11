@@ -2,6 +2,7 @@
 import { useParkingSectionStore } from "@/stores/parkingSectionStore";
 import { storeToRefs } from "pinia";
 import IconExit from "../icons/IconExit.vue";
+import moment from "moment";
 
 const parkingSectionStore = useParkingSectionStore();
 const {
@@ -12,25 +13,14 @@ const {
   isExchangeModalOpen,
 } = storeToRefs(parkingSectionStore);
 const closeModal = () => {
-  isModalOpen.value = false;
-};
-
-const makeTimeFormat = (dateObj) => {
-  const parsedDate = new Date(dateObj);
-
-  if (!(parsedDate instanceof Date) || isNaN(parsedDate.getTime())) {
-    return "Invalid Date";
-  }
-
-  const date = new Date(parsedDate.getTime()).toISOString().split("T")[0];
-  const time = parsedDate.toTimeString().split(" ")[0];
-  return date + " " + time;
+  parkingSectionStore.closeTooltip();
 };
 
 const openUnlockBarModal = () => {
   isUnlockBarModalOpen.value = true;
 };
-const openExchangeLocationModal = () => {
+const openExchangeLocationModal = async () => {
+  await parkingSectionStore.getInParkCarList();
   isExchangeModalOpen.value = true;
 };
 </script>
@@ -55,7 +45,7 @@ const openExchangeLocationModal = () => {
       </div>
       <div class="tooltip-body">
         <div class="entry-time">
-          입차 : {{ makeTimeFormat(carInfo.entryTime) }}
+          입차 : {{ moment(carInfo.entryTime).format("YYYY-MM-DD HH:mm:ss") }}
         </div>
         <button :class="['tooltip-button', 'blue']" @click="openUnlockBarModal">
           차단바 해제

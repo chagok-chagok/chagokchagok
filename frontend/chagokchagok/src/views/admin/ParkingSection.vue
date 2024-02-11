@@ -109,8 +109,10 @@ onMounted(() => {
 </script>
 
 <template>
+  <<<<<<< HEAD
   <!-- <div>주차장 정보 : {{ parks }}</div> -->
   <!-- <div>주차 자리 정보 : {{ occupied }}</div> -->
+  ======= >>>>>>> b31e2416c5af5e61f7a9f96e0dd7f2f8e2c49906
   <modal-bar v-if="isUnlockBarModalOpen"></modal-bar>
   <modal-change v-if="isExchangeModalOpen"></modal-change>
   <Tooltip2></Tooltip2>
@@ -151,6 +153,14 @@ onMounted(() => {
       <div class="end-width"></div>
       <div></div>
     </div>
+    <!-- <form @submit.prevent="searchQuery">
+        <select name="search" id="search" v-model="queryType">
+          <option value="CAR_NUMBER">차 번호</option>
+          <option value="SPOT_NUMBER">주차 위치</option>
+        </select>
+        <input type="text" v-model="queryValue" />
+      </form>
+    </div> -->
 
     <div class="section-container">
       <app-section
