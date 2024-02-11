@@ -7,6 +7,6 @@ import lombok.ToString;
 
 @Getter @ToString @Setter @NoArgsConstructor
 public class RefreshTokenResponse {
-    private String AccessToken;
+    private String Authorization;
     private String message;
 }

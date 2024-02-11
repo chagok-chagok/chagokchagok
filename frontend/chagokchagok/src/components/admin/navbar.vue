@@ -1,11 +1,15 @@
 <script setup>
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 import { ref, onMounted, watchEffect } from "vue";
 import { notificationStore } from "@/stores/alert.js";
 import { storeToRefs } from "pinia";
+import { useAdminStore } from "@/stores/admin";
 const store = notificationStore();
 const { sseStatus } = storeToRefs(store);
 const isModalOpen = ref(false);
+const memberStore = useAdminStore();
+const { adminLogout } = memberStore;
+const router = useRouter();
 
 const openModal = () => {
   isModalOpen.value = true;
@@ -15,15 +19,15 @@ const closeModal = () => {
   isModalOpen.value = false;
 };
 
-const logout = () => {
-  // 로그아웃 로직 추가
-  console.log("로그아웃");
-  closeModal();
+const logout = async () => {
+  await adminLogout();
+  window.alert("로그아웃 되었습니다");
+  router.replace("/main/login");
 };
 
 const changePassword = () => {
-  // 프로필 변경 로직 추가
-  console.log("프로필 변경");
+  router.push("/main/changePassword");
+  console.log("비밀번호 변경");
   closeModal();
 };
 

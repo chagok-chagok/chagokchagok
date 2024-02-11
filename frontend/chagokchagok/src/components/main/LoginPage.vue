@@ -10,7 +10,7 @@ const router = useRouter();
 const adminStore = useAdminStore();
 
 const { isLogin } = storeToRefs(adminStore);
-const { adminLogin, getUserInfo } = adminStore;
+const { adminLogin, adminInfo } = adminStore;
 
 const loginAdmin = ref({
   id: "",
@@ -18,15 +18,15 @@ const loginAdmin = ref({
 });
 
 const login = async () => {
-  console.log("로그인 시작");
   await adminLogin(loginAdmin.value);
   let token = sessionStorage.getItem("accessToken");
   console.log(token);
-  if (token === null) {
+  if (token !== null) {
+    window.alert(sessionStorage.getItem("id") + "님 환영합니다.");
+    router.push("/admin/dashboard");
+  } else {
     window.alert("아이디 또는 비밀번호가 잘못되었습니다.");
-    router.replace("/main/login");
   }
-  router.push("/admin/dashboard");
 };
 </script>
 
@@ -75,6 +75,47 @@ const login = async () => {
                               <input type="checkbox" id="remember-me" />
                               <label for="remember-me">Remember me?</label>
                             </div>
+                          </div>
+
+                          <div
+                            class="login_error_wrap"
+                            id="err_capslock"
+                            style="display: none"
+                          >
+                            <div class="error_message">
+                              <strong>CapsLock</strong>
+                              "이 켜져 있습니다. "
+                            </div>
+                          </div>
+
+                          <div
+                            class="login_error_wrap"
+                            id="err_empty_id"
+                            style="display: none"
+                          >
+                            <div class="error_message">
+                              <strong>아이디</strong>
+                              "를 입력해 주세요. "
+                            </div>
+                          </div>
+
+                          <div
+                            class="login_error_wrap"
+                            id="err_empty_pw"
+                            style="display: none"
+                          >
+                            <div class="error_message">
+                              <strong>비밀번호</strong>
+                              "를 입력해 주세요. "
+                            </div>
+                          </div>
+
+                          <div
+                            class="login_error_wrap"
+                            id="err_common"
+                            style="display: none"
+                          >
+                            <div class="error_message" style="width: 90%"></div>
                           </div>
                         </div>
 
@@ -289,5 +330,29 @@ h1 {
 .input {
   height: 25px;
   border: 1px solid #3a57e8;
+}
+
+.login_error_wrap {
+  position: relative;
+  min-height: 34px;
+  margin: 24px 0 -22px;
+  padding-right: 40px;
+}
+.login_error_wrap::before {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 34px;
+  line-height: 34px;
+  vertical-align: middle;
+
+  .error_message {
+    display: inline-block;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.5px;
+    color: #ff003e;
+    vertical-align: middle;
+  }
 }
 </style>

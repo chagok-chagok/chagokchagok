@@ -3,7 +3,7 @@ import { useRouter } from "vue-router";
 import { defineStore } from "pinia";
 import { jwtDecode } from "jwt-decode";
 
-import { adminConfirm, tokenRegeneration, logout } from "@/api/admin";
+import { adminConfirm, tokenRegeneration, logout, changePW } from "@/api/admin";
 import { httpStatusCode } from "@/utils/http-status";
 
 export const useAdminStore = defineStore("adminStore", () => {
@@ -26,6 +26,7 @@ export const useAdminStore = defineStore("adminStore", () => {
           console.log("data", data);
           let accessToken = data["accessToken"];
           let refreshToken = data["refreshToken"];
+          getAdminInfo(accessToken);
           // console.log("accessToken", accessToken);
           // console.log("refreshToken", refreshToken);
           isLogin.value = true;
@@ -33,7 +34,7 @@ export const useAdminStore = defineStore("adminStore", () => {
           isValidToken.value = true;
           sessionStorage.setItem("accessToken", accessToken);
           sessionStorage.setItem("refreshToken", refreshToken);
-          adminInfo.value = { id: data["id"] };
+          // adminInfo.value = data["id"];
           // console.log("sessiontStorage에 담았다", isLogin.value);
         } else {
           console.log("로그인 실패했다");
@@ -48,30 +49,11 @@ export const useAdminStore = defineStore("adminStore", () => {
     );
   };
 
-  // const getAdminInfo = (token) => {
-  //   let decodeToken = jwtDecode(token);
-  //   console.log("2. decodeToken", decodeToken);
-  //   findById(
-  //     decodeToken.id,
-  //     (response) => {
-  //       if (response.status === httpStatusCode.OK) {
-  //         adminInfo.value = response.data.adminInfo;
-  //         console.log("3. getUserInfo data >> ", response.data);
-  //       } else {
-  //         console.log("유저 정보 없음!!!!");
-  //       }
-  //     },
-  //     async (error) => {
-  //       console.error(
-  //         "getUserInfo() error code [토큰 만료되어 사용 불가능.] ::: ",
-  //         error.response.status
-  //       );
-  //       isValidToken.value = false;
-
-  //       await tokenRegenerate();
-  //     }
-  //   );
-  // };
+  const getAdminInfo = (token) => {
+    let decodeToken = jwtDecode(token);
+    console.log("2. decodeToken", decodeToken.id);
+    sessionStorage.setItem("id", decodeToken.id);
+  };
 
   const tokenRegenerate = async () => {
     console.log(
@@ -82,7 +64,7 @@ export const useAdminStore = defineStore("adminStore", () => {
       JSON.stringify(userInfo.value),
       (response) => {
         if (response.status === httpStatusCode.CREATE) {
-          let accessToken = response.data["access-token"];
+          let accessToken = response.data["accessToken"];
           console.log("재발급 완료 >> 새로운 토큰 : {}", accessToken);
           sessionStorage.setItem("accessToken", accessToken);
           isValidToken.value = true;
@@ -118,20 +100,36 @@ export const useAdminStore = defineStore("adminStore", () => {
     );
   };
 
-  const userLogout = async (userid) => {
+  const changePassword = async (newPassword) => {
+    await changePW(
+      newPassword,
+      (response) => {
+        console.log("변경성공");
+      },
+      (error) => {
+        console.log(error);
+        console.log("실패ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ");
+      }
+    );
+  };
+
+  const adminLogout = async () => {
     await logout(
-      userid,
       (response) => {
         if (response.status === httpStatusCode.OK) {
+          sessionStorage.removeItem("accessToken");
+          sessionStorage.removeItem("refreshToken");
+          sessionStorage.removeItem("id");
           isLogin.value = false;
-          userInfo.value = null;
           isValidToken.value = false;
         } else {
           console.error("유저 정보 없음!!!!");
         }
+        console.log("성공인듯?????????????????????");
       },
       (error) => {
         console.log(error);
+        console.log("실패ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ");
       }
     );
   };
@@ -141,8 +139,10 @@ export const useAdminStore = defineStore("adminStore", () => {
     isLoginError,
     adminInfo,
     isValidToken,
+    getAdminInfo,
     adminLogin,
     tokenRegenerate,
-    userLogout,
+    adminLogout,
+    changePassword,
   };
 });
