@@ -33,6 +33,7 @@ def entrance(request):
 
             # convert response data to json for responsing to rasp
             result = response.json()
+            print(result)
             # need to check key name later
             return JsonResponse({'response': result['validate']})
         except:
