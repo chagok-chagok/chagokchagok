@@ -9,6 +9,7 @@ import { mdiFilterVariant } from "@mdi/js";
 import MdiIcon from "@/components/icons/MdiIcon.vue";
 import MdiIconButton from "@/components/icons/MdiIconButton.vue";
 import ModalDetailReportVue from "@/components/admin/modal/ModalDetailReport.vue";
+import moment from "moment";
 
 const reportStore = useReportStore();
 const page = ref(1);
@@ -172,7 +173,7 @@ onMounted(async () => {
           >
             <td class="report-no">{{ item.report_id }}</td>
             <td class="report-time">
-              {{ item.report_time.replace("T", " ") }}
+              {{ moment(item.report_time).format("YYYY-MM-DD HH:mm:ss") }}
             </td>
             <td class="error-code">{{ item.error_code }}</td>
             <td class="park-no">{{ item.full_name }}</td>

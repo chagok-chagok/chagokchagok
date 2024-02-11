@@ -33,7 +33,8 @@ def entrance(request):
 
             # convert response data to json for responsing to rasp
             result = response.json()
-            return JsonResponse({'response': 'ok'})
+            # need to check key name later
+            return JsonResponse({'response': result['validate']})
         except:
             return JsonResponse({'response': 'fail to recog or via spring'})
     else:
@@ -96,32 +97,19 @@ def exit_way(request):
         return JsonResponse({'response': 'fail'})
 
 
-
-"""
-# will make later
-def auto_report(request):
-    if request.method == 'POST':
-        # request to spring server
-        # header
-        headers = {'Content-type': 'application/json', 'charset': 'utf8'}
-
-    return
-"""
-
-
 ### will add managing system after completing others 
 need2open_area_list = deque()
 def bar(request, area):
     global need2open_area_list
-    
+
     if request.method == 'GET':
         try:
             need2open_area_list.append(area)
-            return Response(status=status.HTTP_200_OK)
+            return JsonResponse({'response': 'ok'})
         except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'response': 'fail to access'})
     else:
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        return JsonResponse({'response': 'not allowed request'})
     
 
 def bar_open(request):
@@ -131,8 +119,28 @@ def bar_open(request):
         if need2open_area_list:
             try:
                 area_no = need2open_area_list.popleft()
-                return JsonResponse({'area_no': area_no})
+                return JsonResponse({'response': area_no})
             except:
-                return JsonResponse({'area_no': 'empty'})
+                return JsonResponse({'response': 'empty'})
+        else:
+            return JsonResponse({'response': 'empty'})
     else:
         return JsonResponse({'response': 'fail'})
+
+
+# open sign
+open_entrance_sign = False
+def entrance_barricate(request):
+    global open_entrance_sign
+
+    if request.method == 'GET':
+        open_entrance_sign = True
+        return JsonResponse({'response': 'ok'})
+    
+    elif request.method == 'POST':
+        if open_entrance_sign:
+            open_entrance_sign = False
+            return JsonResponse({'response': 'open'})
+        else:
+            return JsonResponse({'response': 'close'})
+    return JsonResponse({'response': 'wrong access way'})

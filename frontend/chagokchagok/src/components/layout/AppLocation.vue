@@ -5,8 +5,13 @@ import { useParkingSectionStore } from "@/stores/parkingSectionStore";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
 const parkingSectionStore = useParkingSectionStore();
-const { occupied, targetLocation, modalPosition, isModalOpen } =
-  storeToRefs(parkingSectionStore);
+const {
+  occupied,
+  targetLocation,
+  modalPosition,
+  isModalOpen,
+  originalLocation,
+} = storeToRefs(parkingSectionStore);
 
 const props = defineProps({
   location: Object, // name: String, isDisabled: Boolean
@@ -16,10 +21,12 @@ const emit = defineEmits(["click-location"]);
 const clickLocation = (locationName) => {
   // console.log("locationName : ", locationName);
   if (occupied.value.includes(locationName)) {
+    originalLocation.value = locationName;
     targetLocation.value = "";
     modalPosition.value.x = event.clientX;
     modalPosition.value.y = event.clientY;
-    isModalOpen.value = true;
+    // isModalOpen.value = true;
+    parkingSectionStore.openTooltip();
     console.log("x : ", modalPosition.value.x, "y : ", modalPosition.value.y);
     emit("click-location", locationName);
   }
