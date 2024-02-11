@@ -206,7 +206,7 @@ canvas {
   border-radius: 25px;
   /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
-  padding: 10px;
+  padding: 5%;
   display: flex;
   flex-direction: column;
   gap: 13px;

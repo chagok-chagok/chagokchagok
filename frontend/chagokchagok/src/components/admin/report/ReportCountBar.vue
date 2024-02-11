@@ -7,8 +7,7 @@ import { mdiCalendarCheckOutline } from "@mdi/js";
 import { mdiCheckboxMultipleOutline } from "@mdi/js";
 import { mdiPhoneCheck } from "@mdi/js";
 import { mdiCogClockwise } from "@mdi/js";
-import { mdiSignalCellularOutline } from "@mdi/js";
-import MdiIcon from "@/components/icons/MdiIcon.vue";
+import AppPageHeader from "@/components/admin/AppPageHeader.vue";
 
 const reportStore = useReportStore();
 const { today_cnt, unsolved_cnt, hotline_cnt, sensor_cnt, autosystem_cnt } =
@@ -43,10 +42,7 @@ const cards = ref([
 </script>
 
 <template>
-  <div class="report-title">
-    <mdi-icon :path="mdiSignalCellularOutline" size="40"></mdi-icon>
-    <h3>신고기록</h3>
-  </div>
+  <AppPageHeader icon="chart-simple" pageTitle="신고기록" />
   <div class="card-container">
     <report-count-card
       v-for="(card, index) in cards"

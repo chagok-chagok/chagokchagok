@@ -13,7 +13,6 @@ import {
   Tooltip,
   Legend,
 } from "chart.js/auto"; // Chart.js를 가져옴
-import axios from "axios";
 import { notificationStore } from "@/stores/alert.js";
 import { storeToRefs } from "pinia";
 const store = notificationStore();
@@ -218,10 +217,7 @@ function startAnimation() {
 
 <template>
   <div class="dashboard-main">
-    <AppPageHeader
-      icon="./icon/BarChart.png"
-      pageTitle="실시간 방문차량 대수"
-    />
+    <AppPageHeader icon="chart-line" pageTitle="실시간 방문차량 대수" />
     <section class="park-info">
       <div id="chart-info">
         <h4 id="chart_left" class="title">Total Visits</h4>
@@ -332,7 +328,8 @@ h6 {
   /* 기타 초기화할 스타일 속성들 */
 }
 .title {
-  font-size: 14px;
+  font-size: 0.9rem;
+  margin-bottom: 3px;
 }
 .bold {
   font-weight: bold;
@@ -558,10 +555,10 @@ th {
 }
 
 .content {
-  font-size: 12px;
+  font-size: 0.9rem;
 }
 
 .semi_big {
-  font-size: 10px;
+  font-size: 0.9rem;
 }
 </style>

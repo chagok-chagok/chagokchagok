@@ -51,9 +51,10 @@ function getCurrentTime() {
 }
 
 function selectParking(isDisabled) {
+  console.log("지금 전송할 차번호는 ", carNumber.value);
   axios
     .post(
-      "http://localhost:8080/park/allocation",
+      "http://localhost:8080/api/park/allocation",
       {
         car_no: carNumber.value,
         is_disabled: isDisabled,
