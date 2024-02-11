@@ -7,6 +7,7 @@ import { storeToRefs } from "pinia";
 import Tooltip2 from "@/components/admin/Tooltip2.vue";
 import ModalBar from "@/components/admin/modal/ModalBar.vue";
 import ModalChange from "@/components/admin/modal/ModalChange.vue";
+import AppPageHeader from "@/components/admin/AppPageHeader.vue";
 
 const parkingSectionStore = useParkingSectionStore();
 const {
@@ -115,25 +116,18 @@ onMounted(() => {
   <modal-change v-if="isExchangeModalOpen"></modal-change>
   <Tooltip2></Tooltip2>
 
-  <div class="top-bar">
-    <div class="parking-title-div">
-      <div class="parking-logo">P</div>
-      <h3 class="page-title">차량 배정 현황</h3>
-    </div>
-    <div class="describtion-bar">
-      <span
-        >각 자리 클릭 시 차단바 제어, 자리 변경 등의 동작이 가능합니다.</span
-      >
-      <div id="app">
-        <div class="search-bar">
-          <form @submit.prevent="searchQuery">
-            <select name="search" id="search" v-model="queryType">
-              <option value="CAR_NUMBER">차 번호</option>
-              <option value="SPOT_NUMBER">주차 위치</option>
-            </select>
-            <input type="text" v-model="queryValue" />
-          </form>
-        </div>
+  <AppPageHeader icon="square-parking" pageTitle="차량 배정 현황" />
+  <div class="describtion-bar">
+    <span>각 자리 클릭 시 차단바 제어, 자리 변경 등의 동작이 가능합니다.</span>
+    <div id="app">
+      <div class="search-bar">
+        <form @submit.prevent="searchQuery">
+          <select name="search" id="search" v-model="queryType">
+            <option value="CAR_NUMBER">차 번호</option>
+            <option value="SPOT_NUMBER">주차 위치</option>
+          </select>
+          <input type="text" v-model="queryValue" />
+        </form>
       </div>
     </div>
   </div>
@@ -343,7 +337,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin: 18px 0 0 45px;
+  margin: 1px 0 0 45px;
 }
 
 .describtion-bar > #app {
