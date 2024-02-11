@@ -59,8 +59,12 @@ onMounted(() => {
 <style scoped>
 .screen-container {
   position: relative;
-  font-family: "Arial", sans-serif;
-  background-color: #f0f7ff;
+  font-family: "MICEGothic Bold";
+  background: radial-gradient(
+    circle,
+    rgba(85, 153, 255, 0.5186449579831933) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -75,27 +79,34 @@ onMounted(() => {
 }
 
 .time-display {
+  font-family: "Pretendard-Regular";
   position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 2em;
+  top: 10px; /* 상단 바의 더 가까운 위치로 조정합니다. */
+  right: 10px; /* 오른쪽 가장자리와의 거리를 줄입니다. */
+  padding-right: 2%;
+  padding-top: 1%;
+  font-size: 3em;
   color: #333;
+  z-index: 2; /* .screen-container::before 요소 위에 표시되도록 z-index 값을 더 높게 설정합니다. */
 }
 
 .status-message {
   color: #000;
-  font-size: 2em;
+  font-size: 2.6em;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 45px;
 }
 
 .parking-image {
-  max-width: 50%;
+  max-width: 80%;
   margin: 20px 0;
+  width: 450px;
+  margin-bottom: 130px;
 }
 
 .additional-message {
-  font-size: 1.5em;
+  font-family: "NanumBarunGothic", sans-serif;
+  font-size: 2em;
   text-align: center;
   color: #000;
   margin-bottom: 20px;

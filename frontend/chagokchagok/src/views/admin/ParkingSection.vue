@@ -109,41 +109,40 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>주차장 정보 : {{ parks }}</div>
-  <div>주차 자리 정보 : {{ occupied }}</div>
+  <!-- <div>주차장 정보 : {{ parks }}</div> -->
+  <!-- <div>주차 자리 정보 : {{ occupied }}</div> -->
   <modal-bar v-if="isUnlockBarModalOpen"></modal-bar>
   <modal-change v-if="isExchangeModalOpen"></modal-change>
   <Tooltip2></Tooltip2>
-  <div>
+
+  <div class="top-bar">
     <div class="parking-title-div">
       <div class="parking-logo">P</div>
       <h3 class="page-title">차량 배정 현황</h3>
     </div>
-    <div>
+    <div class="describtion-bar">
       <span
         >각 자리 클릭 시 차단바 제어, 자리 변경 등의 동작이 가능합니다.</span
       >
-      <form @submit.prevent="searchQuery">
-        <select name="search" id="search" v-model="queryType">
-          <option value="CAR_NUMBER">차 번호</option>
-          <option value="SPOT_NUMBER">주차 위치</option>
-        </select>
-        <input type="text" v-model="queryValue" />
-      </form>
-    </div>
-    <div class="all-park-container">
-      <div class="area-div">
-        <div></div>
-        <div class="end-width"></div>
-        <div>
-          <div class="area">A</div>
+      <div id="app">
+        <div class="search-bar">
+          <form @submit.prevent="searchQuery">
+            <select name="search" id="search" v-model="queryType">
+              <option value="CAR_NUMBER">차 번호</option>
+              <option value="SPOT_NUMBER">주차 위치</option>
+            </select>
+            <input type="text" v-model="queryValue" />
+          </form>
         </div>
-        <div class="middle-width"></div>
-        <div class="area"><div class="area">B</div></div>
-        <div class="middle-width"></div>
-        <div><div class="area">C</div></div>
-        <div class="end-width"></div>
-        <div></div>
+      </div>
+    </div>
+  </div>
+  <div class="all-park-container">
+    <div class="area-div">
+      <div></div>
+      <div class="end-width"></div>
+      <div>
+        <div class="area">A</div>
       </div>
       <div class="middle-width"></div>
       <div class="area"><div class="area">B</div></div>
@@ -152,6 +151,7 @@ onMounted(() => {
       <div class="end-width"></div>
       <div></div>
     </div>
+
     <div class="section-container">
       <app-section
         :parkings="parkingLeftUp"
@@ -197,40 +197,14 @@ onMounted(() => {
         <div :class="['color-info', 'yes-car']"></div>
         <span>주차됨</span>
       </div>
-      <div class="section-container">
-        <app-section
-          :parkings="parkingLeftDown"
-          :is-left="true"
-          @location-select="fetchCarInfo"
-        ></app-section>
-        <app-section-middle-vue
-          :parkings="parkingMiddleInfoLD"
-          @location-select="fetchCarInfo"
-        ></app-section-middle-vue>
-        <app-section-middle-vue
-          :parkings="parkingMiddleInfoRD"
-          @location-select="fetchCarInfo"
-        ></app-section-middle-vue>
-        <app-section
-          :parkings="parkingRightDown"
-          :is-left="false"
-          @location-select="fetchCarInfo"
-        ></app-section>
+      <div class="color-info-div">
+        <div :class="['color-info', 'no-car']"></div>
+        <span>빈자리</span>
       </div>
-      <div class="color-info-div-container">
-        <div class="color-info-div">
-          <div :class="['color-info', 'yes-car']"></div>
-          <span>주차됨</span>
-        </div>
-        <div class="color-info-div">
-          <div :class="['color-info', 'no-car']"></div>
-          <span>빈자리</span>
-        </div>
-      </div>
-      <div class="exit-div">
-        <div class="pink-circle"></div>
-        <button class="exit-button">Exit</button>
-      </div>
+    </div>
+    <div class="exit-div">
+      <div class="pink-circle"></div>
+      <button class="exit-button">Exit</button>
     </div>
   </div>
 </template>
@@ -366,5 +340,36 @@ onMounted(() => {
 
 .describtion-bar > #app {
   margin: 15px 0 0 0;
+}
+
+#app {
+  max-width: 640px;
+  margin: 0 auto;
+  height: auto;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.search-bar select {
+  position: absolute;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.search-bar input[type="text"] {
+  padding: 6px;
+  padding-left: 95px;
+  border: 1px solid #ccc;
+  border-color: #eff0f6;
+  border-radius: 8px;
+  width: 100%;
+  background-color: #f7f7f7;
+  opacity: 0.8;
 }
 </style>

@@ -3,7 +3,7 @@
     <div class="time-display">{{ currentTime }}</div>
     <div class="assignment-message">자리가 배정되었습니다.</div>
     <br />
-    <div class="assignment-message">주차확인증을 뽑아주세요.</div>
+    <div class="select-message">주차확인증을 뽑아주세요.</div>
     <div class="ticket-container">
       <img
         src="@/assets/주차확인증.png"
@@ -40,7 +40,7 @@ onMounted(() => {
   intervalId = setInterval(updateCurrentTime, 1000); // 인터벌 ID 저장
   setTimeout(() => {
     router.push({ name: "choice" }); // 일정 시간 후 홈으로 리디렉션
-  }, 10000); // 시간을 1000000에서 10000(예: 10초)으로 조정하여 실제 사용 시나리오에 더 적합하게 조정
+  }, 1000000); // 시간을 1000000에서 10000(예: 10초)으로 조정하여 실제 사용 시나리오에 더 적합하게 조정
 });
 
 // 컴포넌트가 언마운트될 때 인터벌 클리어
@@ -53,7 +53,12 @@ onUnmounted(() => {
 .screen-container {
   position: relative;
   font-family: "Arial", sans-serif;
-  background-color: #f0f7ff;
+  font-size: "MICEGothic Bold";
+  background: radial-gradient(
+    circle,
+    rgba(85, 153, 255, 0.5186449579831933) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -83,22 +88,43 @@ onUnmounted(() => {
 }
 
 .time-display {
+  font-family: "Pretendard-Regular";
   position: absolute;
   top: 10px; /* 상단 바의 더 가까운 위치로 조정합니다. */
   right: 10px; /* 오른쪽 가장자리와의 거리를 줄입니다. */
-  font-size: 2em;
+  padding-right: 2%;
+  padding-top: 1%;
+  font-size: 3em;
   color: #333;
   z-index: 2; /* .screen-container::before 요소 위에 표시되도록 z-index 값을 더 높게 설정합니다. */
 }
 
-.assignment-message,
-.welcome-message {
-  font-size: 2rem;
+.assignment-message {
+  font-family: "MICEGothic Bold";
+  font-size: 3em;
   margin-bottom: 1rem;
   color: #000; /* 이미지에 맞춰서 색상 변경 */
   text-align: center;
+  padding: 10px; /* 안쪽 여백 추가 */
+  border-radius: 5px; /* 모서리 둥글게 처리 */
 }
-
+.select-message {
+  font-family: "NanumBarunGothic", sans-serif;
+  font-size: 2rem;
+  color: #000;
+  text-align: center;
+  padding: 10px; /* 안쪽 여백 추가 */
+  border-radius: 5px; /* 모서리 둥글게 처리 */
+}
+.welcome-message {
+  font-family: "NanumBarunGothic", sans-serif;
+  font-size: 2.3rem;
+  color: #000;
+  text-align: center;
+  padding: 10px; /* 안쪽 여백 추가 */
+  border-radius: 5px; /* 모서리 둥글게 처리 */
+  margin-top: 1rem; /* 여백 조정 */
+}
 .ticket-container {
   display: flex;
   justify-content: center;
@@ -110,10 +136,5 @@ onUnmounted(() => {
   position: absolute; /* 티켓 이미지 위에 오도록 절대 위치 사용 */
   font-size: 3rem;
   color: #000; /* 검은색으로 변경 */
-}
-
-.welcome-message {
-  color: #000; /* 환영 메시지 색상 유지 */
-  margin-top: 1rem; /* 여백 조정 */
 }
 </style>

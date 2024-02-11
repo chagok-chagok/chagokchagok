@@ -9,7 +9,9 @@
         class="parking-image"
       />
     </div>
-    <div class="additional-message">후진 후 앞으로 천천히 움직여 주세요.</div>
+    <div class="additional-message">
+      후진 후 앞으로 천천히 <br />움직여 주세요.
+    </div>
   </div>
 </template>
 
@@ -39,9 +41,14 @@ function getCurrentTime() {
 
 <style scoped>
 .screen-container {
+  font-size: 1.5em;
   position: relative;
-  font-family: "Arial", sans-serif;
-  background-color: #f0f7ff;
+  font-family: "MICEGothic Bold";
+  background: radial-gradient(
+    circle,
+    rgba(85, 153, 255, 0.5186449579831933) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -73,9 +80,12 @@ function getCurrentTime() {
 }
 
 .time-display {
+  font-family: "Pretendard-Regular";
   position: absolute;
   top: 10px; /* 상단 바의 더 가까운 위치로 조정합니다. */
   right: 10px; /* 오른쪽 가장자리와의 거리를 줄입니다. */
+  padding-right: 2%;
+  padding-top: 1%;
   font-size: 2em;
   color: #333;
   z-index: 2; /* .screen-container::before 요소 위에 표시되도록 z-index 값을 더 높게 설정합니다. */
@@ -85,24 +95,26 @@ function getCurrentTime() {
   color: #000000;
   font-size: 2em;
   text-align: center;
-  margin-bottom: 20px; /* 텍스트 아래 마진 설정 */
+  margin-bottom: 50px; /* 텍스트 아래 마진 설정 */
 }
 
 .parking-image {
   max-width: 100%; /* 이미지가 컨테이너를 넘지 않도록 설정 */
-  height: auto; /* 이미지 높이를 자동으로 설정하여 비율 유지 */
+  height: 400px; /* 이미지 높이를 자동으로 설정하여 비율 유지 */
 }
 
 .additional-message {
+  font-family: "NanumBarunGothic", sans-serif;
   font-size: 1.5em;
   text-align: center;
-  color: #333;
+  color: #000;
   margin-top: 20px; /* 이미지 위에 적용될 마진 */
-  margin-bottom: 20px; /* 추가 메시지 아래 마진 설정 */
+  margin-bottom: 50px; /* 추가 메시지 아래 마진 설정 */
 }
 .parking-image-container {
   background-color: #ffffff; /* 흰색 배경 설정 */
   width: 630px; /* 최대 가로 크기 설정 */
+  height: 400px;
   display: flex; /* Flexbox를 사용하여 내용물을 중앙에 배치 */
   justify-content: center; /* 가로 방향 중앙 정렬 */
   align-items: center; /* 세로 방향 중앙 정렬 */

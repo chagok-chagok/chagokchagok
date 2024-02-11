@@ -3,6 +3,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 import axios from "axios";
 import router from "@/router";
 import { useParkingStore } from "@/stores/parkingStore";
+
 const { VITE_VUE_SPRING_URL } = import.meta.env;
 const kioskUrl = `${VITE_VUE_SPRING_URL}sse/kiosk`; //kiosk의 sse접속 url입니다.
 const currentTime = ref(getCurrentTime());
@@ -67,7 +68,7 @@ function selectParking(isDisabled) {
     .then((response) => {
       console.log(response);
       console.log(response.data.allocated_location);
-      parkingStore.allocatedLocation = response.data.allocated_location;
+      parkingStore.allocated_location = response.data.allocated_location;
       router.push({ name: "allocation" });
     })
     .catch((error) => {
@@ -88,7 +89,7 @@ function selectParking(isDisabled) {
   />
   <div class="screen-container">
     <div class="time-display">{{ currentTime }}</div>
-    <div class="message">장애 차량 여부를 선택해주세요.</div>
+    <div class="message"><strong>장애 차량 여부를 선택해주세요.</strong></div>
     <div class="button-container">
       <button class="parking-option" @click.prevent="selectParking(false)">
         <img src="@/assets/주차안내 이미지 1.png" alt="일반 주차" />
@@ -103,10 +104,76 @@ function selectParking(isDisabled) {
 </template>
 
 <style scoped>
+@font-face {
+  font-family: "MICEGothic Bold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-01@1.0/MICEGothic Bold.woff2")
+    format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "NanumBarunGothic";
+  font-style: normal;
+  font-weight: 400;
+  src: url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot");
+  src: url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix")
+      format("embedded-opentype"),
+    url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff")
+      format("woff"),
+    url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf")
+      format("truetype");
+}
+/* 
+@font-face {
+  font-family: "NanumBarunGothic";
+  font-style: normal;
+  font-weight: 700;
+  src: url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebBold.eot");
+  src: url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebBold.eot?#iefix")
+      format("embedded-opentype"),
+    url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebBold.woff")
+      format("woff"),
+    url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebBold.ttf")
+      format("truetype");
+}
+
+@font-face {
+  font-family: "NanumBarunGothic";
+  font-style: normal;
+  font-weight: 300;
+  src: url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.eot");
+  src: url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.eot?#iefix")
+      format("embedded-opentype"),
+    url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.woff")
+      format("woff"),
+    url("//cdn.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWebLight.ttf")
+      format("truetype");
+} */
+
+/* .nanumbarungothic * {
+  font-family: "NanumBarunGothic", sans-serif;
+} */
+/* * {
+  font-family: "TTHakgyoansimYeohaengR";
+} */
 .screen-container {
   position: relative;
-  font-family: "Arial", sans-serif;
-  background-color: #f0f7ff;
+  font-family: "MICEGothic Bold";
+  background: rgb(85, 153, 255);
+  background: rgb(85, 153, 255);
+  background: rgb(85, 153, 255);
+  background: radial-gradient(
+    circle,
+    rgba(85, 153, 255, 0.5186449579831933) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -124,7 +191,7 @@ function selectParking(isDisabled) {
   top: 0; /* 상단에서 0px 위치 */
   left: 0; /* 왼쪽에서 0px 위치 */
   width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정합니다. */
-  height: 60px; /* 색상 바의 높이를 설정합니다. 이것은 시간 표시를 포함하기에 충분한 높이여야 합니다. */
+  height: 80px; /* 색상 바의 높이를 설정합니다. 이것은 시간 표시를 포함하기에 충분한 높이여야 합니다. */
   background: linear-gradient(
     to right,
     rgba(255, 255, 255, 0.2) 0%,
@@ -136,19 +203,22 @@ function selectParking(isDisabled) {
 }
 
 .time-display {
+  font-family: "Pretendard-Regular";
   position: absolute;
   top: 10px; /* 상단 바의 더 가까운 위치로 조정합니다. */
   right: 10px; /* 오른쪽 가장자리와의 거리를 줄입니다. */
-  font-size: 2em;
+  padding-right: 2%;
+  padding-top: 1%;
+  font-size: 3em;
   color: #333;
   z-index: 2; /* .screen-container::before 요소 위에 표시되도록 z-index 값을 더 높게 설정합니다. */
 }
 
 .message {
   color: #000;
-  font-size: 2em;
+  font-size: 2.6em;
   text-align: center;
-  margin-bottom: 20px; /* Space between message and buttons */
+  margin-bottom: 100px; /* Space between message and buttons */
 }
 
 .button-container {
@@ -161,6 +231,7 @@ function selectParking(isDisabled) {
 }
 
 .parking-option {
+  font-family: "NanumBarunGothic", sans-serif;
   border: none;
   display: flex;
   flex-direction: column;
@@ -173,13 +244,19 @@ function selectParking(isDisabled) {
   cursor: pointer;
   transition: transform 0.1s ease-in-out;
   flex: 1; /* 버튼이 동일한 비율로 크기를 조정하도록 flex 속성을 추가합니다 */
-  margin: 0 10px; /* 버튼 사이의 간격을 추가합니다 */
-  font-size: 15px;
+  margin: 0 13px; /* 버튼 사이의 간격을 추가합니다 */
+  font-size: 19px;
   max-width: 266px; /* 버튼의 최대 너비를 설정합니다 */
-  height: 561px; /* 버튼의 높이를 유지합니다 */
+  height: 600px; /* 버튼의 높이를 유지합니다 */
 }
+
+.parking-option > img {
+  margin-top: -130px;
+  scale: 0.45;
+}
+
 .parking-option > :first-child {
-  margin-bottom: 20px; /* 첫 번째 요소와 두 번째 요소 사이의 간격을 늘립니다 */
+  margin-bottom: -100px; /* 첫 번째 요소와 두 번째 요소 사이의 간격을 늘립니다 */
 }
 
 .parking-option > :last-child {

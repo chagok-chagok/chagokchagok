@@ -7,6 +7,7 @@ import NoplaceScreen from "@/views/kiosk/NoplaceScreen.vue";
 import RecognitionErrorScreen from "@/views/kiosk/RecognitionErrorScreen.vue";
 import AllocationScreen from "@/views/kiosk/AllocationScreen.vue";
 import ParkingSection from "../views/admin/ParkingSection.vue";
+import Tooltip from "@/components/admin/Tooltip2.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,7 @@ const router = createRouter({
         },
       ],
     },
+
     {
       path: "/choice",
       name: "choice",
