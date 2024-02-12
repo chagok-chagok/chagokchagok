@@ -5,9 +5,11 @@ import com.hana.chagokchagok.dto.ReportDataDto;
 import com.hana.chagokchagok.dto.ReportDto;
 import com.hana.chagokchagok.dto.ReportRateDto;
 import com.hana.chagokchagok.dto.UnresolvedDto;
+import com.hana.chagokchagok.dto.request.ChangePasswordRequest;
 import com.hana.chagokchagok.dto.request.ExchangeRequest;
 import com.hana.chagokchagok.dto.request.LoginRequest;
 import com.hana.chagokchagok.dto.request.ReportRequest;
+import com.hana.chagokchagok.dto.response.ChangePasswordDto;
 import com.hana.chagokchagok.dto.response.CommonAlertResponse;
 import com.hana.chagokchagok.dto.response.DashBoardResponse;
 import com.hana.chagokchagok.dto.response.LoginResponse;
@@ -256,6 +258,21 @@ public class AdminService {
         for(AllocationLog allocationLog : todayVisits){
             if(LocalDate.now().getDayOfMonth() == allocationLog.getEntryTime().getDayOfMonth() && LocalDateTime.now().getHour() < allocationLog.getEntryTime().getHour()) continue;
             today_visits[allocationLog.getEntryTime().getHour()]++;
+        }
+    }
+
+    public void changePassword(String id, String newPassword){
+        Admin admin = adminRepository.findById(id);
+        System.out.println(admin);
+
+        SHA256 sha256 = new SHA256();
+        try {
+            String hashPass = sha256.encrypt(newPassword);
+            admin.changePassword(hashPass);
+            adminRepository.save(admin);
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println(e);
+            throw new RuntimeException(e);
         }
     }
 }

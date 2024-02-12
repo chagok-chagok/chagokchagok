@@ -2,8 +2,14 @@ package com.hana.chagokchagok.util;
 
 import com.hana.chagokchagok.exception.UnAuthorizedException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -19,8 +25,8 @@ public class JwtInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response, Object handler) throws Exception {
         final String token = request.getHeader(HEADER_AUTH);
-
-        if (request.getRequestURI().equals("/admin/login") || request.getRequestURI().equals("/admin/test")) {
+        System.out.println("검증할 토큰!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+token);
+        if (CorsUtils.isPreFlightRequest(request)) {
             return true;
         }
 

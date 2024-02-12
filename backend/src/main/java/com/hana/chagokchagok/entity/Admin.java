@@ -30,6 +30,10 @@ public class Admin {
         this.refreshToken = null;
     }
 
+    public void changePassword(String password){
+        this.password = password;
+    }
+
     public void join(String id, String password){
         this.id = id;
         this.password = password;

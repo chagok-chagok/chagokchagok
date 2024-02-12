@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
+import MainView from "../views/Main.vue";
+import LoginView from "@/components/main/LoginPage.vue";
+import ChangePasswordView from "@/components/main/ChangePassword.vue";
 import DashBoardView from "../views/admin/DashBoard.vue";
 import AdminView from "../views/Admin.vue";
 import HomeView from "../views/HomeView.vue";
@@ -39,7 +42,23 @@ const router = createRouter({
         },
       ],
     },
-
+    {
+      path: "/main",
+      name: "main",
+      component: MainView,
+      children: [
+        {
+          path: "login",
+          name: "admin-login",
+          component: LoginView,
+        },
+        {
+          path: "changePassword",
+          name: "changePassword",
+          component: ChangePasswordView,
+        },
+      ],
+    },
     {
       path: "/choice",
       name: "choice",
