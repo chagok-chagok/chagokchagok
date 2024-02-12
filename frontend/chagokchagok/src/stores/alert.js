@@ -4,6 +4,8 @@ import axios from "axios";
 import moment from "moment";
 import { instance } from "@/utils/mainAxios";
 
+const local = instance;
+
 export const notificationStore = defineStore("notificationStore", () => {
   //플로팅알림 변수
   const showNotification = ref(false);
@@ -77,7 +79,10 @@ export const notificationStore = defineStore("notificationStore", () => {
 
   //공통바 업데이트
   const updateBar = async () => {
-    const { data } = await instance.get("/admin/common");
+    local.defaults.headers["Authorization"] =
+      sessionStorage.getItem("accessToken");
+    const { data } = await local.get("/admin/common");
+    console.log("공통바 씻이", data);
     const commonData = data;
     total_cnt.value = commonData.total_cnt;
     current_cnt.value = commonData.curr_cnt;
@@ -91,7 +96,10 @@ export const notificationStore = defineStore("notificationStore", () => {
 
   //대시보드 차트 업데이트
   const updateVisitChart = async () => {
-    const { data } = await instance.get("/admin/dashboard");
+    local.defaults.headers["Authorization"] =
+      sessionStorage.getItem("accessToken");
+    const { data } = await local.get("/admin/dashboard");
+    console.log("데시보드 씻이", data);
     const dashboardData = data;
     today_visits.value = dashboardData.today_visits;
     pre_visits.value = dashboardData.previous_visits;

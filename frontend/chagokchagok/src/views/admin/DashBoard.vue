@@ -13,7 +13,6 @@ import {
   Tooltip,
   Legend,
 } from "chart.js/auto"; // Chart.js를 가져옴
-import axios from "axios";
 import { notificationStore } from "@/stores/alert.js";
 import { storeToRefs } from "pinia";
 const store = notificationStore();
@@ -54,14 +53,12 @@ onMounted(async () => {
   drawDoughtnut();
   //프로그래스바
   startAnimation();
-
   //실시간 변화시 차트 업데이트
   watchEffect(() => {
     //라인차트 업데이트
     lineChartRef.data.datasets[0].data = today_visits.value;
     lineChartRef.data.datasets[1].data = pre_visits.value;
     lineChartRef.update();
-
     //도넛차트 업데이트
     doughnutChartRef.data.datasets[0].data = [
       autoReportCnt.value,
@@ -128,6 +125,7 @@ function drawLine() {
         pointBorderWidth: 5,
         pointHoverRadius: 5,
         pointHoverBorderWidth: 1,
+        pointBackgroundColor: "#3F66B5",
         fill: true,
         backgroundColor: gradientFill,
         borderWidth: 2.5,
@@ -217,10 +215,7 @@ function startAnimation() {
 
 <template>
   <div class="dashboard-main">
-    <AppPageHeader
-      icon="./icon/BarChart.png"
-      pageTitle="실시간 방문차량 대수"
-    />
+    <AppPageHeader icon="chart-line" pageTitle="실시간 방문차량 대수" />
     <section class="park-info">
       <div id="chart-info">
         <h4 id="chart_left" class="title">Total Visits</h4>
@@ -331,7 +326,8 @@ h6 {
   /* 기타 초기화할 스타일 속성들 */
 }
 .title {
-  font-size: 14px;
+  font-size: 0.9rem;
+  margin-bottom: 3px;
 }
 .bold {
   font-weight: bold;
@@ -557,10 +553,10 @@ th {
 }
 
 .content {
-  font-size: 12px;
+  font-size: 0.9rem;
 }
 
 .semi_big {
-  font-size: 10px;
+  font-size: 0.9rem;
 }
 </style>

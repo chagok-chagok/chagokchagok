@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
-import axios from "axios";
 import { useParkingSectionStore } from "@/stores/parkingSectionStore";
+import { instance } from "@/utils/mainAxios";
 
 const selectedOption = ref("vehicle");
 const searchQuery = ref("");
@@ -10,7 +10,9 @@ const parkingSectionStore = useParkingSectionStore();
 
 const search = async () => {
   try {
-    const response = await axios.post("http://localhost:8080/admin/search", {
+    instance.defaults.headers["Authorization"] =
+      sessionStorage.getItem("accessToken");
+    const response = await instance.post("http://localhost:8080/admin/search", {
       type: selectedOption.value,
       value: searchQuery.value,
     });

@@ -1,8 +1,10 @@
 <script setup>
-import { defineEmits, defineProps } from "vue";
+import { defineEmits, defineProps, onMounted, ref } from "vue";
 import { useReportStore } from "@/stores/report";
-import { mdiBellOutline } from "@mdi/js";
+import { mdiBellOutline, mdiConsoleNetworkOutline } from "@mdi/js";
 import MdiIcon from "@/components/icons/MdiIcon.vue";
+import moment from "moment";
+import { faBold } from "@fortawesome/free-solid-svg-icons";
 const reportStore = useReportStore();
 const props = defineProps({
   errorCode: Array,
@@ -19,30 +21,64 @@ const modifyReport = () => {
   reportStore.modifyReport(props.report);
   emit("close");
 };
+
+const formattedReportTime = ref("");
+const formattedDoneTime = ref("");
+
+const updateFormattedDateTime = () => {
+  formattedReportTime.value = moment(props.report.report_time).format(
+    "YYYY-MM-DD HH:mm:ss"
+  );
+  formattedDoneTime.value = moment(props.report.done_time).format(
+    "YYYY-MM-DD HH:mm:ss"
+  );
+};
+
+const getOptionStyle = (option) => {
+  console.log(option.value);
+  // 옵션에 따라 색상을 반환
+  switch (option.value) {
+    case "IN_PROGRESS":
+      return { color: "green", fontWeight: "bold" };
+    case "COMPLETED":
+      return { color: "blue", fontWeight: "bold" };
+    case "UNRESOLVED":
+      return { color: "red", fontWeight: "bold" };
+    default:
+      return {}; // 다른 옵션에 대한 기본 스타일
+  }
+};
+
+onMounted(() => {
+  updateFormattedDateTime();
+});
 </script>
 
 <template>
   <div class="modal-overlay" @click="closeModal">
     <div class="modal-container" @click.stop>
-      <div>{{ report }}</div>
-
+      <!-- 헤더 -->
       <div class="modal-header">
-        <span class="modal-title">Detailed Report</span>
-        <button class="close-button" @click="closeModal">&times;</button>
+        <button class="close-button" @click="closeModal">
+          <font-awesome-icon :icon="['fas', 'xmark']" />
+        </button>
+        <div class="icon"><img src="/icon/Doorbell.png" /></div>
       </div>
+      <!-- 본문 -->
       <div class="modal-body">
-        <form class="report-form">
-          <label for="issue-type">신고코드*</label>
-          <input type="text" v-model="report['error_code']" readonly />
-          <!-- <select
-            id="issue-type"
-            name="issue-type"
-            v-model="report['error_code']"
+        <!-- 머릿말 -->
+        <div class="flex-col body-title">
+          <span class="modal-title">Detailed Report</span>
+          <span class="modal-text"
+            >신고의 상세내역을 작성 및 수정할 수 있습니다</span
           >
-            <option v-for="code in errorCode" :key="code" :value="code">
-              {{ code }}
-            </option>
-          </select> -->
+        </div>
+        <!-- 폼 -->
+        <form class="report-form">
+          <div>
+            <label for="issue-type" class="red">신고코드*</label>
+            <input type="text" v-model="report['error_code']" readonly />
+          </div>
 
           <div class="datetime-fields">
             <div class="datetime-group">
@@ -52,7 +88,7 @@ const modifyReport = () => {
                 type="datetime-local"
                 id="start-date"
                 name="start-date"
-                v-model="report['report_time']"
+                v-model="formattedReportTime"
               />
             </div>
             <div class="datetime-group">
@@ -69,7 +105,7 @@ const modifyReport = () => {
           <div class="form-row">
             <div class="form-group half-width">
               <label for="issue-location">신고된 자리</label>
-              <input type="text" v-model="report['full_name']" />
+              <input type="text" readonly v-model="report['full_name']" />
             </div>
 
             <div class="form-group half-width">
@@ -78,11 +114,13 @@ const modifyReport = () => {
                 id="issue-status"
                 name="issue-status"
                 v-model="report['status']"
+                :style="getOptionStyle(report['status'])"
               >
                 <option
                   v-for="option in status"
                   :key="option"
                   :value="option.value"
+                  :style="getOptionStyle(option)"
                 >
                   {{ option.show }}
                 </option>
@@ -90,15 +128,20 @@ const modifyReport = () => {
             </div>
           </div>
 
-          <label for="notes">비고</label>
-          <textarea
-            id="notes"
-            name="notes"
-            placeholder="기타 진단상황을 작성해주세요."
-            v-model="report['note']"
-          ></textarea>
+          <div>
+            <label for="notes">비고</label>
+            <div class="flex-row">
+              <textarea
+                id="notes"
+                name="notes"
+                placeholder="기타 진단상황을 작성해주세요."
+                v-model="report['note']"
+              ></textarea>
+            </div>
+          </div>
         </form>
       </div>
+      <!-- 푸터 -->
       <div class="modal-footer">
         <button class="modal-footer-button cancel-button" @click="closeModal">
           Cancel
@@ -115,6 +158,10 @@ const modifyReport = () => {
 </template>
 
 <style scoped>
+.red {
+  color: red;
+}
+/* 모달 배경 */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -128,28 +175,46 @@ const modifyReport = () => {
   z-index: 1000;
 }
 
+/* 제일 바깥 모달 */
 .modal-container {
   background-color: #fff;
-  width: 600px;
-  border-radius: 8px;
+  width: 35vw;
+  border-radius: 25px;
   overflow: hidden;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   z-index: 1001;
+  padding: 5px;
 }
 
+/* 모달 헤더 */
 .modal-header {
-  padding: 16px;
-  background-color: #f0f0f0;
+  padding: 13px 13px 0px 13px;
+  /* background-color: #f0f0f0; */
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-direction: row-reverse;
+  font-size: 4rem;
 }
-
+.icon {
+  border: 1px solid rgb(194, 194, 194);
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* 모달 제목 */
 .modal-title {
   font-size: 1.25rem;
   font-weight: bold;
+  margin-bottom: 10px;
 }
-
+.modal-text {
+  margin-bottom: 10px;
+}
+/* 닫기버튼 */
 .close-button {
   font-size: 1.25rem;
   border: none;
@@ -157,23 +222,58 @@ const modifyReport = () => {
   cursor: pointer;
 }
 
+/* 모달 본문 */
 .modal-body {
-  padding: 20px;
+  padding: 10px 20px;
+  /* margin: 10px; */
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
 }
 
+.report-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 모달 내부 각 요소의 제목 */
 .report-form label {
   display: block;
   margin-bottom: 5px;
 }
 
-.report-form select,
-.report-form input,
+/* 모달 사용자 수정창들 */
+.report-form select {
+  width: 125px;
+  padding: 10px;
+  /* margin-bottom: 15px; */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+.report-form input {
+  width: 205px;
+  padding: 10px;
+  /* margin-bottom: 15px; */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+.flex-row {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
 .report-form textarea {
   width: 100%;
+  height: 10vh;
   padding: 10px;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 .datetime-fields {
@@ -204,24 +304,38 @@ const modifyReport = () => {
 .modal-footer {
   display: flex;
   justify-content: space-between; /* 버튼들을 양 끝으로 배치 */
-  padding: 16px;
-  background-color: #f0f0f0;
+  /* background-color: #f0f0f0; */
+  padding: 10px 20px;
+  /* margin: 10px; */
 }
 
 .modal-footer-button {
   flex-basis: 48%; /* 버튼의 너비를 조정 */
   padding: 10px 20px;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
 .cancel-button {
-  background-color: #ccc;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  font-weight: bold;
 }
 
 .confirm-button {
   background-color: #007bff;
   color: white;
+  font-weight: bold;
+}
+
+/* Hover 시 색상 변경 */
+.cancel-button:hover {
+  background-color: #dadada; /* hover 시 배경색 변경 */
+  color: #ffffff; /* hover 시 텍스트 색상 변경 */
+}
+.confirm-button:hover {
+  background-color: rgb(2, 2, 196); /* hover 시 배경색 변경 */
+  color: #ffffff; /* hover 시 텍스트 색상 변경 */
 }
 </style>

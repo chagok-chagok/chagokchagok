@@ -5,7 +5,10 @@ import NavbarVue from "@/components/admin/navbar.vue";
 import AppCommonBar from "@/components/admin/AppCommonBar.vue";
 import AppFloatingAlert from "@/components/admin/AppFloatingAlert.vue";
 import { notificationStore } from "@/stores/alert.js";
+import { useParkingSectionStore } from "@/stores/parkingSectionStore";
 const store = notificationStore();
+const parkingSectionStore = useParkingSectionStore();
+
 const { VITE_VUE_SPRING_URL } = import.meta.env;
 
 //SSE 알림이 발생할때마다 공통바 업데이트
@@ -41,6 +44,7 @@ onMounted(() => {
   sseEvent.addEventListener("REALTIME_COMMON", function (e) {
     store.updateBar();
     store.updateVisitChart();
+    parkingSectionStore.update();
   });
 });
 </script>
