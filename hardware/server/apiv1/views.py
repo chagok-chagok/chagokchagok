@@ -30,12 +30,14 @@ def entrance(request):
             json_data = json.dumps({'car_num': car_data[0]})
             # request
             response = requests.post(entrance_url, data=json_data, headers=headers)
-
+            print(response.text)
             # convert response data to json for responsing to rasp
             result = response.json()
+            print(result)
             # need to check key name later
             return JsonResponse({'response': result['validate']})
-        except:
+        except Exception as e:
+            print(e)
             return JsonResponse({'response': 'fail to recog or via spring'})
     else:
         return JsonResponse({'response': 'fail'})

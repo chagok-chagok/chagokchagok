@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-j1ay%^i^le5f=sllprm71+%zn&y(a*=vm7w1&s3x*(n)r#of7y
 DEBUG = True
 
 # spring url
-SPRING_URL = 'http://192.168.31.251:8080/'
+SPRING_URL = 'http://i10b301.p.ssafy.io/api/'
 
 ALLOWED_HOSTS = [
     '192.168.31.17',
