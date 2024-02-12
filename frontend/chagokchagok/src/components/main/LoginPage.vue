@@ -1,33 +1,55 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useRouter } from "vue-router";
 import { useAdminStore } from "@/stores/admin";
 import IconBlue from "@/components/icons/IconMainBlue.vue";
 import IconWhite from "@/components/icons/IconMainWhtite.vue";
+import vueCookies from "vue-cookies";
+
+vueCookies.config("7d");
 
 const router = useRouter();
 const adminStore = useAdminStore();
 
 const { isLogin } = storeToRefs(adminStore);
-const { adminLogin, getUserInfo } = adminStore;
+const { adminLogin, adminInfo } = adminStore;
 
 const loginAdmin = ref({
-  id: "",
+  id: vueCookies.get("rememberedId") || "",
   pass: "",
 });
 
+const rememberMe = ref(true);
+
 const login = async () => {
-  console.log("로그인 시작");
   await adminLogin(loginAdmin.value);
   let token = sessionStorage.getItem("accessToken");
   console.log(token);
-  if (token === null) {
+  if (token !== null) {
+    console.log(rememberMe.value);
+    if (rememberMe.value == true) {
+      console.log("쿠키등록");
+      // emailSave가 true인 경우에만 쿠키를 설정합니다.
+      vueCookies.set("rememberId", loginAdmin.value.id);
+      vueCookies.set("rememberMe", rememberMe.value);
+    } else {
+      console.log("쿠키삭제");
+      vueCookies.remove("rememberId");
+      vueCookies.remove("rememberMe");
+    }
+    window.alert(sessionStorage.getItem("id") + "님 환영합니다.");
+    router.push("/admin/dashboard");
+  } else {
     window.alert("아이디 또는 비밀번호가 잘못되었습니다.");
-    router.replace("/main/login");
   }
-  router.push("/admin/dashboard");
 };
+
+onMounted(() => {
+  // 컴포넌트가 로드될 때 쿠키에서 값을 가져와서 loginAdmin.id에 설정
+  loginAdmin.value.id = vueCookies.get("rememberId") || "";
+  rememberMe.value = vueCookies.get("rememberMe") || "";
+});
 </script>
 
 <template>
@@ -41,7 +63,7 @@ const login = async () => {
           <div id="inner-container">
             <div id="contentCenter">
               <span class="service-title">
-                <iconBlue />
+                <IconBlue />
                 <b>차곡차곡 관리 시스템</b>
               </span>
               <div id="test">
@@ -72,9 +94,54 @@ const login = async () => {
                           />
                           <div class="form-options">
                             <div class="remember-me">
-                              <input type="checkbox" id="remember-me" />
+                              <input
+                                type="checkbox"
+                                id="remember-me"
+                                v-model="rememberMe"
+                              />
                               <label for="remember-me">Remember me?</label>
                             </div>
+                          </div>
+
+                          <div
+                            class="login_error_wrap"
+                            id="err_capslock"
+                            style="display: none"
+                          >
+                            <div class="error_message">
+                              <strong>CapsLock</strong>
+                              "이 켜져 있습니다. "
+                            </div>
+                          </div>
+
+                          <div
+                            class="login_error_wrap"
+                            id="err_empty_id"
+                            style="display: none"
+                          >
+                            <div class="error_message">
+                              <strong>아이디</strong>
+                              "를 입력해 주세요. "
+                            </div>
+                          </div>
+
+                          <div
+                            class="login_error_wrap"
+                            id="err_empty_pw"
+                            style="display: none"
+                          >
+                            <div class="error_message">
+                              <strong>비밀번호</strong>
+                              "를 입력해 주세요. "
+                            </div>
+                          </div>
+
+                          <div
+                            class="login_error_wrap"
+                            id="err_common"
+                            style="display: none"
+                          >
+                            <div class="error_message" style="width: 90%"></div>
                           </div>
                         </div>
 
@@ -289,5 +356,29 @@ h1 {
 .input {
   height: 25px;
   border: 1px solid #3a57e8;
+}
+
+.login_error_wrap {
+  position: relative;
+  min-height: 34px;
+  margin: 24px 0 -22px;
+  padding-right: 40px;
+}
+.login_error_wrap::before {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 34px;
+  line-height: 34px;
+  vertical-align: middle;
+
+  .error_message {
+    display: inline-block;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.5px;
+    color: #ff003e;
+    vertical-align: middle;
+  }
 }
 </style>

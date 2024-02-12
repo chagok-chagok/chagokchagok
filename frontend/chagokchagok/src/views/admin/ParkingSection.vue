@@ -145,15 +145,6 @@ onMounted(() => {
       <div class="end-width"></div>
       <div></div>
     </div>
-    <!-- <form @submit.prevent="searchQuery">
-        <select name="search" id="search" v-model="queryType">
-          <option value="CAR_NUMBER">차 번호</option>
-          <option value="SPOT_NUMBER">주차 위치</option>
-        </select>
-        <input type="text" v-model="queryValue" />
-      </form>
-    </div> -->
-
     <div class="section-container">
       <app-section
         :parkings="parkingLeftUp"
@@ -174,7 +165,7 @@ onMounted(() => {
         @location-select="showTooltip"
       ></app-section>
     </div>
-    <div class="section-container">
+    <div class="section-container" style="margin-bottom: 2%">
       <app-section
         :parkings="parkingLeftDown"
         :is-left="true"
@@ -226,6 +217,7 @@ onMounted(() => {
 }
 .page-title {
   margin-left: 20px;
+  font-size: 3vh;
 }
 .parking-logo {
   display: flex;
@@ -238,12 +230,12 @@ onMounted(() => {
   font-weight: bolder;
 }
 .area-div {
-  height: 40px;
+  height: 7%;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: flex-end;
-  padding: 0 20px; /* 구역 표시 정렬 안맞으면 패딩값 조정 */
+  padding: 0 6%; /* 구역 표시 정렬 안맞으면 패딩값 조정 */
 }
 
 .area {
@@ -267,7 +259,7 @@ onMounted(() => {
 .section-container {
   display: flex;
   flex-direction: row;
-  margin-bottom: 20px;
+  margin-bottom: 4%;
   justify-content: space-evenly;
 }
 
@@ -275,7 +267,7 @@ onMounted(() => {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  margin-right: 30px;
+  margin-right: 6.8%;
 }
 .color-info-div {
   display: flex;
@@ -310,7 +302,7 @@ onMounted(() => {
   justify-content: flex-end;
   align-items: center;
 
-  margin: 20px 50px 0 0;
+  margin: 20px 8.5% 0 0;
 }
 
 .pink-circle {
@@ -321,8 +313,8 @@ onMounted(() => {
   margin-right: 5px;
 }
 .exit-button {
-  width: 117px;
-  height: 37px;
+  width: 100px;
+  height: 30px;
   background-color: #ffefef;
   border: 1px solid transparent;
   border-radius: 3px;
@@ -337,11 +329,15 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin: 1px 0 0 45px;
+  margin: 1% 0 0 45px;
 }
 
 .describtion-bar > #app {
-  margin: 15px 0 0 0;
+  margin: 1% 0 0 0;
+}
+
+.descript {
+  font-size: 2vh;
 }
 
 #app {
@@ -373,5 +369,9 @@ onMounted(() => {
   width: 100%;
   background-color: #f7f7f7;
   opacity: 0.8;
+}
+
+.all-park-container {
+  height: 80vh;
 }
 </style>

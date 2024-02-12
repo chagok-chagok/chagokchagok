@@ -43,8 +43,8 @@ const locationSelect = (message) => {
   border-collapse: collapse;
 }
 .section-container {
-  width: 90px;
-  height: 200px;
+  width: 10vh;
+  height: 100%;
 }
 .section {
   border-top: 2px dashed black;

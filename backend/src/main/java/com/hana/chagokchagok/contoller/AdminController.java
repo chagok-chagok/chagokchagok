@@ -1,12 +1,14 @@
 package com.hana.chagokchagok.contoller;
 
 import com.hana.chagokchagok.dto.ReportDto;
+import com.hana.chagokchagok.dto.request.ChangePasswordRequest;
 import com.hana.chagokchagok.dto.request.ExchangeRequest;
 import com.hana.chagokchagok.dto.request.GetCarlocRequest;
 import com.hana.chagokchagok.dto.request.LoginRequest;
 import com.hana.chagokchagok.dto.request.OpenBarRequest;
 import com.hana.chagokchagok.dto.request.ReportRequest;
 import com.hana.chagokchagok.dto.request.SearchInfoRequest;
+import com.hana.chagokchagok.dto.response.ChangePasswordDto;
 import com.hana.chagokchagok.dto.response.CommonAlertResponse;
 import com.hana.chagokchagok.dto.response.DashBoardResponse;
 import com.hana.chagokchagok.dto.response.GetCarlocResponse;
@@ -24,8 +26,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,6 +63,7 @@ public class AdminController {
     @GetMapping("/refresh")
     public RefreshTokenResponse refreshToken(HttpServletRequest request){
         //클라이언트가 가지고 있는 refreshToken 가져오기
+        System.out.println("엑세스토큰 재생성중");
         String token = request.getHeader("Authorization");
 
         RefreshTokenResponse refreshTokenResponse = new RefreshTokenResponse();
@@ -66,7 +71,8 @@ public class AdminController {
         if (jwtUtil.checkToken(token)) {
             if (token.equals(adminService.getRefreshToken(jwtUtil.getUserId(token)))) {
                 String accessToken = jwtUtil.createAccessToken(jwtUtil.getUserId(token));
-                refreshTokenResponse.setAccessToken(accessToken);
+                System.out.println(accessToken);
+                refreshTokenResponse.setAuthorization(accessToken);
             }
         }else {
             refreshTokenResponse.setMessage("리프레쉬토큰도 사용불가!!!!!!!");
@@ -76,6 +82,7 @@ public class AdminController {
 
     @GetMapping("/logout")
     public LogoutResponse removeToken(HttpServletRequest request) {
+        System.out.println("로그아웃진입!!!!!!!!!!!!!!!!");
         LogoutResponse logoutResponse = new LogoutResponse();
         try {
             adminService.deleRefreshToken(jwtUtil.getUserId(request.getHeader("Authorization")));
@@ -145,5 +152,14 @@ public class AdminController {
     @PostMapping("/search")
     public SearchInfoResponse searchInfo(@RequestBody SearchInfoRequest searchInfoRequest){
         return parkService.searchInfo(searchInfoRequest);
+    }
+
+    @PostMapping("/changePassword")
+    public void changePassword(@RequestBody ChangePasswordRequest changePasswordRequest, HttpServletRequest request){
+        System.out.println("비밀번호 변경시작");
+        String token = request.getHeader("Authorization");
+        String id = jwtUtil.getUserId(token);
+        System.out.println(id);
+        adminService.changePassword(id, changePasswordRequest.getNewPassword());
     }
 }

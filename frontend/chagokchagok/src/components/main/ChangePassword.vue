@@ -1,46 +1,348 @@
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useAdminStore } from "@/stores/admin";
+import IconBlue from "@/components/icons/IconMainBlue.vue";
+import IconWhite from "@/components/icons/IconMainWhtite.vue";
+
+const router = useRouter();
+const adminStore = useAdminStore();
+
+const { changePassword, adminLogout } = adminStore;
+
+const newPassword = ref("");
+const confirmPassword = ref("");
+const passwordsMatch = ref(false);
+
+const checkPasswordsMatch = () => {
+  passwordsMatch.value =
+    newPassword.value === confirmPassword.value && confirmPassword.value !== "";
+};
+
+const changePW = async () => {
+  // changePassword 함수가 비동기로 작동하도록 가정
+  await changePassword(newPassword.value);
+  await adminLogout();
+  window.alert("비밀번호 변경을 성공했습니다. 다시 로그인 해주세요");
+  router.replace("/main/login");
+};
+</script>
 
 <template>
-  <div id="loginContainer">
-    <h2>Login Area</h2>
-    <form>
-      <label for="id">ID</label>
-      <input type="text" id="id" required />
-      <label for="id2">ID</label>
-      <input type="text" id="id2" required />
-    </form>
-  </div>
+  <main>
+    <div class="container">
+      <div id="content">
+        <div id="leftContent">
+          <div id="background">
+            <IconWhite />
+          </div>
+          <div id="inner-container">
+            <div id="contentCenter">
+              <span class="service-title">
+                <IconBlue />
+                <b>차곡차곡 관리 시스템</b>
+              </span>
+              <div id="test">
+                <h1 class="login-title">Reset Password</h1>
+                <article id="mainContent" class="content-article">
+                  <div class="cont_login">
+                    <div class="login-main">
+                      <form class="login-form">
+                        <div class="form-group">
+                          <label class="bold" for="password"
+                            >새 비밀번호:</label
+                          >
+                          <input
+                            type="password"
+                            v-model="newPassword"
+                            id="password"
+                            class="input"
+                            @input="checkPasswordsMatch"
+                            required
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label class="bold" for="confirmPassword"
+                            >비밀번호 확인:</label
+                          >
+                          <input
+                            type="password"
+                            v-model="confirmPassword"
+                            @keyup.enter="login"
+                            id="confirmPassword"
+                            class="input"
+                            @input="checkPasswordsMatch"
+                            required
+                          />
 
-  <div id="imageContainer">
-    <img
-      src="data:image/png;base64,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"
-      alt="배경 이미지"
-    />
-  </div>
+                          <div
+                            v-if="
+                              newPassword && confirmPassword && !passwordsMatch
+                            "
+                            class="error-message"
+                          >
+                            비밀번호가 서로 다릅니다.
+                          </div>
+                          <div v-if="passwordsMatch" class="success-message">
+                            비밀번호가 일치합니다.
+                          </div>
+                        </div>
+
+                        <div id="login-button">
+                          <button
+                            :disabled="!passwordsMatch"
+                            type="button"
+                            class="sign-in-button"
+                            @click="changePW"
+                          >
+                            변경하기
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="rightContent">
+          <img
+            class="rightImage"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_vLFxgT5ryI_kbEtYj_7rtdVFlDknDC4Qgw-BNf1aI-kjrlJx7sC8GsB1FAMSusdJKCo&usqp=CAU"
+          />
+        </div>
+      </div>
+    </div>
+  </main>
 </template>
 
 <style scoped>
-body {
+main {
   margin: 0;
   padding: 0;
+  background-color: #f2f2f7;
   display: flex;
-  height: 100vh; /* 화면 높이의 100%로 설정 */
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-#loginContainer {
-  flex: 1; /* 왼쪽 영역이 화면의 1/2를 차지하도록 설정 */
-  padding: 20px;
-  background-color: #f2f2f2; /* 로그인 영역 배경색 */
+/* 흰색 박스 */
+.container {
+  width: 71vw;
+  height: 90vh;
+  background-color: #ffffff;
+  border-radius: 20px;
+  /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+  overflow: hidden;
+  /* padding: 20px; */
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+/*성욱 */
+
+.login-title {
+  font-size: 50px;
 }
 
-#imageContainer {
-  flex: 1; /* 오른쪽 영역이 화면의 1/2를 차지하도록 설정 */
-  overflow: hidden; /* 내용이 넘칠 경우를 대비해 오버플로우를 감춤 */
+.content-article {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: auto;
+  margin: 0;
+  padding: 0 16px;
+  border: 0;
+  font-size: 10px;
+  box-sizing: border-box;
+}
+.content-article .cont_login {
+  word-wrap: break-word;
+}
+#test {
+  width: 100%;
+}
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.form-group {
+  width: 60%;
+  margin-bottom: 20px;
+}
+.form-group > input {
+  width: 100%;
 }
 
-#imageContainer img {
-  width: 100%; /* 이미지를 부모 요소에 꽉 채우기 */
-  height: 100vh; /* 화면 높이의 100%로 설정 */
-  object-fit: cover; /* 이미지를 부모 요소에 맞게 채우기 (가로, 세로 비율을 유지하면서) */
+.form-options {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.remember-me input {
+  margin-right: 0.5rem;
+}
+
+.forgot-password {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+#content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#leftContent {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#inner-container {
+  display: flex;
+  flex-direction: column;
+  z-index: 20;
+  position: absolute;
+  width: 50%;
+  height: auto;
+}
+
+#rightContent {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.rightImage {
+  position: absolute;
+  width: 100%;
+  height: auto;
+}
+
+#login-button {
+  display: flex;
+  justify-content: center;
+  width: 30%;
+}
+
+.sign-in-button {
+  cursor: pointer;
+  width: 200px;
+  height: 40px;
+  display: block;
+  width: 100%;
+  padding: 13px 0 13px;
+  margin: 10px;
+  border-radius: 6px;
+  border: solid 1px rgba(0, 0, 0, 0.15);
+  background-color: #3a57e8;
+  color: #ffffff;
+  box-sizing: border-box;
+}
+#background {
+  display: flex;
+  justify-content: left;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  align-items: flex-start;
+  position: relative;
+  top: 0; /* 페이지 상단에 위치 */
+  left: 0;
+}
+.sign-in-button:hover {
+  background-color: #007bff;
+}
+.bold {
+  font-weight: bold;
+  font-size: 20px;
+}
+.form-group > input {
+  margin-top: 10px; /* 라벨과 입력란 사이 간격 조절 */
+}
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+#contentCenter {
+  display: flex;
+  align-items: center;
+}
+#test {
+  display: flex;
+  flex-direction: column;
+}
+
+#contentCenter {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  height: 25px;
+  border: 1px solid #3a57e8;
+}
+
+.login_error_wrap {
+  position: relative;
+  min-height: 34px;
+  margin: 24px 0 -22px;
+  padding-right: 40px;
+}
+.login_error_wrap::before {
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 34px;
+  line-height: 34px;
+  vertical-align: middle;
+
+  .error_message {
+    display: inline-block;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.5px;
+    color: #ff003e;
+    vertical-align: middle;
+  }
+}
+
+.success-message {
+  color: green;
+}
+
+.error-message {
+  color: red;
+}
+
+button:disabled {
+  background-color: #f1f1f1; /* Light grey */
+  color: #999999;
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
+  background-color: #f1f1f1; /* Light grey */
+  color: #999999;
+  cursor: not-allowed;
 }
 </style>

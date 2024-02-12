@@ -41,7 +41,7 @@ function getCurrentTime() {
 
 <style scoped>
 .screen-container {
-  font-size: 1.5em;
+  /* font-size: 1.4em; */
   position: relative;
   font-family: "MICEGothic Bold";
   background: radial-gradient(
@@ -86,14 +86,14 @@ function getCurrentTime() {
   right: 10px; /* 오른쪽 가장자리와의 거리를 줄입니다. */
   padding-right: 2%;
   padding-top: 1%;
-  font-size: 2em;
+  font-size: 3em;
   color: #333;
   z-index: 2; /* .screen-container::before 요소 위에 표시되도록 z-index 값을 더 높게 설정합니다. */
 }
 
 .status-message {
   color: #000000;
-  font-size: 2em;
+  font-size: 2.6em;
   text-align: center;
   margin-bottom: 50px; /* 텍스트 아래 마진 설정 */
 }
@@ -105,7 +105,7 @@ function getCurrentTime() {
 
 .additional-message {
   font-family: "NanumBarunGothic", sans-serif;
-  font-size: 1.5em;
+  font-size: 2.5em;
   text-align: center;
   color: #000;
   margin-top: 20px; /* 이미지 위에 적용될 마진 */
