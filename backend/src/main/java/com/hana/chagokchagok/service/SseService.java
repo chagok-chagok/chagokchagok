@@ -66,17 +66,12 @@ public class SseService {
      * AI서버로부터 추출된 차번호텍스트를 SSE를 통해 키오스크로 전송
      * @param carNum
      */
-    public void validateCarnum(String carNum, String keyValue) {
+    public void validateCarnum(boolean validation, String carNum, String keyValue) {
         SseEmitter sseEmitter = SseController.sseEmitters.get(keyValue);
         try {
             if(sseEmitter == null) throw new SseEmitterIsNullException(keyValue+" 연결이 존재하지 않음");
             else{
-                System.out.println("carNum : " + carNum);
-                System.out.println("keyValue : " + keyValue);
-                String regax = "^[0-9]{2}[가-힣][0-9]{4}$";
-                Pattern pattern = Pattern.compile(regax);
-                Matcher matcher = pattern.matcher(carNum);
-                if(matcher.matches()) {
+                if(validation) {
                     sseEmitter.send(SseEmitter.event()
                             .name(String.valueOf(SseStatus.VALID_CAR_NUM))
                             .data(carNum));
