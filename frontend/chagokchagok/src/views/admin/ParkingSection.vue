@@ -131,73 +131,77 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  <div class="all-park-container">
-    <div class="area-div">
-      <div></div>
-      <div class="end-width"></div>
-      <div>
-        <div class="area">A</div>
+  <div class="content">
+    <div class="all-park-container">
+      <div class="area-div">
+        <div class="end-width"></div>
+
+        <div>
+          <div class="area">A</div>
+        </div>
+        <div class="middle-width"></div>
+
+        <div class="area"><div class="area">B</div></div>
+
+        <div class="middle-width"></div>
+        <div><div class="area">C</div></div>
+
+        <div class="end-width"></div>
       </div>
-      <div class="middle-width"></div>
-      <div class="area"><div class="area">B</div></div>
-      <div class="middle-width"></div>
-      <div><div class="area">C</div></div>
-      <div class="end-width"></div>
-      <div></div>
-    </div>
-    <div class="section-container">
-      <app-section
-        :parkings="parkingLeftUp"
-        :is-left="true"
-        @location-select="showTooltip"
-      ></app-section>
-      <app-section-middle-vue
-        :parkings="parkingMiddleInfoLU"
-        @location-select="showTooltip"
-      ></app-section-middle-vue>
-      <app-section-middle-vue
-        :parkings="parkingMiddleInfoRU"
-        @location-select="showTooltip"
-      ></app-section-middle-vue>
-      <app-section
-        :parkings="parkingRightUp"
-        :is-left="false"
-        @location-select="showTooltip"
-      ></app-section>
-    </div>
-    <div class="section-container" style="margin-bottom: 2%">
-      <app-section
-        :parkings="parkingLeftDown"
-        :is-left="true"
-        @location-select="showTooltip"
-      ></app-section>
-      <app-section-middle-vue
-        :parkings="parkingMiddleInfoLD"
-        @location-select="showTooltip"
-      ></app-section-middle-vue>
-      <app-section-middle-vue
-        :parkings="parkingMiddleInfoRD"
-        @location-select="showTooltip"
-      ></app-section-middle-vue>
-      <app-section
-        :parkings="parkingRightDown"
-        :is-left="false"
-        @location-select="showTooltip"
-      ></app-section>
-    </div>
-    <div class="color-info-div-container">
-      <div class="color-info-div">
-        <div :class="['color-info', 'yes-car']"></div>
-        <span>주차됨</span>
+      <div class="section-container">
+        <app-section
+          :parkings="parkingLeftUp"
+          :is-left="true"
+          @location-select="showTooltip"
+        ></app-section>
+        <app-section-middle-vue
+          :parkings="parkingMiddleInfoLU"
+          @location-select="showTooltip"
+        ></app-section-middle-vue>
+        <app-section-middle-vue
+          :parkings="parkingMiddleInfoRU"
+          @location-select="showTooltip"
+        ></app-section-middle-vue>
+        <app-section
+          :parkings="parkingRightUp"
+          :is-left="false"
+          @location-select="showTooltip"
+        ></app-section>
       </div>
-      <div class="color-info-div">
-        <div :class="['color-info', 'no-car']"></div>
-        <span>빈자리</span>
+      <div class="section-container" style="margin-bottom: 2%">
+        <app-section
+          :parkings="parkingLeftDown"
+          :is-left="true"
+          @location-select="showTooltip"
+        ></app-section>
+        <app-section-middle-vue
+          :parkings="parkingMiddleInfoLD"
+          @location-select="showTooltip"
+        ></app-section-middle-vue>
+        <app-section-middle-vue
+          :parkings="parkingMiddleInfoRD"
+          @location-select="showTooltip"
+        ></app-section-middle-vue>
+        <app-section
+          :parkings="parkingRightDown"
+          :is-left="false"
+          @location-select="showTooltip"
+        ></app-section>
       </div>
-    </div>
-    <div class="exit-div">
-      <div class="pink-circle"></div>
-      <button class="exit-button">Exit</button>
+      <div class="color-info-div-container">
+        <div class="color-info-div">
+          <div :class="['color-info', 'yes-car']"></div>
+          <span>주차됨</span>
+        </div>
+        <div class="color-info-div">
+          <div :class="['color-info', 'no-car']"></div>
+          <span>빈자리</span>
+        </div>
+      </div>
+      <div class="exit-div">
+        <div class="pink-circle"></div>
+        <button class="exit-button">Exit</button>
+      </div>
     </div>
   </div>
 </template>
@@ -208,6 +212,13 @@ onMounted(() => {
   padding: 0;
   box-sizing: border-box;
   border-collapse: collapse;
+}
+.content {
+  height: 78%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .parking-title-div {
   display: flex;
@@ -230,12 +241,12 @@ onMounted(() => {
   font-weight: bolder;
 }
 .area-div {
-  height: 7%;
+  width: 100%;
+  height: 10%;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: flex-end;
-  padding: 0 6%; /* 구역 표시 정렬 안맞으면 패딩값 조정 */
 }
 
 .area {
@@ -250,9 +261,11 @@ onMounted(() => {
   border-radius: 5px;
 }
 .end-width {
+  /* height: 5px; */
   width: 90px;
 }
 .middle-width {
+  /* height: 5px; */
   width: 180px;
 }
 
@@ -260,20 +273,24 @@ onMounted(() => {
   display: flex;
   flex-direction: row;
   margin-bottom: 4%;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  height: 35%;
+  width: 100%;
 }
 
 .color-info-div-container {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  margin-right: 6.8%;
+  /* margin-right: 6.8%; */
+  height: 7%;
+  width: 100%;
 }
 .color-info-div {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-right: 15px;
+  margin-left: 15px;
 }
 .color-info-div span {
   margin-left: 5px;
@@ -305,8 +322,9 @@ onMounted(() => {
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-
-  margin: 20px 8.5% 0 0;
+  height: 13%;
+  width: 100%;
+  /* margin: 20px 8.5% 0 0; */
 }
 
 .pink-circle {
@@ -317,7 +335,7 @@ onMounted(() => {
   margin-right: 5px;
 }
 .exit-button {
-  width: 100px;
+  width: 80px;
   height: 30px;
   background-color: #ffefef;
   border: 1px solid transparent;
@@ -334,6 +352,7 @@ onMounted(() => {
   flex-direction: column;
   align-items: flex-start;
   margin: 1px 0 0 45px;
+  font-family: "NanumBarunGothic", sans-serif;
 }
 
 .describtion-bar > #app {
@@ -362,6 +381,7 @@ onMounted(() => {
   border: 1px solid #ccc;
   border-radius: 8px;
   z-index: 1;
+  outline: none;
 }
 
 .search-bar input[type="text"] {
@@ -373,9 +393,15 @@ onMounted(() => {
   width: 100%;
   background-color: #f7f7f7;
   opacity: 0.8;
+  outline: none;
 }
 
 .all-park-container {
-  height: 80vh;
+  width: 83%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
 }
 </style>
