@@ -53,14 +53,12 @@ onMounted(async () => {
   drawDoughtnut();
   //프로그래스바
   startAnimation();
-
   //실시간 변화시 차트 업데이트
   watchEffect(() => {
     //라인차트 업데이트
     lineChartRef.data.datasets[0].data = today_visits.value;
     lineChartRef.data.datasets[1].data = pre_visits.value;
     lineChartRef.update();
-
     //도넛차트 업데이트
     doughnutChartRef.data.datasets[0].data = [
       autoReportCnt.value,

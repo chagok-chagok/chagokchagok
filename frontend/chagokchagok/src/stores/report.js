@@ -14,6 +14,8 @@ export const useReportStore = defineStore("report", () => {
   const searchRES = ref(0);
 
   const getReportList = async (page) => {
+    instance.defaults.headers["Authorization"] =
+      sessionStorage.getItem("accessToken");
     const { data } = await instance.get("admin/report", { params: { page } });
     reports.value = data.board;
     today_cnt.value = data.today_cnt;
@@ -25,6 +27,8 @@ export const useReportStore = defineStore("report", () => {
   };
 
   const modifyReport = async (report) => {
+    instance.defaults.headers["Authorization"] =
+      sessionStorage.getItem("accessToken");
     await instance.put("admin/report", report);
   };
 

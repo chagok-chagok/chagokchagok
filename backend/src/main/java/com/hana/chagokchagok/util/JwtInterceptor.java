@@ -26,7 +26,17 @@ public class JwtInterceptor implements HandlerInterceptor {
     public boolean preHandle(jakarta.servlet.http.HttpServletRequest request, jakarta.servlet.http.HttpServletResponse response, Object handler) throws Exception {
         final String token = request.getHeader(HEADER_AUTH);
         System.out.println("검증할 토큰!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+token);
+        System.out.println(request.getMethod());
+
+        String requestUrl = request.getRequestURL().toString();
+        System.out.println("요청된 URL: " + requestUrl);
+
         if (CorsUtils.isPreFlightRequest(request)) {
+            System.out.println("옵션"+CorsUtils.isPreFlightRequest(request));
+            return true;
+        }
+
+        if ("GET".equals(request.getMethod()) && "text/event-stream".equals(request.getContentType())) {
             return true;
         }
 

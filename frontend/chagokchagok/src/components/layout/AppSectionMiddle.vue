@@ -63,8 +63,8 @@ td {
 }
 .section {
   /* background-color: bisque; */
-  border-top: 2px dashed black;
-  border-bottom: 2px dashed black;
+  border-top: 2px dashed rgb(164, 164, 164);
+  border-bottom: 2px dashed rgb(164, 164, 164);
 }
 
 .not-disabled {
@@ -77,11 +77,11 @@ td {
   border-left: 2px dashed black;
 } */
 .right {
-  border-right: 2px dashed black;
+  border-right: 2px dashed rgb(164, 164, 164);
 }
 .location {
   height: 100%;
-  padding: 5px;
+  padding: 3px;
 }
 
 td {
