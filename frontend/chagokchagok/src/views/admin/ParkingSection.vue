@@ -291,9 +291,13 @@ onMounted(() => {
 
 .yes-car {
   background-color: #84adff;
+  border: none;
+  border-radius: 7px;
 }
 .no-car {
   background-color: #e1e1e1;
+  border: none;
+  border-radius: 7px;
 }
 
 .exit-div {
@@ -329,7 +333,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin: 1% 0 0 45px;
+  margin: 1px 0 0 45px;
 }
 
 .describtion-bar > #app {

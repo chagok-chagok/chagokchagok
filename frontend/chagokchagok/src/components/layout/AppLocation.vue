@@ -50,7 +50,7 @@ const clickLocation = (locationName) => {
         active: targetLocation.area == location.name,
       }"
     >
-      <mdi-icon-button :path="mdiWheelchair" :size="50"></mdi-icon-button>
+      <mdi-icon-button :path="mdiWheelchair" :size="33"></mdi-icon-button>
       <p>{{ location.name }}</p>
     </div>
   </div>
@@ -103,11 +103,17 @@ const clickLocation = (locationName) => {
 
 .yes-car {
   background-color: #84adff;
+  border: none;
+  border-radius: 7px;
 }
 .no-car {
   background-color: #e1e1e1;
+  border: none;
+  border-radius: 7px;
 }
 .active {
   background-color: #84ff9f;
+  border: none;
+  border-radius: 7px;
 }
 </style>
