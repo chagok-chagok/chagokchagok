@@ -7,6 +7,7 @@ import { instance } from "@/utils/mainAxios";
 export const dashBoardStore = defineStore("dashBoardStore", () => {
   //대쉬보드의 데이터를 로드
   const getDashBoard = async () => {
+    // console.log("token : ")
     const { data } = await instance.get("admin/dashboard");
     return data;
   };
