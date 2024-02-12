@@ -1,5 +1,4 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
 import { ref, onMounted, watchEffect } from "vue";
 import { Chart as ChartJS } from "chart.js/auto";
 import { notificationStore } from "@/stores/alert.js";

@@ -16,6 +16,8 @@ export const useParkingSectionStore = defineStore("parkingSection", () => {
   const isExchangeModalOpen = ref(false);
 
   const getParkList = async () => {
+    instance.defaults.headers["Authorization"] =
+      sessionStorage.getItem("accessToken");
     const { data } = await instance.get("/guest");
     parks.value = data.parks;
     occupied.value = parks.value
@@ -24,12 +26,16 @@ export const useParkingSectionStore = defineStore("parkingSection", () => {
   };
 
   const getCarInfo = async (area) => {
+    instance.defaults.headers["Authorization"] =
+      sessionStorage.getItem("accessToken");
     const { data } = await instance.post("/admin/caloc", { area: area });
     carInfo.value = data;
   };
 
   const searchLocation = async (queryType, queryValue) => {
     try {
+      instance.defaults.headers["Authorization"] =
+        sessionStorage.getItem("accessToken");
       const { data } = await instance.post("/admin/search", {
         type: queryType.value,
         value: queryValue.value.trim(),
@@ -41,11 +47,15 @@ export const useParkingSectionStore = defineStore("parkingSection", () => {
   };
 
   const getInParkCarList = async () => {
+    instance.defaults.headers["Authorization"] =
+      sessionStorage.getItem("accessToken");
     const { data } = await instance.get("/admin/cars");
     inParkCarList.value = data.cars;
   };
 
   const exchangeLocation = async (carNum) => {
+    instance.defaults.headers["Authorization"] =
+      sessionStorage.getItem("accessToken");
     await instance.put("/admin/exchange", {
       car_num: carNum.trim(),
       original_location: originalLocation.value,
@@ -53,6 +63,8 @@ export const useParkingSectionStore = defineStore("parkingSection", () => {
   };
 
   const unlockBar = async (carNum) => {
+    instance.defaults.headers["Authorization"] =
+      sessionStorage.getItem("accessToken");
     await instance.put("/admin/bar", {
       car_no: carNum.trim(),
       park_full_name: originalLocation.value,

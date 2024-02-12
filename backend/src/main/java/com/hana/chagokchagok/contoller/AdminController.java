@@ -124,6 +124,7 @@ public class AdminController {
     }
     @GetMapping("/common")
     public CommonAlertResponse getCommonAlertData() {
+        System.out.println("공통바 슈웃");
         return adminService.getCommonAlertData();
     }
 
@@ -145,6 +146,7 @@ public class AdminController {
 
     @GetMapping("/dashboard")
     public DashBoardResponse getDashboard(){
+        System.out.println("데시보드 슈웃");
         return adminService.getDashboard();
     }
 

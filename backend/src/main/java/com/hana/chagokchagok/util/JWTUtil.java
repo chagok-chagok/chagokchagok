@@ -43,6 +43,8 @@ public class JWTUtil {
     private String create(String id, String subject, long expireTime) {
 //		Payload 설정 : 생성일 (IssuedAt), 유효기간 (Expiration),
 //		토큰 제목 (Subject), 데이터 (Claim) 등 정보 세팅.
+        System.out.println("확인할 시간값!!!!!!!!!!!!!!!!!!"+expireTime);
+        System.out.println("!!!!!!!!!@!@!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"+new Date(System.currentTimeMillis() + expireTime));
         Claims claims = Jwts.claims()
                 .setSubject(subject) // 토큰 제목 설정 ex) access-token, refresh-token
                 .setIssuedAt(new Date()) // 생성일 설정
