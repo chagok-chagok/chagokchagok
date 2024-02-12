@@ -65,6 +65,6 @@ const locationSelect = (message) => {
 }
 .location {
   height: 100%;
-  padding: 5px;
+  padding: 7px;
 }
 </style>

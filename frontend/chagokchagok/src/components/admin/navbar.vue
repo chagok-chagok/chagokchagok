@@ -49,7 +49,7 @@ const closeModalOnOutsideClick = (event) => {
   <!-- router link 랑 setting icon 링크 설정 해줘야함 -->
   <nav class="navbar-container">
     <div class="links-container">
-      <RouterLink to="/admin/dashboard" class="router-link"
+      <RouterLink to="/admin/dashboard" class="router-link Dashboard"
         >Dashboard</RouterLink
       >
       <RouterLink to="/admin/section" class="router-link"
@@ -135,8 +135,13 @@ const closeModalOnOutsideClick = (event) => {
 }
 .links-container a.router-link-exact-active {
   color: var(--color-text, black);
-  font-weight: bold;
+  /* font-weight: bold; */
+  text-shadow: 0.02em 0 black, 0 0.02em black, -0.02em 0 black, 0 -0.02em black; /* 텍스트 그림자 */
+  /* font-weight: bold; */
+  /* transform: scale(1); */
+  /* font-size-adjust: 0.5; 글꼴 크기 조절 */
 }
+
 .router-link {
   font-size: 1rem;
   color: var(--Grey-50, #d0d1d2);
@@ -144,9 +149,11 @@ const closeModalOnOutsideClick = (event) => {
   &:hover {
     background-color: transparent;
   }
-
   text-decoration: none;
 }
+/* .links-container a.router-link-exact-active .Dashboard {
+  padding-right: 35px;
+} */
 .admin-container {
   display: flex;
   align-items: center;
