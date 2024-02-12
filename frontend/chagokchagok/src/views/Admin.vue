@@ -47,7 +47,6 @@ onMounted(() => {
   <main>
     <div class="container">
       <section class="nav"><NavbarVue /></section>
-
       <section class="under">
         <div class="content">
           <RouterView />
