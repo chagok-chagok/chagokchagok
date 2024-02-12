@@ -15,6 +15,10 @@ export const useParkingSectionStore = defineStore("parkingSection", () => {
   const isUnlockBarModalOpen = ref(false);
   const isExchangeModalOpen = ref(false);
 
+  const update = async () => {
+    getParkList();
+  };
+
   const getParkList = async () => {
     instance.defaults.headers["Authorization"] =
       sessionStorage.getItem("accessToken");
@@ -79,6 +83,7 @@ export const useParkingSectionStore = defineStore("parkingSection", () => {
   };
 
   return {
+    update,
     parks,
     occupied,
     carInfo,

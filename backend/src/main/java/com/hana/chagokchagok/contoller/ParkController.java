@@ -5,10 +5,12 @@ import com.hana.chagokchagok.dto.request.CarNumRequest;
 import com.hana.chagokchagok.dto.request.PullOutRequest;
 import com.hana.chagokchagok.dto.request.ValidateAreaRequest;
 import com.hana.chagokchagok.dto.response.AllocateCarResponse;
+import com.hana.chagokchagok.dto.response.CarNumValidationDto;
 import com.hana.chagokchagok.dto.response.ValidateAreaResponse;
 import com.hana.chagokchagok.service.AdminService;
 import com.hana.chagokchagok.service.ParkService;
 import com.hana.chagokchagok.service.SseService;
+import com.hana.chagokchagok.util.ValidateCarNum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -88,8 +90,10 @@ public class ParkController {
      * @return Void
      */
     @PostMapping("/validation/carnum")
-    public ResponseEntity<Void> sendCarNum(@RequestBody CarNumRequest carNumRequest){
-        sseService.validateCarnum(carNumRequest.getCarNum(), KIOSK_KEY);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<CarNumValidationDto> sendCarNum(@RequestBody CarNumRequest carNumRequest){
+        System.out.println("carnum 들어옴"+carNumRequest);
+        boolean validation = ValidateCarNum.validateCarNum(carNumRequest.getCarNum());
+        sseService.validateCarnum(validation, carNumRequest.getCarNum(), KIOSK_KEY);
+        return new ResponseEntity<>(new CarNumValidationDto(validation), HttpStatus.OK);
     }
 }

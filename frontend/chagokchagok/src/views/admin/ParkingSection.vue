@@ -7,6 +7,7 @@ import { storeToRefs } from "pinia";
 import Tooltip2 from "@/components/admin/Tooltip2.vue";
 import ModalBar from "@/components/admin/modal/ModalBar.vue";
 import ModalChange from "@/components/admin/modal/ModalChange.vue";
+import AppPageHeader from "@/components/admin/AppPageHeader.vue";
 
 const parkingSectionStore = useParkingSectionStore();
 const {
@@ -115,104 +116,92 @@ onMounted(() => {
   <modal-change v-if="isExchangeModalOpen"></modal-change>
   <Tooltip2></Tooltip2>
 
-  <div class="top-bar">
-    <div class="parking-title-div">
-      <div class="parking-logo">P</div>
-      <h3 class="page-title">차량 배정 현황</h3>
-    </div>
-    <div class="describtion-bar">
-      <span
-        >각 자리 클릭 시 차단바 제어, 자리 변경 등의 동작이 가능합니다.</span
-      >
-      <div id="app">
-        <div class="search-bar">
-          <form @submit.prevent="searchQuery">
-            <select name="search" id="search" v-model="queryType">
-              <option value="CAR_NUMBER">차 번호</option>
-              <option value="SPOT_NUMBER">주차 위치</option>
-            </select>
-            <input type="text" v-model="queryValue" />
-          </form>
-        </div>
+  <AppPageHeader icon="square-parking" pageTitle="차량 배정 현황" />
+  <div class="describtion-bar">
+    <span>각 자리 클릭 시 차단바 제어, 자리 변경 등의 동작이 가능합니다.</span>
+    <div id="app">
+      <div class="search-bar">
+        <form @submit.prevent="searchQuery">
+          <select name="search" id="search" v-model="queryType">
+            <option value="CAR_NUMBER">차 번호</option>
+            <option value="SPOT_NUMBER">주차 위치</option>
+          </select>
+          <input type="text" v-model="queryValue" />
+        </form>
       </div>
     </div>
   </div>
-  <div class="all-park-container">
-    <div class="area-div">
-      <div></div>
-      <div class="end-width"></div>
-      <div>
-        <div class="area">A</div>
-      </div>
-      <div class="middle-width"></div>
-      <div class="area"><div class="area">B</div></div>
-      <div class="middle-width"></div>
-      <div><div class="area">C</div></div>
-      <div class="end-width"></div>
-      <div></div>
-    </div>
-    <!-- <form @submit.prevent="searchQuery">
-        <select name="search" id="search" v-model="queryType">
-          <option value="CAR_NUMBER">차 번호</option>
-          <option value="SPOT_NUMBER">주차 위치</option>
-        </select>
-        <input type="text" v-model="queryValue" />
-      </form>
-    </div> -->
+  <div class="content">
+    <div class="all-park-container">
+      <div class="area-div">
+        <div class="end-width"></div>
 
-    <div class="section-container">
-      <app-section
-        :parkings="parkingLeftUp"
-        :is-left="true"
-        @location-select="showTooltip"
-      ></app-section>
-      <app-section-middle-vue
-        :parkings="parkingMiddleInfoLU"
-        @location-select="showTooltip"
-      ></app-section-middle-vue>
-      <app-section-middle-vue
-        :parkings="parkingMiddleInfoRU"
-        @location-select="showTooltip"
-      ></app-section-middle-vue>
-      <app-section
-        :parkings="parkingRightUp"
-        :is-left="false"
-        @location-select="showTooltip"
-      ></app-section>
-    </div>
-    <div class="section-container">
-      <app-section
-        :parkings="parkingLeftDown"
-        :is-left="true"
-        @location-select="showTooltip"
-      ></app-section>
-      <app-section-middle-vue
-        :parkings="parkingMiddleInfoLD"
-        @location-select="showTooltip"
-      ></app-section-middle-vue>
-      <app-section-middle-vue
-        :parkings="parkingMiddleInfoRD"
-        @location-select="showTooltip"
-      ></app-section-middle-vue>
-      <app-section
-        :parkings="parkingRightDown"
-        :is-left="false"
-        @location-select="showTooltip"
-      ></app-section>
-    </div>
-    <div class="color-info-div-container">
-      <div class="color-info-div">
-        <div :class="['color-info', 'yes-car']"></div>
-        <span>주차됨</span>
+        <div>
+          <div class="area">A</div>
+        </div>
+        <div class="middle-width"></div>
+
+        <div class="area"><div class="area">B</div></div>
+
+        <div class="middle-width"></div>
+        <div><div class="area">C</div></div>
+
+        <div class="end-width"></div>
       </div>
-      <div class="color-info-div">
-        <div :class="['color-info', 'no-car']"></div>
-        <span>빈자리</span>
+      <div class="section-container">
+        <app-section
+          :parkings="parkingLeftUp"
+          :is-left="true"
+          @location-select="showTooltip"
+        ></app-section>
+        <app-section-middle-vue
+          :parkings="parkingMiddleInfoLU"
+          @location-select="showTooltip"
+        ></app-section-middle-vue>
+        <app-section-middle-vue
+          :parkings="parkingMiddleInfoRU"
+          @location-select="showTooltip"
+        ></app-section-middle-vue>
+        <app-section
+          :parkings="parkingRightUp"
+          :is-left="false"
+          @location-select="showTooltip"
+        ></app-section>
       </div>
-    </div>
-    <div class="exit-div">
-      <div class="pink-circle"></div>
-      <button class="exit-button">Exit</button>
+      <div class="section-container" style="margin-bottom: 2%">
+        <app-section
+          :parkings="parkingLeftDown"
+          :is-left="true"
+          @location-select="showTooltip"
+        ></app-section>
+        <app-section-middle-vue
+          :parkings="parkingMiddleInfoLD"
+          @location-select="showTooltip"
+        ></app-section-middle-vue>
+        <app-section-middle-vue
+          :parkings="parkingMiddleInfoRD"
+          @location-select="showTooltip"
+        ></app-section-middle-vue>
+        <app-section
+          :parkings="parkingRightDown"
+          :is-left="false"
+          @location-select="showTooltip"
+        ></app-section>
+      </div>
+      <div class="color-info-div-container">
+        <div class="color-info-div">
+          <div :class="['color-info', 'yes-car']"></div>
+          <span>주차됨</span>
+        </div>
+        <div class="color-info-div">
+          <div :class="['color-info', 'no-car']"></div>
+          <span>빈자리</span>
+        </div>
+      </div>
+      <div class="exit-div">
+        <div class="pink-circle"></div>
+        <button class="exit-button">Exit</button>
+      </div>
     </div>
   </div>
 </template>
@@ -224,6 +213,13 @@ onMounted(() => {
   box-sizing: border-box;
   border-collapse: collapse;
 }
+.content {
+  height: 78%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .parking-title-div {
   display: flex;
   flex-direction: row;
@@ -232,6 +228,7 @@ onMounted(() => {
 }
 .page-title {
   margin-left: 20px;
+  font-size: 3vh;
 }
 .parking-logo {
   display: flex;
@@ -244,12 +241,12 @@ onMounted(() => {
   font-weight: bolder;
 }
 .area-div {
-  height: 40px;
+  width: 100%;
+  height: 10%;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: flex-end;
-  padding: 0 20px; /* 구역 표시 정렬 안맞으면 패딩값 조정 */
 }
 
 .area {
@@ -264,30 +261,36 @@ onMounted(() => {
   border-radius: 5px;
 }
 .end-width {
+  /* height: 5px; */
   width: 90px;
 }
 .middle-width {
+  /* height: 5px; */
   width: 180px;
 }
 
 .section-container {
   display: flex;
   flex-direction: row;
-  margin-bottom: 20px;
-  justify-content: space-evenly;
+  margin-bottom: 4%;
+  justify-content: space-between;
+  height: 35%;
+  width: 100%;
 }
 
 .color-info-div-container {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  margin-right: 30px;
+  /* margin-right: 6.8%; */
+  height: 7%;
+  width: 100%;
 }
 .color-info-div {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-right: 15px;
+  margin-left: 15px;
 }
 .color-info-div span {
   margin-left: 5px;
@@ -305,9 +308,13 @@ onMounted(() => {
 
 .yes-car {
   background-color: #84adff;
+  border: none;
+  border-radius: 7px;
 }
 .no-car {
   background-color: #e1e1e1;
+  border: none;
+  border-radius: 7px;
 }
 
 .exit-div {
@@ -315,8 +322,9 @@ onMounted(() => {
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-
-  margin: 20px 50px 0 0;
+  height: 13%;
+  width: 100%;
+  /* margin: 20px 8.5% 0 0; */
 }
 
 .pink-circle {
@@ -327,8 +335,8 @@ onMounted(() => {
   margin-right: 5px;
 }
 .exit-button {
-  width: 117px;
-  height: 37px;
+  width: 80px;
+  height: 30px;
   background-color: #ffefef;
   border: 1px solid transparent;
   border-radius: 3px;
@@ -343,11 +351,16 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin: 18px 0 0 45px;
+  margin: 1px 0 0 45px;
+  font-family: "NanumBarunGothic", sans-serif;
 }
 
 .describtion-bar > #app {
-  margin: 15px 0 0 0;
+  margin: 1% 0 0 0;
+}
+
+.descript {
+  font-size: 2vh;
 }
 
 #app {
@@ -368,6 +381,7 @@ onMounted(() => {
   border: 1px solid #ccc;
   border-radius: 8px;
   z-index: 1;
+  outline: none;
 }
 
 .search-bar input[type="text"] {
@@ -379,5 +393,15 @@ onMounted(() => {
   width: 100%;
   background-color: #f7f7f7;
   opacity: 0.8;
+  outline: none;
+}
+
+.all-park-container {
+  width: 83%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
 }
 </style>
