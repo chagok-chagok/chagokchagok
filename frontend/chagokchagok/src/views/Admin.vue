@@ -5,21 +5,12 @@ import NavbarVue from "@/components/admin/navbar.vue";
 import AppCommonBar from "@/components/admin/AppCommonBar.vue";
 import AppFloatingAlert from "@/components/admin/AppFloatingAlert.vue";
 import { notificationStore } from "@/stores/alert.js";
-import { useParkingSectionStore } from "@/stores/parkingSectionStore";
 const store = notificationStore();
-const parkingSectionStore = useParkingSectionStore();
-
 const { VITE_VUE_SPRING_URL } = import.meta.env;
 
 //SSE 알림이 발생할때마다 공통바 업데이트
 const adminUrl = `${VITE_VUE_SPRING_URL}sse/admin`;
-const sseEvent = new EventSource(adminUrl, {
-  withCredentials: true,
-  headers: {
-    Authorization: `Bearer ${yourAccessToken}`, // 실제 액세스 토큰으로 교체
-    "Content-Type": "application/json",
-  },
-});
+const sseEvent = new EventSource(adminUrl);
 onMounted(() => {
   //연결 리스너
   sseEvent.addEventListener("open", function (e) {
@@ -44,7 +35,6 @@ onMounted(() => {
   sseEvent.addEventListener("REALTIME_COMMON", function (e) {
     store.updateBar();
     store.updateVisitChart();
-    parkingSectionStore.update();
   });
 });
 </script>
