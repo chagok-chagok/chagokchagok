@@ -57,8 +57,8 @@ td {
 .section-container {
   /* width: 100%; */
   /* height: 100%; */
-  width: 180px;
-  height: 200px;
+  width: 20vh;
+  height: 100%;
   /* background-color: blueviolet; */
 }
 .section {

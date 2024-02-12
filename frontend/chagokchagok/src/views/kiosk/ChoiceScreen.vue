@@ -97,7 +97,9 @@ function selectParking(isDisabled) {
       </button>
       <button class="parking-option" @click.prevent="selectParking(true)">
         <img src="@/assets/주차안내 이미지 2.png" alt="장애인 주차" />
-        <div>장애인 주차구역을 <br />우선 배정해드립니다.</div>
+        <div style="padding-bottom: 11%">
+          장애인 주차구역을 <br />우선 배정해드립니다.
+        </div>
       </button>
     </div>
   </div>
@@ -251,12 +253,12 @@ function selectParking(isDisabled) {
 }
 
 .parking-option > img {
-  margin-top: -130px;
-  scale: 0.45;
+  margin-bottom: 40%;
+  scale: 1;
 }
 
 .parking-option > :first-child {
-  margin-bottom: -100px; /* 첫 번째 요소와 두 번째 요소 사이의 간격을 늘립니다 */
+  /* margin-bottom: -100px; 첫 번째 요소와 두 번째 요소 사이의 간격을 늘립니다 */
 }
 
 .parking-option > :last-child {

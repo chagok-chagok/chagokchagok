@@ -60,7 +60,6 @@ const router = createRouter({
       name: "allocation",
       component: AllocationScreen,
     },
-
     {
       path: "/guest",
       name: "guest",
