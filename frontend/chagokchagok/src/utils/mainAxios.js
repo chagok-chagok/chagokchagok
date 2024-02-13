@@ -130,17 +130,16 @@ instance.interceptors.response.use(
           // 에러가 발생했던 원래의 요청을 다시 진행.
           return instance(originalRequest);
         });
+      } else {
+        if (
+          originalRequest.headers.Authorization !=
+          sessionStorage.getItem("accessToken")
+        ) {
+          instance.defaults.headers["Authorization"] =
+            sessionStorage.getItem("accessToken");
+          return instance(originalRequest);
+        }
       }
-      // else {
-      //   if (
-      //     originalRequest.headers.Authorization !=
-      //     sessionStorage.getItem("accessToken")
-      //   ) {
-      //     instance.defaults.headers["Authorization"] =
-      //       sessionStorage.getItem("accessToken");
-      //     return instance(originalRequest);
-      //   }
-      // }
     } else if (status == httpStatusCode.FORBIDDEN) {
       alert(error.response.data.message);
     }
