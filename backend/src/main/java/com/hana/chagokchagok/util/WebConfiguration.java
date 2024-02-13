@@ -26,7 +26,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 //		Set max age to 1800 seconds (30 minutes).
         registry
                 .addMapping("/**")
-                .allowedOrigins("http://localhost:5173")
+                .allowedOrigins("http://localhost:5173", "http://172.19.0.2:80", "http://172.19.0.2:443")
                 .allowedHeaders("*")
 //			.allowedOrigins("http://localhost:5173", "http://localhost:5174")
 //                .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(),
@@ -40,7 +40,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(jwtInterceptor).excludePathPatterns("/admin/login", "/sse/admin");
+        registry.addInterceptor(jwtInterceptor).excludePathPatterns("/admin/login", "/sse/admin", "/park/**");
     }
 
 }
