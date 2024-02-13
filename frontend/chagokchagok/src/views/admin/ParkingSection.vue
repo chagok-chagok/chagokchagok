@@ -259,6 +259,8 @@ onMounted(() => {
   background-color: #eff5ff;
   color: #5f93fb;
   border-radius: 5px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
 }
 .end-width {
   /* height: 5px; */
@@ -295,6 +297,8 @@ onMounted(() => {
 .color-info-div span {
   margin-left: 5px;
   font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
 }
 .color-info {
   display: flex;
@@ -341,6 +345,7 @@ onMounted(() => {
   border: 1px solid transparent;
   border-radius: 3px;
   color: #ff5a5f;
+  font-family: 'Poppins', sans-serif;
 }
 
 .top-bar {
@@ -382,6 +387,7 @@ onMounted(() => {
   border-radius: 8px;
   z-index: 1;
   outline: none;
+  font-family: 'Roboto', sans-serif;
 }
 
 .search-bar input[type="text"] {
@@ -394,6 +400,7 @@ onMounted(() => {
   background-color: #f7f7f7;
   opacity: 0.8;
   outline: none;
+  font-family: 'Roboto', sans-serif;
 }
 
 .all-park-container {

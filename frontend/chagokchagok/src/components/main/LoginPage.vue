@@ -204,6 +204,8 @@ main {
 
 .login-title {
   font-size: 50px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
 }
 
 .content-article {
@@ -241,6 +243,8 @@ main {
   justify-content: flex-end;
   width: 100%;
   margin-top: 10px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
 }
 
 .remember-me input {
@@ -314,6 +318,9 @@ main {
   background-color: #3a57e8;
   color: #ffffff;
   box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
 }
 #background {
   display: flex;
@@ -381,5 +388,10 @@ h1 {
     color: #ff003e;
     vertical-align: middle;
   }
+}
+.bold {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  color: #8A92A6;
 }
 </style>
