@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { useParkingSectionStore } from "@/stores/parkingSectionStore";
 import { instance } from "@/utils/mainAxios";
+const { VITE_VUE_SPRING_URL } = import.meta.env;
 
 const selectedOption = ref("vehicle");
 const searchQuery = ref("");
@@ -12,7 +13,7 @@ const search = async () => {
   try {
     instance.defaults.headers["Authorization"] =
       sessionStorage.getItem("accessToken");
-    const response = await instance.post("http://localhost:8080/admin/search", {
+    const response = await instance.post(`${VITE_VUE_SPRING_URL}admin/search`, {
       type: selectedOption.value,
       value: searchQuery.value,
     });
