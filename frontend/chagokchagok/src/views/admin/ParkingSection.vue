@@ -25,15 +25,15 @@ const queryValue = ref("");
 // name: String, isDisabled: Boolean
 // 위쪽
 const parkingLeftUp = ref([
-  { name: "A1", isDisabled: false },
+  { name: "A1", isDisabled: true },
   { name: "A2", isDisabled: false },
-  { name: "A3", isDisabled: true },
+  { name: "A3", isDisabled: false },
 ]);
 const parkingMiddleInfoLU = ref([
-  { name: "A7", isDisabled: false },
   { name: "A8", isDisabled: false },
   { name: "A9", isDisabled: false },
   { name: "A10", isDisabled: false },
+  { name: "A11", isDisabled: false },
   { name: "B1", isDisabled: false },
   { name: "B2", isDisabled: false },
   { name: "B3", isDisabled: false },
@@ -58,9 +58,10 @@ const parkingRightUp = ref([
 
 // 아래쪽
 const parkingLeftDown = ref([
-  { name: "A4", isDisabled: true },
+  { name: "A4", isDisabled: false },
   { name: "A5", isDisabled: false },
   { name: "A6", isDisabled: false },
+  { name: "A7", isDisabled: false },
 ]);
 const parkingMiddleInfoLD = ref([
   { name: "A11", isDisabled: false },
@@ -259,6 +260,8 @@ onMounted(() => {
   background-color: #eff5ff;
   color: #5f93fb;
   border-radius: 5px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
 }
 .end-width {
   /* height: 5px; */
@@ -295,6 +298,8 @@ onMounted(() => {
 .color-info-div span {
   margin-left: 5px;
   font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
 }
 .color-info {
   display: flex;
@@ -341,6 +346,7 @@ onMounted(() => {
   border: 1px solid transparent;
   border-radius: 3px;
   color: #ff5a5f;
+  font-family: 'Poppins', sans-serif;
 }
 
 .top-bar {
@@ -382,6 +388,7 @@ onMounted(() => {
   border-radius: 8px;
   z-index: 1;
   outline: none;
+  font-family: 'Roboto', sans-serif;
 }
 
 .search-bar input[type="text"] {
@@ -394,6 +401,7 @@ onMounted(() => {
   background-color: #f7f7f7;
   opacity: 0.8;
   outline: none;
+  font-family: 'Roboto', sans-serif;
 }
 
 .all-park-container {
