@@ -1,6 +1,8 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { instance } from "@/utils/mainAxios";
+import { localAxios } from "@/utils/mainAxios";
+
+const local = localAxios();
 
 export const useReportStore = defineStore("report", () => {
   /* ============= 신고 리스트 받아오는 요청 ============= */
@@ -14,9 +16,7 @@ export const useReportStore = defineStore("report", () => {
   const searchRES = ref(0);
 
   const getReportList = async (page) => {
-    instance.defaults.headers["Authorization"] =
-      sessionStorage.getItem("accessToken");
-    const { data } = await instance.get("admin/report", { params: { page } });
+    const { data } = await local.get("admin/report", { params: { page } });
     reports.value = data.board;
     today_cnt.value = data.today_cnt;
     unsolved_cnt.value = data.unsolved_cnt;
@@ -27,9 +27,7 @@ export const useReportStore = defineStore("report", () => {
   };
 
   const modifyReport = async (report) => {
-    instance.defaults.headers["Authorization"] =
-      sessionStorage.getItem("accessToken");
-    await instance.put("admin/report", report);
+    await local.put("admin/report", report);
   };
 
   return {
