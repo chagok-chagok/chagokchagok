@@ -24,6 +24,12 @@ const rememberMe = ref(true);
 
 const login = async () => {
   console.log("==========최신버전==========");
+  console.log("==========로그인로그인로그인==========");
+  console.log("==========로그인로그인로그인==========");
+  console.log("==========로그인로그인로그인==========");
+  console.log("==========로그인로그인로그인==========");
+  console.log("==========로그인로그인로그인==========");
+
   await adminLogin(loginAdmin.value);
   let token = sessionStorage.getItem("accessToken");
 
