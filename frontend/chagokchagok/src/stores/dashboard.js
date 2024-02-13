@@ -19,7 +19,6 @@ export const dashBoardStore = defineStore("dashBoardStore", () => {
     getDashBoard,
   };
 });
-
 // import { ref } from "vue";
 // import { defineStore } from "pinia";
 // import axios from "axios";
