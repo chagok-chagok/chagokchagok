@@ -1,7 +1,8 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { instance } from "@/utils/mainAxios";
+import { localAxios } from "@/utils/mainAxios";
 
+const local = localAxios();
 export const useParkingSectionStore = defineStore("parkingSection", () => {
   /* =========== 차량 현황 받아오는 요청 ============ */
   const parks = ref([]); // 주차장 현재 정보, {park_spot:String, park_status=Boolean}
@@ -20,9 +21,7 @@ export const useParkingSectionStore = defineStore("parkingSection", () => {
   };
 
   const getParkList = async () => {
-    instance.defaults.headers["Authorization"] =
-      sessionStorage.getItem("accessToken");
-    const { data } = await instance.get("/guest");
+    const { data } = await local.get("/guest");
     parks.value = data.parks;
     occupied.value = parks.value
       .filter((park) => park["park_status"])

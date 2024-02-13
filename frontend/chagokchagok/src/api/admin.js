@@ -1,6 +1,6 @@
-import { instance } from "@/utils/mainAxios";
+import { localAxios } from "@/utils/mainAxios";
 
-const local = instance;
+const local = localAxios();
 
 async function adminConfirm(param, success, fail) {
   console.log("param", param);
