@@ -56,7 +56,7 @@ instance.interceptors.response.use(
 // function localAxios() {
 const instance = axios.create({
   baseURL: VITE_VUE_SPRING_URL,
-  withCredentials: true,
+  // withCredentials: true,
   // headers: {
   //   "Content-Type": "application/json;charset=utf-8",
   // },
