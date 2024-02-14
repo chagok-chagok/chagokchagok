@@ -1,7 +1,10 @@
 import axios from "axios";
 import router from "../router";
 import { httpStatusCode } from "@/utils/http-status";
-
+import { useTokenStore } from "@/stores/token";
+import { storeToRefs } from "pinia";
+const tokenStore = useTokenStore();
+const { isTokenRefreshing } = storeToRefs(tokenStore);
 const { VITE_VUE_SPRING_URL } = import.meta.env;
 
 // const instance = axios.create({
@@ -80,8 +83,6 @@ function localAxios() {
   // refreshToken을 이용해 재발급 처리.
   // https://maruzzing.github.io/study/rnative/axios-interceptors%EB%A1%9C-%ED%86%A0%ED%81%B0-%EB%A6%AC%ED%94%84%EB%A0%88%EC%8B%9C-%ED%95%98%EA%B8%B0/
 
-  let isTokenRefreshing = false;
-
   instance.interceptors.response.use(
     (response) => {
       return response;
@@ -96,16 +97,16 @@ function localAxios() {
       // 토큰 자체가 만료되어 더 이상 진행할 수 없는 경우.
       console.log("테스트 status : " + status);
       console.log(status == httpStatusCode.UNAUTHORIZED);
-      console.log("isTokenRefreshing 값1" + isTokenRefreshing);
+      console.log("isTokenRefreshing 값1" + isTokenRefreshing.value);
       if (status == httpStatusCode.UNAUTHORIZED) {
         // 요청 상태 저장
         const originalRequest = config;
 
         // Token을 재발급하는 동안 다른 요청이 발생하는 경우 대기.
         // 다른 요청을 진행하면, 새로 발급 받은 Token이 유효하지 않게 됨.
-        console.log("isTokenRefreshing 값2" + isTokenRefreshing);
-        if (!isTokenRefreshing) {
-          isTokenRefreshing = true;
+        console.log("isTokenRefreshing 값2" + isTokenRefreshing.value);
+        if (!isTokenRefreshing.value) {
+          isTokenRefreshing.value = true;
           console.log("에러 예상지역");
           instance.defaults.headers["Authorization"] =
             sessionStorage.getItem("refreshToken"); //axios header에 refresh-token 셋팅
@@ -117,26 +118,36 @@ function localAxios() {
             console.log(response);
             const newAccessToken = response.data.authorization;
             console.log(newAccessToken);
-            if (newAccessToken != null) {
-              sessionStorage.setItem("accessToken", newAccessToken);
-              originalRequest.headers.Authorization = newAccessToken;
-            }
+
+            sessionStorage.setItem("accessToken", newAccessToken);
+            originalRequest.headers.Authorization = newAccessToken;
+
             console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!변경후");
             console.log(originalRequest);
 
-            isTokenRefreshing = false;
+            isTokenRefreshing.value = false;
 
             // 에러가 발생했던 원래의 요청을 다시 진행.
             return instance(originalRequest);
           });
         } else {
-          if (
-            originalRequest.headers.Authorization !=
-            sessionStorage.getItem("accessToken")
-          ) {
-            instance.defaults.headers["Authorization"] =
-              sessionStorage.getItem("accessToken");
-            return instance(originalRequest);
+          if (originalRequest.headers.Authorization == null) {
+            console.log("null 발생");
+            console.log("null 발생");
+            console.log("null 발생");
+            console.log("null 발생");
+            console.log("null 발생");
+            console.log("null 발생");
+            console.log("=============3000만큼 기다려================");
+            console.log("=============3000만큼 기다려================");
+            console.log("=============3000만큼 기다려================");
+            console.log("=============3000만큼 기다려================");
+            console.log("=============3000만큼 기다려================");
+            sleep(3000).then(() => {
+              instance.defaults.headers["Authorization"] =
+                sessionStorage.getItem("accessToken");
+              return instance(originalRequest);
+            });
           }
         }
       } else if (status == httpStatusCode.FORBIDDEN) {
