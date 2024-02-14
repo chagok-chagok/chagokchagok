@@ -90,6 +90,11 @@ const router = createRouter({
       name: "guest",
       component: () => import("@/views/guest/GuestView.vue"),
     },
+    {
+      path: "/print",
+      name: "print",
+      component: () => import("@/views/kiosk/Print.vue"),
+    },
   ],
 });
 

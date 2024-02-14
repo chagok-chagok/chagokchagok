@@ -24,7 +24,7 @@ function getCurrentTime() {
 
 // 현재 시간을 HH:MM 형식으로 반환하는 함수
 const currentTime = ref(getCurrentTime());
-const kioskUrl = `${VITE_VUE_SPRING_URL}api/sse/kiosk`;
+const kioskUrl = `${VITE_VUE_SPRING_URL}sse/kiosk`;
 
 // 인터벌을 설정하여 현재 시간을 매초마다 업데이트
 onMounted(() => {
