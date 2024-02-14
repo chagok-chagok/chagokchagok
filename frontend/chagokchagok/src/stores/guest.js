@@ -11,6 +11,8 @@ export const useGuestStore = defineStore("guest", () => {
   const total_cnt = ref(0); // 전체 주차장 수
   const current_cnt = ref(0); // 현재 차 수
   const getParkList = async () => {
+    local.defaults.headers["Authorization"] =
+      sessionStorage.getItem("accessToken");
     const { data } = await local.get("/guest");
     parks.value = data.parks;
     total_cnt.value = data.total_cnt;

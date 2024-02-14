@@ -117,11 +117,10 @@ function localAxios() {
             console.log(response);
             const newAccessToken = response.data.authorization;
             console.log(newAccessToken);
-            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!변경전");
-            console.log(originalRequest);
-            sessionStorage.setItem("accessToken", newAccessToken);
-            originalRequest.headers.Authorization = newAccessToken;
-
+            if (newAccessToken != null) {
+              sessionStorage.setItem("accessToken", newAccessToken);
+              originalRequest.headers.Authorization = newAccessToken;
+            }
             console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!변경후");
             console.log(originalRequest);
 
