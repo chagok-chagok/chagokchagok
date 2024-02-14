@@ -65,7 +65,7 @@ function selectParking(isDisabled) {
     sessionStorage.getItem("accessToken");
   local
     .post(
-      "http://localhost:8080/api/park/allocation",
+      `${VITE_VUE_SPRING_URL}api/park/allocation`,
       {
         car_no: carNumber.value,
         is_disabled: isDisabled,

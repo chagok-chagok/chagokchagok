@@ -233,11 +233,14 @@ ol {
   color: rgb(216, 216, 216);
   font-size: 0.9rem;
   margin-bottom: 2px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
 }
 .processing-text > div:nth-child(2) {
   color: rgb(46, 46, 46);
   font-size: 0.9rem;
-  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
 }
 
 #chart-percent {
