@@ -40,7 +40,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(jwtInterceptor).excludePathPatterns("/admin/login", "/sse/admin");
+        registry.addInterceptor(jwtInterceptor).excludePathPatterns("/admin/login", "/sse/admin", "/park/**");
     }
 
 }
