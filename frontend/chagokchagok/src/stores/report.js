@@ -16,6 +16,8 @@ export const useReportStore = defineStore("report", () => {
   const searchRES = ref(0);
 
   const getReportList = async (page) => {
+    local.defaults.headers["Authorization"] =
+      sessionStorage.getItem("accessToken");
     const { data } = await local.get("admin/report", { params: { page } });
     reports.value = data.board;
     today_cnt.value = data.today_cnt;
