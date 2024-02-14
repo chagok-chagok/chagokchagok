@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-import router from "@/router";
+import router from "vue-router";
 import { useParkingStore } from "@/stores/parkingStore";
 import { instance } from "@/utils/mainAxios";
 
@@ -12,6 +12,14 @@ const currentTime = ref(getCurrentTime());
 const allocatedLocation = ref("");
 const parkingStore = useParkingStore();
 const carNumber = ref("");
+const router = useRouter();
+
+router.beforeEach((to, from, next) => {
+  if (from.name === "allocation" && to.name === "choice-screen") {
+    carNumber.value = "";
+  }
+  next();
+});
 
 onMounted(() => {
   const sseEvent = new EventSource(kioskUrl);
@@ -54,13 +62,13 @@ function getCurrentTime() {
 }
 
 function selectParking(isDisabled) {
+  if (!carNumber.value) {
+    console.error("차번호 인식 실패");
+    router.push({ name: "recognition-error" });
+    return; // 함수 실행 중단
+  }
+
   console.log("지금 전송할 차번호는 ", carNumber.value);
-  if (
-    carNumber.value == undefined ||
-    carNumber.value == null ||
-    carNumber.value == ""
-  )
-    return;
   local.defaults.headers["Authorization"] =
     sessionStorage.getItem("accessToken");
   local
