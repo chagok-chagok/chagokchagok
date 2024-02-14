@@ -24,7 +24,6 @@ onMounted(() => {
   sseEvent.addEventListener("error", function (e) {
     console.log(e);
     console.log("응 안됐어~~~~~~~");
-    console.log(e.getMessage());
     console.log(e.toString());
     console.log(e.printStackTrace());
     store.updateSSEStatus("disconnected");
