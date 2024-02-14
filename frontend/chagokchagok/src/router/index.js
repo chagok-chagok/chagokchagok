@@ -12,23 +12,33 @@ import AllocationScreen from "@/views/kiosk/AllocationScreen.vue";
 import ParkingSection from "../views/admin/ParkingSection.vue";
 import Tooltip from "@/components/admin/Tooltip2.vue";
 
+const requireAuth = () => (from, to, next) => {
+  const token = sessionStorage.getItem("accessToken");
+  if (token) {
+    return next();
+  } // isLogin === true면 페이지 이동
+  next("/main/login"); // isLogin === false면 다시 로그인 화면으로 이동
+};
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
       name: "home",
-      component: HomeView,
+      component: LoginView,
     },
     {
       path: "/admin",
       name: "admin",
       component: AdminView,
+      beforeEnter: requireAuth(),
       children: [
         {
           path: "dashboard",
           name: "admin-dashboard",
           component: DashBoardView,
+          beforeEnter: requireAuth(),
         },
         {
           path: "section",
@@ -56,6 +66,7 @@ const router = createRouter({
           path: "changePassword",
           name: "changePassword",
           component: ChangePasswordView,
+          beforeEnter: requireAuth(),
         },
       ],
     },
@@ -86,5 +97,4 @@ const router = createRouter({
     },
   ],
 });
-
 export default router;
