@@ -10,8 +10,7 @@
         alt="주차확인증"
         class="ticket-image"
       />
-      <!-- 할당된 주차 구역 번호를 직접 참조 -->
-      <div class="ticket">{{ parkingStore.allocatedLocation }}</div>
+      <div class="ticket">{{ parkingStore.allocated_location }}</div>
     </div>
     <div class="welcome-message">환영합니다.</div>
   </div>
@@ -37,10 +36,10 @@ let intervalId = null; // 인터벌 ID를 저장할 변수
 // 마운트될 때와 매초마다 현재 시간을 업데이트
 onMounted(() => {
   updateCurrentTime();
-  intervalId = setInterval(updateCurrentTime, 1000); // 인터벌 ID 저장
+  intervalId = setInterval(updateCurrentTime, 1000);
   setTimeout(() => {
-    router.push({ name: "choice" }); // 일정 시간 후 홈으로 리디렉션
-  }, 1000000); // 시간을 1000000에서 10000(예: 10초)으로 조정하여 실제 사용 시나리오에 더 적합하게 조정
+    router.push({ name: "choice" });
+  }, 5000);
 });
 
 // 컴포넌트가 언마운트될 때 인터벌 클리어
