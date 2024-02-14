@@ -78,7 +78,9 @@ function drawDoughtnut() {
           <div class="circle">
             <canvas ref="doughnutChart" style="height: 70px"> </canvas>
           </div>
-          <div id="chart-percent">{{ (current_cnt / total_cnt) * 100 }}%</div>
+          <div id="chart-percent">
+            {{ ((current_cnt / total_cnt) * 100).toFixed(1) }}%
+          </div>
 
           <h2>
             <span :class="addColor()">{{ current_cnt }}</span> /
@@ -233,13 +235,13 @@ ol {
   color: rgb(216, 216, 216);
   font-size: 0.9rem;
   margin-bottom: 2px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 400;
 }
 .processing-text > div:nth-child(2) {
   color: rgb(46, 46, 46);
   font-size: 0.9rem;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 700;
 }
 
