@@ -85,8 +85,12 @@ public class ParkService {
             // 주차현황 테이블 업데이트
             allocatedLocation.changeAllocationLog(allocationLog);
 
+            //장고로 차단바 해제 요청하기
+            feignService.sendOpenEntranceBar();
+
             return ResponseEntity.status(HttpStatus.OK).body(new AllocateCarResponse(allocatedLocation, allocationLog));
         }
+
     }
 
     /**

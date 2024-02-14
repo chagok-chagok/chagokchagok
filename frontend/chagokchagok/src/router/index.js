@@ -9,6 +9,7 @@ import ChoiceScreen from "@/views/kiosk/ChoiceScreen.vue";
 import NoplaceScreen from "@/views/kiosk/NoplaceScreen.vue";
 import RecognitionErrorScreen from "@/views/kiosk/RecognitionErrorScreen.vue";
 import AllocationScreen from "@/views/kiosk/AllocationScreen.vue";
+import RecommendationScreen from "@/views/kiosk/RecommendationScreen.vue";
 import ParkingSection from "../views/admin/ParkingSection.vue";
 import Tooltip from "@/components/admin/Tooltip2.vue";
 
@@ -91,9 +92,19 @@ const router = createRouter({
       component: AllocationScreen,
     },
     {
+      path: "/recommendation",
+      name: "recommendation",
+      component: RecommendationScreen,
+    },
+    {
       path: "/guest",
       name: "guest",
       component: () => import("@/views/guest/GuestView.vue"),
+    },
+    {
+      path: "/print",
+      name: "print",
+      component: () => import("@/views/kiosk/Print.vue"),
     },
   ],
 });

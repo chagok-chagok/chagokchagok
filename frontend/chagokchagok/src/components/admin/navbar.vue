@@ -136,6 +136,7 @@ const closeModalOnOutsideClick = (event) => {
   justify-content: space-between;
   align-items: center;
 }
+
 .links-container {
   margin-left: 35px;
 }
