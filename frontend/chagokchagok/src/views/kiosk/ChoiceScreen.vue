@@ -63,6 +63,7 @@ function getCurrentTime() {
 }
 
 function selectParking(isDisabled) {
+  carNumber.value = "99가9999";
   if (!carNumber.value) {
     console.error("차번호 인식 실패");
     router.push({ name: "recognition-error" });
@@ -70,8 +71,6 @@ function selectParking(isDisabled) {
   }
 
   console.log("지금 전송할 차번호는 ", carNumber.value);
-  local.defaults.headers["Authorization"] =
-    sessionStorage.getItem("accessToken");
   local
     .post(
       `${VITE_VUE_SPRING_URL}park/allocation`,
