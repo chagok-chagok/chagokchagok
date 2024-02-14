@@ -3,6 +3,8 @@ import { defineStore } from "pinia";
 import { localAxios } from "@/utils/mainAxios";
 
 const local = localAxios();
+const instance = localAxios();
+
 export const useParkingSectionStore = defineStore("parkingSection", () => {
   /* =========== 차량 현황 받아오는 요청 ============ */
   const parks = ref([]); // 주차장 현재 정보, {park_spot:String, park_status=Boolean}

@@ -1,8 +1,10 @@
 import axios from "axios";
 import router from "../router";
 import { httpStatusCode } from "@/utils/http-status";
+import { ref } from "vue";
 const { VITE_VUE_SPRING_URL } = import.meta.env;
 
+let isTokenRefreshing = false;
 // const instance = axios.create({
 //   baseURL: VITE_VUE_SPRING_URL,
 //   headers: {
@@ -91,24 +93,20 @@ function localAxios() {
 
       // 페이지가 새로고침되어 저장된 accessToken이 없어진 경우.
       // 토큰 자체가 만료되어 더 이상 진행할 수 없는 경우.
-      let isTokenRefreshing = false;
+      // isTokenRefreshing = false;
 
       console.log("테스트 status : " + status);
       console.log(status == httpStatusCode.UNAUTHORIZED);
-      console.log("isTokenRefreshing 값1" + isTokenRefreshing);
       if (status == httpStatusCode.UNAUTHORIZED) {
         // 요청 상태 저장
         const originalRequest = config;
         // Token을 재발급하는 동안 다른 요청이 발생하는 경우 대기.
         // 다른 요청을 진행하면, 새로 발급 받은 Token이 유효하지 않게 됨.
-        console.log("isTokenRefreshing 값2" + isTokenRefreshing);
         if (!isTokenRefreshing) {
           isTokenRefreshing = true;
-          console.log("에러 예상지역");
           instance.defaults.headers["Authorization"] =
             sessionStorage.getItem("refreshToken"); //axios header에 refresh-token 셋팅
           console.log(sessionStorage.getItem("refreshToken"));
-          console.log("왜 안돼............");
           // 에러가 발생했던 컴포넌트의 axios로 이동하고자하는 경우
           // 반드시 return을 붙여주어야한다.
           return await instance.get("/admin/refresh").then((response) => {
