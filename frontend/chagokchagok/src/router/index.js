@@ -18,7 +18,7 @@ const requireAuth = () => (from, to, next) => {
   if (token) {
     return next();
   } // isLogin === true면 페이지 이동
-  next("/main/login"); // isLogin === false면 다시 로그인 화면으로 이동
+  next("/"); // isLogin === false면 다시 로그인 화면으로 이동
 };
 
 const router = createRouter({
