@@ -78,6 +78,8 @@ export const notificationStore = defineStore("notificationStore", () => {
 
   //공통바 업데이트
   const updateBar = async () => {
+    local.defaults.headers["Authorization"] =
+      sessionStorage.getItem("accessToken");
     const { data } = await local.get("/admin/common");
     console.log("공통바 씻이", data);
     const commonData = data;
@@ -93,6 +95,8 @@ export const notificationStore = defineStore("notificationStore", () => {
 
   //대시보드 차트 업데이트
   const updateVisitChart = async () => {
+    local.defaults.headers["Authorization"] =
+      sessionStorage.getItem("accessToken");
     const { data } = await local.get("/admin/dashboard");
     console.log("데시보드 씻이", data);
     const dashboardData = data;
