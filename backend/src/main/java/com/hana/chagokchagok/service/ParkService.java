@@ -195,28 +195,24 @@ public class ParkService {
 
     public GetCarlocResponse getCarLocation(GetCarlocRequest getCarlocRequest){
         String[] location = separateLocationInput(getCarlocRequest.getArea());
-        ParkingInfo parkingInfo = parkingInfoRepository.findByParkNoAndAreaCode(Integer.valueOf(location[1]),location[0]);
-        AllocationLog allocationLog = allocationLogRepository.findByParkingInfo(parkingInfo);
-        return new GetCarlocResponse(allocationLog.getCarNo(), allocationLog.getEntryTime());
+        RealtimeParking realtimeParking = realTimeParkingRepository.findByParkingInfo_ParkNoAndParkingInfo_AreaCode(Integer.valueOf(location[1]),location[0]);
+        if (realtimeParking == null || realtimeParking.getAllocationLog() == null) {
+            throw new CustomException(ErrorType.NO_CAR_NUMBER);
+        }
+        return new GetCarlocResponse(realtimeParking.getAllocationLog());
     }
 
     public SearchInfoResponse searchInfo(SearchInfoRequest searchInfoRequest) {
-        String area = null;
-        String car_no = null;
-        LocalDateTime entryTime = null;
+        RealtimeParking realtimeParking = null;
         if(searchInfoRequest.getType() == SearchType.CAR_NUMBER){
-            car_no = searchInfoRequest.getValue();
-            AllocationLog allocationLog = allocationLogRepository.findByCarNo(searchInfoRequest.getValue());
-            area = allocationLog.getParkingInfo().getAreaCode().concat(allocationLog.getParkingInfo().getParkNo().toString());
-            entryTime = allocationLog.getEntryTime();
+            realtimeParking = realTimeParkingRepository.findByAllocationLog_CarNo(searchInfoRequest.getValue());
         }else if(searchInfoRequest.getType() == SearchType.SPOT_NUMBER){
-            area = searchInfoRequest.getValue();
             String[] location = separateLocationInput(searchInfoRequest.getValue());
-            ParkingInfo parkingInfo = parkingInfoRepository.findByParkNoAndAreaCode(Integer.valueOf(location[1]),location[0]);
-            AllocationLog allocationLog = allocationLogRepository.findByParkingInfo(parkingInfo);
-            car_no = allocationLog.getCarNo();
-            entryTime = allocationLog.getEntryTime();
+            realtimeParking = realTimeParkingRepository.findByParkingInfo_ParkNoAndParkingInfo_AreaCode(Integer.valueOf(location[1]),location[0]);
         }
-        return new SearchInfoResponse(area, car_no, entryTime);
+        if (realtimeParking == null) {
+            throw new CustomException(ErrorType.NO_TOOLTIP_INFORMATION);
+        }
+        return new SearchInfoResponse(realtimeParking);
     }
 }

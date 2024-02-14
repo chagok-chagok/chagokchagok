@@ -1,10 +1,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-import router from "vue-router";
+import axios from "axios";
+import router from "@/router";
 import { useParkingStore } from "@/stores/parkingStore";
-import { instance } from "@/utils/mainAxios";
-
-const local = instance;
 
 const { VITE_VUE_SPRING_URL } = import.meta.env;
 const kioskUrl = `${VITE_VUE_SPRING_URL}sse/kiosk`; //kiosk의 sse접속 url입니다.
@@ -12,14 +10,6 @@ const currentTime = ref(getCurrentTime());
 const allocatedLocation = ref("");
 const parkingStore = useParkingStore();
 const carNumber = ref("");
-const router = useRouter();
-
-router.beforeEach((to, from, next) => {
-  if (from.name === "allocation" && to.name === "choice-screen") {
-    carNumber.value = "";
-  }
-  next();
-});
 
 onMounted(() => {
   const sseEvent = new EventSource(kioskUrl);
@@ -27,7 +17,7 @@ onMounted(() => {
   //연결 리스너
   sseEvent.addEventListener("open", function (e) {
     //캐치할 에러코드를 써줌
-    console.log("연결되었습니다.", e.data);
+    console.log("carNumber : ", e.data);
   });
 
   //에러 리스너
@@ -61,48 +51,12 @@ function getCurrentTime() {
   return now.toTimeString().substring(0, 5);
 }
 
-function selectParking(isDisabled) {
-  if (!carNumber.value) {
-    console.error("차번호 인식 실패");
-    router.push({ name: "recognition-error" });
-    return; // 함수 실행 중단
-  }
-
-  console.log("지금 전송할 차번호는 ", carNumber.value);
-  local.defaults.headers["Authorization"] =
-    sessionStorage.getItem("accessToken");
-  local
-    .post(
-      `${VITE_VUE_SPRING_URL}park/allocation`,
-      {
-        car_no: carNumber.value,
-        is_disabled: isDisabled,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-    .then((response) => {
-      console.log(response);
-      console.log(response.data.allocated_location);
-      parkingStore.allocated_location = response.data.allocated_location;
-      if (isDisabled) {
-        router.push({ name: "allocation" });
-      } else {
-        router.push({ name: "recommendation" });
-      }
-    })
-    .catch((error) => {
-      console.error("자리 없음:", error);
-      allocatedLocation.value = "";
-      router.push({ name: "no-place" });
-    });
+function selectParking() {
+  // 여기서는 isDisabled 파라미터를 사용하지 않고 직접 allocation 페이지로 이동
+  router.push({ name: "allocation" });
 }
 </script>
 
-+
 <template>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -112,18 +66,13 @@ function selectParking(isDisabled) {
   />
   <div class="screen-container">
     <div class="time-display">{{ currentTime }}</div>
-    <div v-if="carNumber" class="number">[{{ carNumber }}]님 환영합니다.</div>
-    <div class="message"><strong>장애 차량 여부를 선택해주세요.</strong></div>
+    <div class="message"><strong>선호하시는 자리를 선택해주세요.</strong></div>
     <div class="button-container">
-      <button class="parking-option" @click.prevent="selectParking(false)">
-        <img src="@/assets/주차안내 이미지 1.png" alt="일반 주차" />
-        <div>일반 주차구역을 <br />배정해드립니다.</div>
+      <button class="parking-option" @click.prevent="selectParking()">
+        <div><strong>가까운 자리</strong></div>
       </button>
-      <button class="parking-option" @click.prevent="selectParking(true)">
-        <img src="@/assets/주차안내 이미지 2.png" alt="장애인 주차" />
-        <div style="padding-bottom: 11%">
-          장애인 주차구역을 <br />우선 배정해드립니다.
-        </div>
+      <button class="parking-option" @click.prevent="selectParking()">
+        <div><strong>여유로운 자리</strong></div>
       </button>
     </div>
   </div>
@@ -160,8 +109,6 @@ function selectParking(isDisabled) {
 .screen-container {
   position: relative;
   font-family: "MICEGothic Bold";
-  background: rgb(85, 153, 255);
-  background: rgb(85, 153, 255);
   background: rgb(85, 153, 255);
   background: radial-gradient(
     circle,
@@ -212,62 +159,33 @@ function selectParking(isDisabled) {
   color: #000;
   font-size: 2.6em;
   text-align: center;
-  margin-bottom: 100px; /* Space between message and buttons */
 }
 
 .button-container {
   display: flex;
-  flex-direction: row;
-  justify-content: center; /* 버튼을 가운데 정렬합니다 */
+  flex-direction: column;
   align-items: center; /* 버튼을 수직으로 가운데 정렬합니다 */
-  gap: 20px; /* 버튼 사이의 간격을 조정합니다 */
-  padding: 0 20px; /* 좌우 패딩을 유지합니다 */
+  gap: 40px; /* 버튼 사이의 간격을 조정합니다 */
+  margin-top: 150px;
 }
 
 .parking-option {
-  font-family: "NanumBarunGothic", sans-serif;
-  border: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: transform 0.1s ease-in-out;
-  flex: 1;
-  margin: 0 13px;
-  font-size: 25px;
-  max-width: 266px;
-  height: 600px;
+  width: 80%; /* 버튼 너비를 컨테이너의 80%로 설정합니다. */
+  height: 150px; /* 버튼 높이를 60px로 설정합니다. */
+  margin-bottom: 20px; /* 버튼 사이의 마진을 20px로 설정합니다. */
+  padding: 20px; /* 버튼 내부의 패딩을 20px로 설정합니다. */
+  border-radius: 10px; /* 버튼의 둥근 모서리 반경을 10px로 설정합니다. */
+  background-color: #fff; /* 버튼 배경색을 흰색으로 설정합니다. */
+  font-family: "NanumBarunGothic", sans-serif; /* 버튼 폰트를 설정합니다. */
+  font-size: 3.3em; /* 버튼 텍스트 크기를 24px로 설정합니다. */
+  color: #333; /* 버튼 텍스트 색상을 설정합니다. */
+  border: none; /* 버튼 테두리를 제거합니다. */
+  cursor: pointer; /* 마우스 커서를 포인터로 설정합니다. */
+  transition: transform 0.1s ease-in-out; /* 마우스 호버 효과를 위한 전환 설정 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
 }
 
-.parking-option > img {
-  margin-bottom: 40%;
-  scale: 1;
-}
-
-.parking-option > :first-child {
-  /* margin-bottom: -100px; 첫 번째 요소와 두 번째 요소 사이의 간격을 늘립니다 */
-}
-s .parking-option > :last-child {
-  margin-top: 20px; /* 마지막 요소 위에 간격을 늘립니다 */
-}
-/* Additional hover effect */
 .parking-option:hover {
   transform: scale(1.02);
-}
-
-/* Active/click effect */
-.parking-option:active {
-  transform: scale(0.98);
-}
-
-.number {
-  font-size: 2.6em;
-  text-align: center;
-  margin-bottom: 40px;
 }
 </style>

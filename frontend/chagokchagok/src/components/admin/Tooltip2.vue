@@ -145,6 +145,7 @@ const openExchangeLocationModal = async () => {
   padding: 8px 0;
   border-radius: 3px;
   border: none;
+  cursor: pointer;
 }
 .blue {
   background-color: #cde5f2;

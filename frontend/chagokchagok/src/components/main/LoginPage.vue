@@ -23,6 +23,13 @@ const loginAdmin = ref({
 const rememberMe = ref(true);
 
 const login = async () => {
+  console.log("==========최신버전==========");
+  console.log("==========로그인로그인로그인==========");
+  console.log("==========로그인로그인로그인==========");
+  console.log("==========로그인로그인로그인==========");
+  console.log("==========로그인로그인로그인==========");
+  console.log("==========로그인로그인로그인==========");
+
   await adminLogin(loginAdmin.value);
   let token = sessionStorage.getItem("accessToken");
 
@@ -204,6 +211,8 @@ main {
 
 .login-title {
   font-size: 50px;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
 }
 
 .content-article {
@@ -241,6 +250,8 @@ main {
   justify-content: flex-end;
   width: 100%;
   margin-top: 10px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
 }
 
 .remember-me input {
@@ -314,6 +325,9 @@ main {
   background-color: #3a57e8;
   color: #ffffff;
   box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
 }
 #background {
   display: flex;
@@ -381,5 +395,10 @@ h1 {
     color: #ff003e;
     vertical-align: middle;
   }
+}
+.bold {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  color: #8a92a6;
 }
 </style>

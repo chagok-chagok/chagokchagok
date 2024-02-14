@@ -14,6 +14,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import router from "@/router";
+const { VITE_VUE_SPRING_URL } = import.meta.env;
 
 // 현재 시간을 가져오는 함수
 function getCurrentTime() {
@@ -23,7 +24,7 @@ function getCurrentTime() {
 
 // 현재 시간을 HH:MM 형식으로 반환하는 함수
 const currentTime = ref(getCurrentTime());
-const kioskUrl = "http://localhost:8080/api/sse/kiosk";
+const kioskUrl = `${VITE_VUE_SPRING_URL}api/sse/kiosk`;
 
 // 인터벌을 설정하여 현재 시간을 매초마다 업데이트
 onMounted(() => {

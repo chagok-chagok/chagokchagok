@@ -136,10 +136,13 @@ const closeModalOnOutsideClick = (event) => {
 .links-container a.router-link-exact-active {
   color: var(--color-text, black);
   /* font-weight: bold; */
-  text-shadow: 0.02em 0 black, 0 0.02em black, -0.02em 0 black, 0 -0.02em black; /* 텍스트 그림자 */
+  /* 텍스트 그림자 */
+  text-shadow: 0.01em 0 black, 0 0.01em black, -0.01em 0 black, 0 -0.01em black; 
   /* font-weight: bold; */
   /* transform: scale(1); */
   /* font-size-adjust: 0.5; 글꼴 크기 조절 */
+  font-family: 'Poppins', sans-serif;
+  /* font-weight: 700;   */
 }
 
 .router-link {
@@ -150,6 +153,8 @@ const closeModalOnOutsideClick = (event) => {
     background-color: transparent;
   }
   text-decoration: none;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
 }
 /* .links-container a.router-link-exact-active .Dashboard {
   padding-right: 35px;

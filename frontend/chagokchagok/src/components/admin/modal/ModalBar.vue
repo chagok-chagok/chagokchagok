@@ -103,6 +103,7 @@ const unlockBar = async () => {
   width: 690px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 200;
+  font-family: 'DM Sans', sans-serif;
 }
 
 .modal-header {
