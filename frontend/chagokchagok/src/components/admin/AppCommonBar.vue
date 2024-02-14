@@ -79,7 +79,7 @@ function drawDoughtnut() {
             <canvas ref="doughnutChart" style="height: 70px"> </canvas>
           </div>
           <div id="chart-percent">
-            {{ ((current_cnt / total_cnt) * 100).toFixed(1) }}%
+            {{ Math.round((current_cnt / total_cnt) * 100) }}%
           </div>
 
           <h2>
