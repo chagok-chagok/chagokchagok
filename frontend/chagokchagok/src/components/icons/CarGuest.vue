@@ -6,8 +6,8 @@ import { defineProps } from "vue";
 <template>
   <div>
     <svg
-      width="77"
-      height="34"
+      width="57"
+      height="25"
       viewBox="5 18 67 40"
       xmlns="http://www.w3.org/2000/svg"
     >

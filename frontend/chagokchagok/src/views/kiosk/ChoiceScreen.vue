@@ -88,7 +88,10 @@ function selectParking(isDisabled) {
     .then((response) => {
       console.log(response);
       console.log(response.data.allocated_location);
+      // parkingStore에 저장할 정보 추가(프린터용)
       parkingStore.allocated_location = response.data.allocated_location;
+      parkingStore.car_no = response.data.car_no;
+      parkingStore.entry_time = response.data.entry_time;
       if (isDisabled) {
         router.push({ name: "allocation" });
       } else {
