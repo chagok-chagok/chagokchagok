@@ -24,8 +24,6 @@ onMounted(() => {
   sseEvent.addEventListener("error", function (e) {
     console.log(e);
     console.log("응 안됐어~~~~~~~");
-    console.log(e.toString());
-    console.log(e.printStackTrace());
     store.updateSSEStatus("disconnected");
   });
   //자동신고시스템 - 플로팅알림
