@@ -10,6 +10,7 @@ const isModalOpen = ref(false);
 const memberStore = useAdminStore();
 const { adminLogout } = memberStore;
 const router = useRouter();
+const id = sessionStorage.getItem("id");
 
 const openModal = () => {
   isModalOpen.value = true;
@@ -58,7 +59,7 @@ const closeModalOnOutsideClick = (event) => {
       <RouterLink to="/admin/report" class="router-link">신고기록</RouterLink>
     </div>
     <div class="admin-container">
-      <div class="admin-name">ADMIN(관리자) 님</div>
+      <div class="admin-name">{{ id }} 님</div>
       <transition name="modal-fade">
         <Modal v-show="isModalOpen" class="modal">
           <div class="modal-content">
@@ -137,11 +138,11 @@ const closeModalOnOutsideClick = (event) => {
   color: var(--color-text, black);
   /* font-weight: bold; */
   /* 텍스트 그림자 */
-  text-shadow: 0.01em 0 black, 0 0.01em black, -0.01em 0 black, 0 -0.01em black; 
+  text-shadow: 0.01em 0 black, 0 0.01em black, -0.01em 0 black, 0 -0.01em black;
   /* font-weight: bold; */
   /* transform: scale(1); */
   /* font-size-adjust: 0.5; 글꼴 크기 조절 */
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   /* font-weight: 700;   */
 }
 
@@ -153,7 +154,7 @@ const closeModalOnOutsideClick = (event) => {
     background-color: transparent;
   }
   text-decoration: none;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 600;
 }
 /* .links-container a.router-link-exact-active .Dashboard {
