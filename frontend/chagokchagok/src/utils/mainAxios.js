@@ -117,6 +117,7 @@ function localAxios() {
             console.log(newAccessToken);
 
             sessionStorage.setItem("accessToken", newAccessToken);
+
             originalRequest.headers.Authorization = newAccessToken;
 
             console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!변경후");
@@ -129,24 +130,19 @@ function localAxios() {
             return instance(originalRequest);
           });
         } else {
-          if (originalRequest.headers.Authorization == null) {
-            console.log("null 발생");
-            console.log("null 발생");
-            console.log("null 발생");
-            console.log("null 발생");
-            console.log("null 발생");
-            console.log("null 발생");
-            console.log("=============3000만큼 기다려================");
-            console.log("=============3000만큼 기다려================");
-            console.log("=============3000만큼 기다려================");
-            console.log("=============3000만큼 기다려================");
-            console.log("=============3000만큼 기다려================");
-            sleep(3000).then(() => {
-              instance.defaults.headers["Authorization"] =
-                sessionStorage.getItem("accessToken");
-              return instance(originalRequest);
-            });
-          }
+          // if (originalRequest.headers.Authorization == null) {
+          //   console.log("null 발생");
+          //   console.log("null 발생");
+          //   console.log("null 발생");
+          //   console.log("null 발생");
+          //   console.log("null 발생");
+          //   console.log("null 발생");
+          //   console.log("=============3000만큼 기다려================");
+          //   console.log("=============3000만큼 기다려================");
+          //   console.log("=============3000만큼 기다려================");
+          //   console.log("=============3000만큼 기다려================");
+          //   console.log("=============3000만큼 기다려================");
+          // }
         }
       } else if (status == httpStatusCode.FORBIDDEN) {
         alert(error.response.data.message);

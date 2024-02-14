@@ -70,8 +70,12 @@ public class AdminController {
         //정상적인 토큰일때
         if (jwtUtil.checkToken(token)) {
             if (token.equals(adminService.getRefreshToken(jwtUtil.getUserId(token)))) {
-                String accessToken = jwtUtil.createAccessToken(jwtUtil.getUserId(token));
-                System.out.println(accessToken);
+                String accessToken = null;
+                while (accessToken == null) {
+                    accessToken = jwtUtil.createAccessToken(jwtUtil.getUserId(token));
+                }
+//                accessToken = jwtUtil.createAccessToken(jwtUtil.getUserId(token));
+                System.out.println("==================AccessToken : " + accessToken + " =========================");
                 refreshTokenResponse.setAuthorization(accessToken);
             }
         }else {
