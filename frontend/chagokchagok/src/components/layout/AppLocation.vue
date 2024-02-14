@@ -105,6 +105,7 @@ const clickLocation = (locationName) => {
   background-color: #84adff;
   border: none;
   border-radius: 7px;
+  cursor: pointer;
 }
 .no-car {
   background-color: #e1e1e1;

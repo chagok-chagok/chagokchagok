@@ -21,8 +21,13 @@ const closeModal = () => {
 
 const logout = async () => {
   await adminLogout();
-  window.alert("로그아웃 되었습니다");
-  router.replace("/main/login");
+  const token = sessionStorage.getItem("refreshToken");
+  if (token) {
+    window.alert("다시 시도 해주세요");
+  } else {
+    window.alert("로그아웃 되었습니다");
+    router.replace("/main/login");
+  }
 };
 
 const changePassword = () => {
@@ -30,6 +35,8 @@ const changePassword = () => {
   console.log("비밀번호 변경");
   closeModal();
 };
+
+const id = sessionStorage.getItem("id");
 
 const toggleSettings = () => {
   isModalOpen.value = !isModalOpen.value;
@@ -58,7 +65,7 @@ const closeModalOnOutsideClick = (event) => {
       <RouterLink to="/admin/report" class="router-link">신고기록</RouterLink>
     </div>
     <div class="admin-container">
-      <div class="admin-name">ADMIN(관리자) 님</div>
+      <div class="admin-name">{{ id }} 님</div>
       <transition name="modal-fade">
         <Modal v-show="isModalOpen" class="modal">
           <div class="modal-content">
@@ -129,6 +136,7 @@ const closeModalOnOutsideClick = (event) => {
   justify-content: space-between;
   align-items: center;
 }
+
 .links-container {
   margin-left: 35px;
 }
@@ -136,11 +144,11 @@ const closeModalOnOutsideClick = (event) => {
   color: var(--color-text, black);
   /* font-weight: bold; */
   /* 텍스트 그림자 */
-  text-shadow: 0.01em 0 black, 0 0.01em black, -0.01em 0 black, 0 -0.01em black; 
+  text-shadow: 0.01em 0 black, 0 0.01em black, -0.01em 0 black, 0 -0.01em black;
   /* font-weight: bold; */
   /* transform: scale(1); */
   /* font-size-adjust: 0.5; 글꼴 크기 조절 */
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   /* font-weight: 700;   */
 }
 
@@ -152,7 +160,7 @@ const closeModalOnOutsideClick = (event) => {
     background-color: transparent;
   }
   text-decoration: none;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 600;
 }
 /* .links-container a.router-link-exact-active .Dashboard {

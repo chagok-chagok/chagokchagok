@@ -19,4 +19,13 @@ public class FeignService {
     public void sendOpenBarRequest(int parkId) {
         djangoClient.sendOpenBarRequestToDjango(parkId);
     }
+
+    /**
+     * AI서버로 입구 차단바 해제 Request 보내는 메소드
+     * @author 최서현
+     */
+    public void sendOpenEntranceBar(){
+        djangoClient.sendOpenEntranceRequestToDjango();
+
+    }
 }
