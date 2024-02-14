@@ -17,11 +17,13 @@ onMounted(() => {
   sseEvent.addEventListener("open", function (e) {
     //캐치할 에러코드를 써줌
     console.log(e.data);
+    console.log("연결됐어~~~~~~~");
     store.updateSSEStatus("connected");
   });
   //에러 리스너
   sseEvent.addEventListener("error", function (e) {
     console.log(e);
+    console.log("응 안됐어~~~~~~~");
     store.updateSSEStatus("disconnected");
   });
   //자동신고시스템 - 플로팅알림
