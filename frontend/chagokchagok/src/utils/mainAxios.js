@@ -91,13 +91,14 @@ function localAxios() {
 
       // 페이지가 새로고침되어 저장된 accessToken이 없어진 경우.
       // 토큰 자체가 만료되어 더 이상 진행할 수 없는 경우.
+      let isTokenRefreshing = false;
+
       console.log("테스트 status : " + status);
       console.log(status == httpStatusCode.UNAUTHORIZED);
       console.log("isTokenRefreshing 값1" + isTokenRefreshing);
       if (status == httpStatusCode.UNAUTHORIZED) {
         // 요청 상태 저장
         const originalRequest = config;
-        let isTokenRefreshing = false;
         // Token을 재발급하는 동안 다른 요청이 발생하는 경우 대기.
         // 다른 요청을 진행하면, 새로 발급 받은 Token이 유효하지 않게 됨.
         console.log("isTokenRefreshing 값2" + isTokenRefreshing);
