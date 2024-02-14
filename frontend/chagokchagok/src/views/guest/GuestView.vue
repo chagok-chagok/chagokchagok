@@ -234,7 +234,7 @@ const parkingRightDown = ref([
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  margin-top: 3%;
+  margin-top: 1%;
   height: 7%;
 }
 .entry {
