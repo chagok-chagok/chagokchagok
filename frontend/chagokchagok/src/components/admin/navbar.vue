@@ -171,8 +171,8 @@ const closeModalOnOutsideClick = (event) => {
 
 .modal {
   position: absolute;
-  top: 35px;
-  left: 40px;
+  top: 33px;
+  left: -17px;
   display: flex;
   align-items: center;
   justify-content: center;
