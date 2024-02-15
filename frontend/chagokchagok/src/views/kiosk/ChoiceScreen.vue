@@ -4,6 +4,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 import { useParkingStore } from "@/stores/parkingStore";
 import { instance } from "@/utils/mainAxios";
 import { useRouter } from "vue-router";
+import printJs from "print-js";
 
 const local = instance;
 
@@ -14,6 +15,7 @@ const allocatedLocation = ref("");
 const parkingStore = useParkingStore();
 const carNumber = ref("");
 const router = useRouter();
+const printObj = ref([]);
 
 router.beforeEach((to, from, next) => {
   if (from.name === "allocation" && to.name === "choice-screen") {
@@ -92,6 +94,13 @@ function selectParking(isDisabled) {
       parkingStore.allocated_location = response.data.allocated_location;
       parkingStore.car_no = response.data.car_no;
       parkingStore.entry_time = response.data.entry_time;
+      printObj.value.push({
+        allocated_location: parkingStore.allocated_location,
+        car_no: parkingStore.car_no,
+        entry_time: parkingStore.entry_time,
+      });
+
+      print();
       if (isDisabled) {
         router.push({ name: "allocation" });
       } else {
@@ -104,9 +113,20 @@ function selectParking(isDisabled) {
       router.push({ name: "no-place" });
     });
 }
+
+const print = () => {
+  printJs({
+    printable: printObj.value,
+    properties: [
+      { field: "allocated_location", displayName: "배정 자리" },
+      { field: "car_no", displayName: "차량 번호" },
+      { field: "entry_time", displayName: "입차 시간" },
+    ],
+    type: "json",
+  });
+};
 </script>
 
-+
 <template>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

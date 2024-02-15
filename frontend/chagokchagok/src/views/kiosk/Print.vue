@@ -28,7 +28,7 @@ const print = () => {
   });
 };
 
-print();
+// print();
 </script>
 
 <template>
