@@ -77,6 +77,7 @@ onMounted(() => {
                             id="id"
                             class="input"
                             required
+                            autocomplete="username"
                           />
                         </div>
                         <div class="form-group">
@@ -88,6 +89,7 @@ onMounted(() => {
                             id="password"
                             class="input"
                             required
+                            autocomplete="current-password"
                           />
                           <div class="form-options">
                             <div class="remember-me">
