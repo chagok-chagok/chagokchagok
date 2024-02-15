@@ -65,29 +65,12 @@ function selectParking(isDisabled) {
   local.defaults.headers["Authorization"] =
     sessionStorage.getItem("accessToken");
   if (isDisabled) {
-<<<<<<< HEAD
-    router.push({ name: "allocation" });
-  } else {
-    router.push({ name: "recommendation" });
-  }
-  local
-    .post(
-      `${VITE_VUE_SPRING_URL}park/allocation`,
-      {
-        car_no: carNumber.value,
-        is_disabled: isDisabled,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-=======
     local
       .post(
         `${VITE_VUE_SPRING_URL}park/allocation`,
         {
           car_no: carNumber.value,
           is_disabled: isDisabled,
->>>>>>> 8bad49db2802fd7e81ee9b67a4e8b18bb774e718
         },
         {
           headers: {
@@ -102,21 +85,9 @@ function selectParking(isDisabled) {
         allocatedLocation.value = "";
         router.push({ name: "no-place" });
       });
-<<<<<<< HEAD
-
-      // 프린트 기능
-      // print();
-    })
-    .catch((error) => {
-      console.error("자리 없음:", error);
-      allocatedLocation.value = "";
-      router.push({ name: "no-place" });
-    });
-=======
   } else {
     router.push({ name: "recommendation" });
   }
->>>>>>> 8bad49db2802fd7e81ee9b67a4e8b18bb774e718
 }
 </script>
 
