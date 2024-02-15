@@ -10,9 +10,6 @@ const currentTime = ref(getCurrentTime());
 const allocatedLocation = ref("");
 const parkingStore = useParkingStore();
 const carNumber = ref("");
-import { instance } from "@/utils/mainAxios";
-
-const local = instance;
 
 onMounted(() => {
   const sseEvent = new EventSource(kioskUrl);
@@ -56,31 +53,6 @@ function getCurrentTime() {
 
 function selectParking() {
   // 여기서는 isDisabled 파라미터를 사용하지 않고 직접 allocation 페이지로 이동
-  local.defaults.headers["Authorization"] =
-    sessionStorage.getItem("accessToken");
-  local
-    .post(
-      `${VITE_VUE_SPRING_URL}park/allocation`,
-      {
-        car_no: parkingStore.car_no,
-        is_disabled: false,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-    .then((response) => {
-      console.log(response);
-      console.log(response.data.allocated_location);
-      parkingStore.allocated_location = response.data.allocated_location;
-    })
-    .catch((error) => {
-      console.error("자리 없음:", error);
-      allocatedLocation.value = "";
-      router.push({ name: "no-place" });
-    });
   router.push({ name: "allocation" });
 }
 </script>
