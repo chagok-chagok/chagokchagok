@@ -100,7 +100,8 @@ function selectParking(isDisabled) {
         entry_time: parkingStore.entry_time,
       });
 
-      print();
+      // 프린트 기능
+      // print();
       if (isDisabled) {
         router.push({ name: "allocation" });
       } else {
