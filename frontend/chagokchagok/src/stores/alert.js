@@ -67,7 +67,7 @@ export const notificationStore = defineStore("notificationStore", () => {
     time.value = data.time;
     setTimeout(() => {
       closeNotification();
-    }, 15000); // 3초 후에 알림을 닫음 (조절 가능)
+    }, 3000); // 3초 후에 알림을 닫음 (조절 가능)
   };
 
   //플로팅 알림 닫기
