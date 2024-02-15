@@ -494,7 +494,7 @@ SSAFY 10기 공통 프로젝트<br>
 
 ## 시스템 아키텍쳐
 
-<img src="./readmeAssets/systemArcitecture.png" width="500px">
+<img src="./readmeAssets/systemArcitecture2.png" width="500px">
 
 ### [API 명세서](https://www.notion.so/API-416d1c418006414d8b8912dfdab97391?pvs=4)
 
