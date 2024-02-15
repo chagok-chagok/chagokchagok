@@ -50,10 +50,10 @@ const parkingMiddleInfoRU = ref([
   { name: "C4", isDisabled: false },
 ]);
 const parkingRightUp = ref([
-  { name: "C4", isDisabled: false },
-  { name: "C5", isDisabled: false },
-  { name: "C6", isDisabled: false },
-  { name: "C7", isDisabled: false },
+  { name: "C9", isDisabled: false },
+  { name: "C10", isDisabled: false },
+  { name: "C11", isDisabled: false },
+  { name: "C12", isDisabled: false },
 ]);
 
 // 아래쪽
@@ -260,7 +260,7 @@ onMounted(() => {
   background-color: #eff5ff;
   color: #5f93fb;
   border-radius: 5px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 400;
 }
 .end-width {
@@ -298,7 +298,7 @@ onMounted(() => {
 .color-info-div span {
   margin-left: 5px;
   font-size: 14px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 600;
 }
 .color-info {
@@ -346,7 +346,7 @@ onMounted(() => {
   border: 1px solid transparent;
   border-radius: 3px;
   color: #ff5a5f;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .top-bar {
@@ -388,7 +388,7 @@ onMounted(() => {
   border-radius: 8px;
   z-index: 1;
   outline: none;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .search-bar input[type="text"] {
@@ -401,7 +401,7 @@ onMounted(() => {
   background-color: #f7f7f7;
   opacity: 0.8;
   outline: none;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .all-park-container {

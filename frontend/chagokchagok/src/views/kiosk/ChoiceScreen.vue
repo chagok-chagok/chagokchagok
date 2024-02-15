@@ -74,6 +74,11 @@ function selectParking(isDisabled) {
   console.log("지금 전송할 차번호는 ", carNumber.value);
   local.defaults.headers["Authorization"] =
     sessionStorage.getItem("accessToken");
+  if (isDisabled) {
+    router.push({ name: "allocation" });
+  } else {
+    router.push({ name: "recommendation" });
+  }
   local
     .post(
       `${VITE_VUE_SPRING_URL}park/allocation`,
@@ -102,11 +107,6 @@ function selectParking(isDisabled) {
 
       // 프린트 기능
       // print();
-      if (isDisabled) {
-        router.push({ name: "allocation" });
-      } else {
-        router.push({ name: "recommendation" });
-      }
     })
     .catch((error) => {
       console.error("자리 없음:", error);
