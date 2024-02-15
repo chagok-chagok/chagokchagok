@@ -47,6 +47,10 @@ SSAFY 10기 공통 프로젝트<br>
 | :---------------------------------------------------------------------: | :---------------------------------------------------------------------: | :-------------------------------------------------------------------------: |
 | <img src="./readmeAssets/admin/admin-curr-situation.png" width="500px"> | <img src="./readmeAssets/admin/admin-chagne-section.png" width="500px"> | <img src="./readmeAssets/admin/admin-deactivate-section.png" width="500px"> |
 
+### 제작품
+
+<img src="./readmeAssets/parkinglot.jpg" width="500px">
+
 ### ERD
 
 <img src="./readmeAssets/ERDiagram.png" width="500px">
@@ -124,7 +128,7 @@ SSAFY 10기 공통 프로젝트<br>
 
 ## 🛠기술스택
 
-### $BackEnd$
+### BackEnd
 
 <img src="https://img.shields.io/badge/JAVA-3776AB?style=for-the-badge&logo=JAVA&logoColor=white">&nbsp;
 <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white">&nbsp;
@@ -139,7 +143,7 @@ SSAFY 10기 공통 프로젝트<br>
 - MySQL 8.0.35
 - Django
 
-### $FrontEnd$
+### FrontEnd
 
 <img src="https://img.shields.io/badge/Vue.js-4FC08D?style=for-the-badge&logo=Vue.js&logoColor=white">&nbsp;
 <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">&nbsp;
