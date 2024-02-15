@@ -23,26 +23,15 @@ const loginAdmin = ref({
 const rememberMe = ref(true);
 
 const login = async () => {
-  console.log("==========최신버전==========");
-  console.log("==========로그인로그인로그인==========");
-  console.log("==========로그인로그인로그인==========");
-  console.log("==========로그인로그인로그인==========");
-  console.log("==========로그인로그인로그인==========");
-  console.log("==========로그인로그인로그인==========");
-
   await adminLogin(loginAdmin.value);
   let token = sessionStorage.getItem("accessToken");
 
-  console.log(token);
   if (token !== null) {
-    console.log(rememberMe.value);
     if (rememberMe.value == true) {
-      console.log("쿠키등록");
       // emailSave가 true인 경우에만 쿠키를 설정합니다.
       vueCookies.set("rememberId", loginAdmin.value.id);
       vueCookies.set("rememberMe", rememberMe.value);
     } else {
-      console.log("쿠키삭제");
       vueCookies.remove("rememberId");
       vueCookies.remove("rememberMe");
     }

@@ -6,7 +6,6 @@ const props = defineProps({
 });
 const emit = defineEmits("location-select");
 const locationSelect = (message) => {
-  console.log("AppSection message : ", message);
   emit("location-select", message);
 };
 </script>
@@ -65,7 +64,7 @@ td {
   /* background-color: bisque; */
   border-top: 2px dashed rgb(164, 164, 164);
   border-bottom: 2px dashed rgb(164, 164, 164);
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 600;
 }
 

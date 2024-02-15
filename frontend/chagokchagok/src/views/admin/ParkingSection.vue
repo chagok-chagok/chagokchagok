@@ -91,22 +91,15 @@ const parkingRightDown = ref([
 ]);
 
 const searchQuery = async () => {
-  console.log("검색조건 : ", queryType.value, "검색어 : ", queryValue.value);
   await parkingSectionStore.searchLocation(queryType, queryValue);
-  console.log("위치 검색 결과", targetLocation.value);
 };
 
 const showTooltip = async (message) => {
-  console.log("location : ", message);
   await parkingSectionStore.getCarInfo(message);
-  console.log("검색해온 차 정보 : ", carInfo.value);
-  console.log("carInfo.car_no", carInfo);
 };
 
 onMounted(() => {
   parkingSectionStore.getParkList();
-  console.log("주차장 정보 : ", parks.value);
-  console.log("주차 자리 정보 : ", occupied.value);
 });
 </script>
 
@@ -260,7 +253,7 @@ onMounted(() => {
   background-color: #eff5ff;
   color: #5f93fb;
   border-radius: 5px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 400;
 }
 .end-width {
@@ -298,7 +291,7 @@ onMounted(() => {
 .color-info-div span {
   margin-left: 5px;
   font-size: 14px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 600;
 }
 .color-info {
@@ -346,7 +339,7 @@ onMounted(() => {
   border: 1px solid transparent;
   border-radius: 3px;
   color: #ff5a5f;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .top-bar {
@@ -388,7 +381,7 @@ onMounted(() => {
   border-radius: 8px;
   z-index: 1;
   outline: none;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .search-bar input[type="text"] {
@@ -401,7 +394,7 @@ onMounted(() => {
   background-color: #f7f7f7;
   opacity: 0.8;
   outline: none;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .all-park-container {

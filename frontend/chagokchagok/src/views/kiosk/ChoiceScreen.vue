@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-// import router from "vue-router";
 import { useParkingStore } from "@/stores/parkingStore";
 import { instance } from "@/utils/mainAxios";
 import { useRouter } from "vue-router";
@@ -27,25 +26,20 @@ onMounted(() => {
   //연결 리스너
   sseEvent.addEventListener("open", function (e) {
     //캐치할 에러코드를 써줌
-    console.log("연결되었습니다.", e.data);
   });
 
   //에러 리스너
-  sseEvent.addEventListener("error", function (e) {
-    console.log(e);
-  });
+  sseEvent.addEventListener("error", function (e) {});
 
   // 자리 배정 이벤트
   sseEvent.addEventListener("VALID_CAR_NUM", function (e) {
     // 차 번호 입력받았으니 장애 여부 입력받고 자리 할당 api 호출
-    console.log(e.data);
     carNumber.value = e.data;
     parkingStore.car_no = carNumber.value;
   });
   // 정규식 틀렸을 경우
   sseEvent.addEventListener("INVALID_CAR_NUM", function (e) {
     // 잘못찍힘 화면으로 보냄
-    console.log(e.data);
     router.push({ name: "recognition-error" });
   });
   const interval = setInterval(() => {
@@ -64,12 +58,10 @@ function getCurrentTime() {
 
 function selectParking(isDisabled) {
   if (!carNumber.value) {
-    console.error("차번호 인식 실패");
     router.push({ name: "recognition-error" });
     return; // 함수 실행 중단
   }
 
-  console.log("지금 전송할 차번호는 ", carNumber.value);
   local.defaults.headers["Authorization"] =
     sessionStorage.getItem("accessToken");
   if (isDisabled) {
@@ -87,13 +79,9 @@ function selectParking(isDisabled) {
         }
       )
       .then((response) => {
-        console.log(response);
-        console.log(response.data.allocated_location);
         parkingStore.allocated_location = response.data.allocated_location;
-        // if
       })
       .catch((error) => {
-        console.error("자리 없음:", error);
         allocatedLocation.value = "";
         router.push({ name: "no-place" });
       });

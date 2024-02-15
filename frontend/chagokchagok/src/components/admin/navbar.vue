@@ -28,7 +28,6 @@ const logout = async () => {
 
 const changePassword = () => {
   router.push("/main/changePassword");
-  console.log("비밀번호 변경");
   closeModal();
 };
 

@@ -16,12 +16,10 @@ onMounted(() => {
   //연결 리스너
   sseEvent.addEventListener("open", function (e) {
     //캐치할 에러코드를 써줌
-    console.log(e.data);
     store.updateSSEStatus("connected");
   });
   //에러 리스너
   sseEvent.addEventListener("error", function (e) {
-    console.log(e);
     store.updateSSEStatus("disconnected");
   });
   //자동신고시스템 - 플로팅알림

@@ -12,8 +12,6 @@ const { occupied, parks } = storeToRefs(guestStore);
 
 const search = async () => {
   await guestStore.getParkList();
-  console.log("parks : ", parks.value);
-  console.log("occupied : ", occupied.value);
 };
 
 search();

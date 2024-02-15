@@ -33,21 +33,14 @@ onMounted(() => {
   //연결 리스너
   sseEvent.addEventListener("open", function (e) {
     //캐치할 에러코드를 써줌
-    console.log("open");
-    console.log(e.data);
   });
 
   //에러 리스너
-  sseEvent.addEventListener("error", function (e) {
-    console.log("error");
-    console.log(e);
-  });
+  sseEvent.addEventListener("error", function (e) {});
 
   // SENSOR_REPORT 상태코드 리스너 << 이런식으로 등록하면 됨
   sseEvent.addEventListener("CONGESTION_CLEAR", function (e) {
     //캐치할 상태코드를 써줌
-    console.log("catch");
-    console.log(e.data);
     router.push({ name: "allocation" });
   });
 

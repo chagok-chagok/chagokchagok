@@ -13,8 +13,6 @@ const closeModal = () => {
 };
 
 const unlockBar = async () => {
-  console.log("park_full_name : ", parkingSectionStore.originalLocation);
-  console.log("car_no : ", targetCar.value);
   await parkingSectionStore.unlockBar(targetCar.value);
   await parkingSectionStore.getParkList();
   closeModal();
@@ -103,7 +101,7 @@ const unlockBar = async () => {
   width: 690px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 200;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
 }
 
 .modal-header {
