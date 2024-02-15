@@ -67,7 +67,7 @@ export const notificationStore = defineStore("notificationStore", () => {
     time.value = data.time;
     setTimeout(() => {
       closeNotification();
-    }, 3000); // 3초 후에 알림을 닫음 (조절 가능)
+    }, 17000);
   };
 
   //플로팅 알림 닫기
@@ -82,7 +82,6 @@ export const notificationStore = defineStore("notificationStore", () => {
     local.defaults.headers["Authorization"] =
       sessionStorage.getItem("accessToken");
     const { data } = await local.get("/admin/common");
-    console.log("공통바 씻이", data);
     const commonData = data;
     total_cnt.value = commonData.total_cnt;
     current_cnt.value = commonData.curr_cnt;
@@ -91,7 +90,6 @@ export const notificationStore = defineStore("notificationStore", () => {
     processing_details.value.forEach((item) => {
       item.time = moment(item.time).format("YYYY-MM-DD HH:mm:ss");
     });
-    console.log("parks ", parks.value);
   };
 
   //대시보드 차트 업데이트
@@ -99,7 +97,6 @@ export const notificationStore = defineStore("notificationStore", () => {
     local.defaults.headers["Authorization"] =
       sessionStorage.getItem("accessToken");
     const { data } = await local.get("/admin/dashboard");
-    console.log("데시보드 씻이", data);
     const dashboardData = data;
     today_visits.value = dashboardData.today_visits;
     pre_visits.value = dashboardData.previous_visits;

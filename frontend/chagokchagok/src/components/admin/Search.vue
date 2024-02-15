@@ -19,10 +19,7 @@ const search = async () => {
     });
     searchResult.value = response.data;
     parkingSectionStore.searchRES = response.data;
-  } catch (error) {
-    console.error("Search error:", error);
-    // 에러 처리 로직을 추가합니다.
-  }
+  } catch (error) {}
 };
 </script>
 

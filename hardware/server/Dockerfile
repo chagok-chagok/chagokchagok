@@ -2,13 +2,16 @@ From python:3.9.13
 
 RUN pip install --upgrade pip
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY . .
+COPY server-requirements.txt .
 
-WORKDIR ./server
-RUN pip install -r requirements.txt
+COPY . /app
 
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8080"]
+ADD start.sh /
 
-EXPOSE 8080
+RUN chmod +x /start.sh
+
+CMD ["/start.sh"]
+
+EXPOSE 8081

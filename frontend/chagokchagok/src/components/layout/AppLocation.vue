@@ -19,7 +19,6 @@ const props = defineProps({
 
 const emit = defineEmits(["click-location"]);
 const clickLocation = (locationName) => {
-  // console.log("locationName : ", locationName);
   if (occupied.value.includes(locationName)) {
     originalLocation.value = locationName;
     targetLocation.value = "";
@@ -27,7 +26,6 @@ const clickLocation = (locationName) => {
     modalPosition.value.y = event.clientY;
     // isModalOpen.value = true;
     parkingSectionStore.openTooltip();
-    console.log("x : ", modalPosition.value.x, "y : ", modalPosition.value.y);
     emit("click-location", locationName);
   }
 };

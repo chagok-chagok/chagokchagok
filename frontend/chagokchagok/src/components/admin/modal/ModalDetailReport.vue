@@ -1,10 +1,7 @@
 <script setup>
 import { defineEmits, defineProps, onMounted, ref } from "vue";
 import { useReportStore } from "@/stores/report";
-import { mdiBellOutline, mdiConsoleNetworkOutline } from "@mdi/js";
-import MdiIcon from "@/components/icons/MdiIcon.vue";
 import moment from "moment";
-import { faBold } from "@fortawesome/free-solid-svg-icons";
 const reportStore = useReportStore();
 const props = defineProps({
   errorCode: Array,
@@ -35,7 +32,6 @@ const updateFormattedDateTime = () => {
 };
 
 const getOptionStyle = (option) => {
-  console.log(option.value);
   // 옵션에 따라 색상을 반환
   switch (option.value) {
     case "IN_PROGRESS":

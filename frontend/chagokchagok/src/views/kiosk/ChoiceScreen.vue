@@ -1,11 +1,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-// import router from "vue-router";
 import { useParkingStore } from "@/stores/parkingStore";
 import { instance } from "@/utils/mainAxios";
 import { useRouter } from "vue-router";
-import printJs from "print-js";
-
 const local = instance;
 
 const { VITE_VUE_SPRING_URL } = import.meta.env;
@@ -15,7 +12,6 @@ const allocatedLocation = ref("");
 const parkingStore = useParkingStore();
 const carNumber = ref("");
 const router = useRouter();
-const printObj = ref([]);
 
 router.beforeEach((to, from, next) => {
   if (from.name === "allocation" && to.name === "choice-screen") {
@@ -30,24 +26,20 @@ onMounted(() => {
   //연결 리스너
   sseEvent.addEventListener("open", function (e) {
     //캐치할 에러코드를 써줌
-    console.log("연결되었습니다.", e.data);
   });
 
   //에러 리스너
-  sseEvent.addEventListener("error", function (e) {
-    console.log(e);
-  });
+  sseEvent.addEventListener("error", function (e) {});
 
   // 자리 배정 이벤트
   sseEvent.addEventListener("VALID_CAR_NUM", function (e) {
     // 차 번호 입력받았으니 장애 여부 입력받고 자리 할당 api 호출
-    console.log(e.data);
     carNumber.value = e.data;
+    parkingStore.car_no = carNumber.value;
   });
   // 정규식 틀렸을 경우
   sseEvent.addEventListener("INVALID_CAR_NUM", function (e) {
     // 잘못찍힘 화면으로 보냄
-    console.log(e.data);
     router.push({ name: "recognition-error" });
   });
   const interval = setInterval(() => {
@@ -66,15 +58,14 @@ function getCurrentTime() {
 
 function selectParking(isDisabled) {
   if (!carNumber.value) {
-    console.error("차번호 인식 실패");
     router.push({ name: "recognition-error" });
     return; // 함수 실행 중단
   }
 
-  console.log("지금 전송할 차번호는 ", carNumber.value);
   local.defaults.headers["Authorization"] =
     sessionStorage.getItem("accessToken");
   if (isDisabled) {
+<<<<<<< HEAD
     router.push({ name: "allocation" });
   } else {
     router.push({ name: "recommendation" });
@@ -89,21 +80,29 @@ function selectParking(isDisabled) {
       {
         headers: {
           "Content-Type": "application/json",
+=======
+    local
+      .post(
+        `${VITE_VUE_SPRING_URL}park/allocation`,
+        {
+          car_no: carNumber.value,
+          is_disabled: isDisabled,
+>>>>>>> 8bad49db2802fd7e81ee9b67a4e8b18bb774e718
         },
-      }
-    )
-    .then((response) => {
-      console.log(response);
-      console.log(response.data.allocated_location);
-      // parkingStore에 저장할 정보 추가(프린터용)
-      parkingStore.allocated_location = response.data.allocated_location;
-      parkingStore.car_no = response.data.car_no;
-      parkingStore.entry_time = response.data.entry_time;
-      printObj.value.push({
-        allocated_location: parkingStore.allocated_location,
-        car_no: parkingStore.car_no,
-        entry_time: parkingStore.entry_time,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        parkingStore.allocated_location = response.data.allocated_location;
+      })
+      .catch((error) => {
+        allocatedLocation.value = "";
+        router.push({ name: "no-place" });
       });
+<<<<<<< HEAD
 
       // 프린트 기능
       // print();
@@ -113,21 +112,15 @@ function selectParking(isDisabled) {
       allocatedLocation.value = "";
       router.push({ name: "no-place" });
     });
+=======
+  } else {
+    router.push({ name: "recommendation" });
+  }
+>>>>>>> 8bad49db2802fd7e81ee9b67a4e8b18bb774e718
 }
-
-const print = () => {
-  printJs({
-    printable: printObj.value,
-    properties: [
-      { field: "allocated_location", displayName: "배정 자리" },
-      { field: "car_no", displayName: "차량 번호" },
-      { field: "entry_time", displayName: "입차 시간" },
-    ],
-    type: "json",
-  });
-};
 </script>
 
++
 <template>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

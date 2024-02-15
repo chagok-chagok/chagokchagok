@@ -25,7 +25,7 @@ const props = defineProps(["icon", "pageTitle"]);
 
 .pageTitle {
   font-size: 18px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 700;
 }
 </style>

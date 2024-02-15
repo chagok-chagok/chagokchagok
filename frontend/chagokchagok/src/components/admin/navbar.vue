@@ -61,7 +61,7 @@ const closeModalOnOutsideClick = (event) => {
     <div class="admin-container">
       <div class="admin-name">{{ id }} 님</div>
       <transition name="modal-fade">
-        <Modal v-show="isModalOpen" class="modal">
+        <div v-show="isModalOpen" class="modal">
           <div class="modal-content">
             <div class="modal-inner">
               <div class="inner status" @click="openSettings">
@@ -87,7 +87,7 @@ const closeModalOnOutsideClick = (event) => {
               <div class="inner hover" @click="logout">로그아웃</div>
             </div>
           </div>
-        </Modal>
+        </div>
       </transition>
       <div class="settings" @click="toggleSettings">
         <font-awesome-icon :icon="['fas', 'gear']" style="color: #222222" />
@@ -171,8 +171,8 @@ const closeModalOnOutsideClick = (event) => {
 
 .modal {
   position: absolute;
-  top: 35px;
-  left: 40px;
+  top: 33px;
+  left: -17px;
   display: flex;
   align-items: center;
   justify-content: center;

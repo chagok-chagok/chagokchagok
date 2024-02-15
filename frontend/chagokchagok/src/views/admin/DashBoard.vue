@@ -106,7 +106,6 @@ function drawDoughtnut() {
 }
 
 function drawLine() {
-  console.log(today_visits);
   const ctx = lineChart.value.getContext("2d");
   let gradientFill = ctx.createLinearGradient(0, 0, 0, 200);
   gradientFill.addColorStop(0, "rgb(0,7,182,0.1)");
@@ -428,6 +427,7 @@ p {
   /* background-color: aliceblue; */
   height: 45%;
   width: 90%;
+  font-size: 0.7rem;
 }
 
 .horizontal-line {
@@ -483,7 +483,7 @@ p {
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px; /* 원하는 폰트 크기로 조절 */
+  /* font-size: 14px; */
 }
 th,
 td {

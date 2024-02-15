@@ -108,9 +108,9 @@ board.set_pin_mode_servo(motor_exit)
 board.set_pin_mode_sonar(trigpin_section, echopin_section, call_back)
 
 # AIserver url
-url = 'http://192.168.31.17:8000/apiv1/'
+url = 'http://i10b301.p.ssafy.io:8081/apiv1/'
 # backend server url
-spring_url = 'http://192.168.31.251:8080/'
+spring_url = 'https://chagokchagok.store/api/'
 
 
 def main():
@@ -127,25 +127,30 @@ def main():
             print(sect_dis)
 
             # hall way logic
-            if hall_dis[0] <= 5:
+            if hall_dis[0] <= 7:
                 # data processing
                 image_source = capture1()
                 # request url
                 hall_url = f'{url}hall/'
                 # request to django
+
                 hall_response = requests.post(hall_url, data=image_source)
                 hall_result = hall_response.json()
-                print(hall_result)
-                # need to change conditions after checking 
-                if hall_result:
-                    if hall_result['park_id'] == 'A8':
-                        board.servo_write(motor_hall_1, 0)
-                    else:
-                        board.servo_write(motor_hall_2, 0)
-                time.sleep(5)
+                # need to change conditions after checking
+                try:
+
+                    if hall_result:
+                        print('here')
+                        if hall_result['park_id'] == 'A1':
+                            board.servo_write(motor_hall_1, 0)
+                        else:
+                            board.servo_write(motor_hall_2, 0)
+                    time.sleep(5)
+                except:
+                    print(hall_result)
 
             # exit logic
-            if exit_dis[0] <= 5:
+            if exit_dis[0] <= 7:
                 # data processing
                 image_source = capture2()
                 # reuqest url
@@ -162,10 +167,10 @@ def main():
                     # will change condition after deciding parking section number 1 to another
                     section = exit_result['response']
                     print(section)
-                    if section == 'A7':
+                    if section == 'A2':
                         # check parking section is empty
                         # if it is not empty
-                        if sect_dis[0] <= 5:
+                        if sect_dis[0] <= 7:
                             print('here?')
                             report_url = f'{spring_url}park/auto?location={section}'
                             headers = {'Content-type': 'application/json', 'charset': 'utf8'}
@@ -174,25 +179,30 @@ def main():
                             
                         # if it is empty
                         else:
-                            board.servo_write(motor_hall_1, 90)
+                            board.servo_write(motor_hall_2, 90)
                     else:
-                        board.servo_write(motor_hall_2, 90)
+                        board.servo_write(motor_hall_1, 90)
                 time.sleep(5)
             
 
             if cnt == 3:
                 cnt = 0
+                print('CHECK')
                 # url
                 check_managing_url = f'{url}bar-open/'
-                bar_response = requests.get(check_managing_url)
-                area_value = bar_response['area_no']
+                try:
+                    bar_response = requests.get(check_managing_url)
+                    print(bar_response)
+                    area_value = bar_response.json()['response']
+                except:
+                    area_value = 'empty'
                 if area_value == 'empty':
                     pass
-                elif area_value == 'A7':
+                elif area_value == '2':
                     # open = 0
-                    board.servo_write(motor_hall_1, 0)
-                elif area_value == 'A8':
                     board.servo_write(motor_hall_2, 0)
+                elif area_value == '1':
+                    board.servo_write(motor_hall_1, 0)
 
             # activate barricate at exit   
             board.servo_write(motor_exit, 90)

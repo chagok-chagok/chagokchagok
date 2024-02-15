@@ -62,3 +62,9 @@ def plate_recog(image_data):
     cv2.imwrite('./image.png', img_out)
     text = main('./image.png')
     return text
+
+
+"""
+AI Source From
+https://github.com/gyupro/EasyKoreanLpDetector/tree/main
+"""

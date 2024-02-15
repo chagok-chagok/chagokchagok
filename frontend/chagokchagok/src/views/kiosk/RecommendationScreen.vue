@@ -10,6 +10,9 @@ const currentTime = ref(getCurrentTime());
 const allocatedLocation = ref("");
 const parkingStore = useParkingStore();
 const carNumber = ref("");
+import { instance } from "@/utils/mainAxios";
+
+const local = instance;
 
 onMounted(() => {
   const sseEvent = new EventSource(kioskUrl);
@@ -17,24 +20,19 @@ onMounted(() => {
   //연결 리스너
   sseEvent.addEventListener("open", function (e) {
     //캐치할 에러코드를 써줌
-    console.log("carNumber : ", e.data);
   });
 
   //에러 리스너
-  sseEvent.addEventListener("error", function (e) {
-    console.log(e);
-  });
+  sseEvent.addEventListener("error", function (e) {});
 
   // 자리 배정 이벤트
   sseEvent.addEventListener("VALID_CAR_NUM", function (e) {
     // 차 번호 입력받았으니 장애 여부 입력받고 자리 할당 api 호출
-    console.log(e.data);
     carNumber.value = e.data;
   });
   // 정규식 틀렸을 경우
   sseEvent.addEventListener("INVALID_CAR_NUM", function (e) {
     // 잘못찍힘 화면으로 보냄
-    console.log(e.data);
     router.push({ name: "recognition-error" });
   });
   const interval = setInterval(() => {
@@ -53,6 +51,28 @@ function getCurrentTime() {
 
 function selectParking() {
   // 여기서는 isDisabled 파라미터를 사용하지 않고 직접 allocation 페이지로 이동
+  local.defaults.headers["Authorization"] =
+    sessionStorage.getItem("accessToken");
+  local
+    .post(
+      `${VITE_VUE_SPRING_URL}park/allocation`,
+      {
+        car_no: parkingStore.car_no,
+        is_disabled: false,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((response) => {
+      parkingStore.allocated_location = response.data.allocated_location;
+    })
+    .catch((error) => {
+      allocatedLocation.value = "";
+      router.push({ name: "no-place" });
+    });
   router.push({ name: "allocation" });
 }
 </script>

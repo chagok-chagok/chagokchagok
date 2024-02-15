@@ -91,22 +91,15 @@ const parkingRightDown = ref([
 ]);
 
 const searchQuery = async () => {
-  console.log("검색조건 : ", queryType.value, "검색어 : ", queryValue.value);
   await parkingSectionStore.searchLocation(queryType, queryValue);
-  console.log("위치 검색 결과", targetLocation.value);
 };
 
 const showTooltip = async (message) => {
-  console.log("location : ", message);
   await parkingSectionStore.getCarInfo(message);
-  console.log("검색해온 차 정보 : ", carInfo.value);
-  console.log("carInfo.car_no", carInfo);
 };
 
 onMounted(() => {
   parkingSectionStore.getParkList();
-  console.log("주차장 정보 : ", parks.value);
-  console.log("주차 자리 정보 : ", occupied.value);
 });
 </script>
 

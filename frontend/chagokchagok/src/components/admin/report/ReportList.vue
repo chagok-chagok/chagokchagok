@@ -30,9 +30,6 @@ const search = async () => {
   await reportStore.getReportList(page.value);
   // 가져온 total_page_cnt를 BasicPagination에 전달
   basicPaginationProps.value.totalPages = total_page_cnt.value;
-  console.log("reports : ", reports.value);
-  console.log(reports.value[0]);
-  console.log();
 };
 
 const changePage = async (pageNumber) => {
@@ -60,12 +57,9 @@ const getStatus = (status) => {
 };
 
 // filter button 클릭 시 이벤트 작성
-const filterClick = () => {
-  console.log("filter click");
-};
+const filterClick = () => {};
 
 const openModal = (report) => {
-  console.log("report : ", report);
   modalReport.value = report;
   isModalVisible.value = true;
 };
@@ -80,7 +74,6 @@ onMounted(async () => {
   await search(); // 컴포넌트가 마운트될 때 초기 total_page_cnt를 가져옴
   if (reports.value[0] != null) {
     titles.value = Object.keys(reports.value[0]);
-    console.log("titles : ", titles.value);
   }
 });
 </script>
