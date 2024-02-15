@@ -428,6 +428,7 @@ p {
   /* background-color: aliceblue; */
   height: 45%;
   width: 90%;
+  font-size: 0.7rem;
 }
 
 .horizontal-line {
@@ -483,7 +484,7 @@ p {
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px; /* 원하는 폰트 크기로 조절 */
+  /* font-size: 14px; */
 }
 th,
 td {
