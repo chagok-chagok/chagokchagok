@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-import router from "vue-router";
+// import router from "vue-router";
 import { useParkingStore } from "@/stores/parkingStore";
 import { instance } from "@/utils/mainAxios";
 
@@ -90,11 +90,7 @@ function selectParking(isDisabled) {
         console.log(response);
         console.log(response.data.allocated_location);
         parkingStore.allocated_location = response.data.allocated_location;
-        // if (isDisabled) {
-        //   router.push({ name: "allocation" });
-        // } else {
-        //   router.push({ name: "recommendation" });
-        // }
+        // if
       })
       .catch((error) => {
         console.error("자리 없음:", error);
