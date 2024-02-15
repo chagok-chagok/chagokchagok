@@ -1,19 +1,31 @@
 # 🚗차곡차곡🚗
 
-> 진행기간 2024.01.08 ~ 2024.02.16<br>
+## 🎞 프로젝트 진행기간
 
-### 서비스 소개
+진행기간 2024.01.08 ~ 2024.02.16<br>
 
-> 주차장에서 돌고 도는 당신을 위한 자동 주차 배정 시스템,<br>
+SSAFY 10기 공통 프로젝트<br>
 
-## 팀 구성
+## 서비스 소개
 
-|                                        백성욱                                        |                                         김용준                                         |                               <center>김준호</center>                                |                                         박수형                                         |                                         임태수                                         |                                          최서현                                          |
-| :----------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------: |
-| <img src="/uploads/1117df801a93b036eb6c238b97b1cf3b/su.PNG" width="42" height="42"/> | <img src="/uploads/6b485c5c0918ce88b75b250e57ac26a6/용준.PNG" width="42" height="42"/> | <img src="/uploads/926229d301d510473b0398a02260bc6b/jh.PNG" width="42" height="42"/> | <img src="/uploads/c816b7a71ad45a343914ac36fe4c8116/수형.PNG" width="42" height="42"/> | <img src="/uploads/1dccedefbf9da4ed6b3731e45ecaa9d2/태수.PNG" width="42" height="42"/> | <img src="/uploads/01d4f0e6ee89d1c7804d0a5507a54826/사장님.PNG" width="42" height="42"/> |
-|                                     팀장 <br> BE                                     |                                           BE                                           |                                  FE팀장 <br> UX/UI                                   |                                         HW팀장                                         |                                    HW <br> 지라관리                                    |                                    BE팀장 <br> UX/UI                                     |
+> 주차장에서 돌고 도는 당신을 위한 자동 주차 배정 시스템, 🚗차곡차곡🚗<br>
+> 혼잡한 주차장 내부에서 발생하는 문제의 근본적 해결을 위한 주차장 자리배정 시스템
 
-## 서비스 구현
+## 💻주요기능
+
+### 주차장 내부
+
+- 장애 여부를 선택하고, 취향에 따라서 자리를 배정해 줍니다.
+- 새로운 장비를 구매하여 설치하는 것이 아닌, 기존의 cctv를 활용하여 이미지에서 자동차 번호판을 읽어냅니다.
+- AI를 활용하여 차량의 번호판을 인식합니다.
+- 각 구역에 자리를 배정받은 차량이 진입하면 cctv가 차량을 감지하고, 자리의 차단바를 해제시킵니다.
+
+### 관리자
+
+- 실시간으로 주차장에 자리가 얼마나 남았는지, 어느 구역이 많이 비는지 확인할 수 있습니다.
+- 각 자리에 설치된 센서를 이용하여, 문제가 발생했을 때, 자동으로 관리자에게 신고됩니다.
+
+## 🖼서비스 화면
 
 ### kiosk
 
@@ -57,42 +69,76 @@
 
 - 일대다 단방향 연관관계 (신고기록쪽이 외래키, 즉 다)
 
-## 기술스택
+## 🛠기술스택
 
-### 💾 $BackEnd$
+### $BackEnd$
 
-|           | Skill         | Version |
-| --------- | ------------- | ------- |
-| Language  | Java          | JDK21   |
-| Framework | SpringBoot    | 3.2.2   |
-| DataBase  | MySQL         | 8.0.35  |
-| ORM       | JPA           | -       |
-| Build     | Gradle-Groovy | -       |
+<img src="https://img.shields.io/badge/JAVA-3776AB?style=for-the-badge&logo=JAVA&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=Gradle&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=Django&logoColor=white">&nbsp;
 
-### 📱$FrontEnd$
+- Java JDK 21
+- SpringBoot 3.2.2
+- JPA
+- Gradle
+- MySQL 8.0.35
+- Django
 
-| Skill      | Version |
-| ---------- | ------- |
-| Vue        | 3.3.11  |
-| HTML       |         |
-| CSS        |         |
-| JavaScript |         |
+### $FrontEnd$
 
-### 🔃 Devops
+<img src="https://img.shields.io/badge/Vue.js-4FC08D?style=for-the-badge&logo=Vue.js&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=Axios&logoColor=white">&nbsp;
 
+- Vue
+- Node.js
+- javascript
+- Axios
+
+### HardWare
+
+<img src="https://img.shields.io/badge/Raspberry Pi-A22846?style=for-the-badge&logo=Raspberry Pi&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/Arduino-00878F?style=for-the-badge&logo=Ariduino&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/AutoCAD-E51050?style=for-the-badge&logo=AutoCAD&logoColor=white">&nbsp;
+
+- Raspberry Pi4 B 6.1
+- Arduino IDE 2.2.1
+- Python 3.9.13
+- AutoCAD
+
+### CI/CD
+
+<img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=Ubuntu&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=NGINX&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=Jenkins&logoColor=white">&nbsp;
+
+- AWS EC2
+- Ubuntu 20.04 LTS
 - nginx
 - Docker
 - Jenkins
 
-### ⚙ $HardWare$
+### 협업 툴
 
-| Skill           | Version |
-| --------------- | ------- |
-| Raspberry Pi OS | 6.1     |
-| Python          | 3.9.13  |
-| Arduino IDE     | 2.2.1   |
+<img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/jira-0052CC?style=for-the-badge&logo=jirasoftware&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/figma-EA4335?style=for-the-badge&logo=figma&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/gerrit-EEEEEE?style=for-the-badge&logo=gerrit&logoColor=black">&nbsp;
 
-## 프로젝트 구조도
+- Git
+- Jira
+- Mattermost, Notion
+- Figma
+- gerrit
+
+## 프로젝트 파일 구조
 
 <details>
 <summary>backend</summary>
@@ -431,3 +477,10 @@
 [[FE] 코드컨벤션](./conventions/frontend_convention.md)
 
 [[H/W] 코드컨벤션](./conventions/hw_convention.md)
+
+## 팀 구성
+
+|                                        백성욱                                        |                                         김용준                                         |                               <center>김준호</center>                                |                                         박수형                                         |                                         임태수                                         |                                          최서현                                          |
+| :----------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------: | :------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------: |
+| <img src="/uploads/1117df801a93b036eb6c238b97b1cf3b/su.PNG" width="42" height="42"/> | <img src="/uploads/6b485c5c0918ce88b75b250e57ac26a6/용준.PNG" width="42" height="42"/> | <img src="/uploads/926229d301d510473b0398a02260bc6b/jh.PNG" width="42" height="42"/> | <img src="/uploads/c816b7a71ad45a343914ac36fe4c8116/수형.PNG" width="42" height="42"/> | <img src="/uploads/1dccedefbf9da4ed6b3731e45ecaa9d2/태수.PNG" width="42" height="42"/> | <img src="/uploads/01d4f0e6ee89d1c7804d0a5507a54826/사장님.PNG" width="42" height="42"/> |
+|                                 Leader <br> Backend                                  |                                        Backend                                         |                                       FrontEnd                                       |                                        Hardware                                        |                                     Hardware <br>                                      |                                   Backend <br> Design                                    |
