@@ -3,9 +3,9 @@ from pymata4 import pymata4
 import time
 import requests
 import base64
+# from queue import Queue
 
 
-# setting pins
 trigpin_entrance = 2
 echopin_entrance = 3
 motor_entrance = 4
@@ -20,7 +20,11 @@ def call_back(data):
 board.set_pin_mode_sonar(trigpin_entrance, echopin_entrance, call_back)
 board.set_pin_mode_servo(motor_entrance)
 
-apiurl = 'http://192.168.31.17:8000/apiv1/'
+# import threading
+
+# image_queue = Queue()
+
+apiurl = 'http://i10b301.p.ssafy.io:8081/apiv1/'
 
 
 def capture():
@@ -50,12 +54,15 @@ def capture():
 
 
 def open_barricate():
-    entrance_url = f'{apiurl}/ent-open/succes/'
+    entrance_url = f'{apiurl}ent-open/'
     while True:
         try:
+            print('here?')
+
             time.sleep(1)
             ent_response = requests.post(entrance_url)
             ent_res = ent_response.json()
+            print(ent_res)
             if ent_res['response'] == 'open':
                 board.servo_write(motor_entrance, 0)
                 time.sleep(5)
@@ -70,14 +77,13 @@ def main():
             time.sleep(1)
             dist = board.sonar_read(trigpin_entrance)
             print(dist)
-            if dist[0] <= 5:
+            if dist[0] <= 7:
                 image_source = capture()
                 entrance_url = f'{apiurl}entrance/'
                 entrance_response = requests.post(entrance_url, data=image_source)
                 entrance_result = entrance_response.json()
-
-                # if success to recognize carplate number
-                if entrance_result['response'] == 'True':
+                print(entrance_result)
+                if entrance_result['response'] == True:
                     # start to check
                     open_barricate()
                     
@@ -87,7 +93,7 @@ def main():
             board.servo_write(motor_entrance, 90)
         except Exception:
             board.shutdown()
-
+            
 
 if __name__ == "__main__":
     main()
