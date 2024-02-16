@@ -14,6 +14,32 @@ import { instance } from "@/utils/mainAxios";
 
 const local = instance;
 
+//프린트
+import printJs from "print-js";
+const item = ref([]); // print-js에서 json 출력하려면 객체의 배열 형태만 가능함.
+// 이부분을 parkStore의 변수들로 대체하면 됨.
+item.value = [
+  {
+    allocated_location: "A2",
+    car_no: "07서0484",
+    entry_time: new Date(),
+  },
+];
+// print함수 => RecommendationScreen에서 호출하면 될듯함
+// 스타일 변경해야 함
+const print = () => {
+  printJs({
+    printable: item.value,
+    properties: [
+      { field: "allocated_location", displayName: "배정 자리" },
+      { field: "car_no", displayName: "차량 번호" },
+      { field: "entry_time", displayName: "입차 시간" },
+    ],
+    type: "json",
+  });
+};
+// print();
+
 onMounted(() => {
   const sseEvent = new EventSource(kioskUrl);
 
