@@ -94,6 +94,7 @@ function selectParking() {
     )
     .then((response) => {
       parkingStore.allocated_location = response.data.allocated_location;
+      print();
     })
     .catch((error) => {
       allocatedLocation.value = "";
