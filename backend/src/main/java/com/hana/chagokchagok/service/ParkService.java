@@ -205,6 +205,7 @@ public class ParkService {
     public SearchInfoResponse searchInfo(SearchInfoRequest searchInfoRequest) {
         RealtimeParking realtimeParking = null;
         if(searchInfoRequest.getType() == SearchType.CAR_NUMBER){
+
             realtimeParking = realTimeParkingRepository.findByAllocationLog_CarNo(searchInfoRequest.getValue());
         }else if(searchInfoRequest.getType() == SearchType.SPOT_NUMBER){
             String[] location = separateLocationInput(searchInfoRequest.getValue());
