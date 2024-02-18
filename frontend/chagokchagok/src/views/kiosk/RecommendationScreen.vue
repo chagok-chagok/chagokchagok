@@ -3,16 +3,27 @@ import { ref, onMounted, onUnmounted } from "vue";
 import axios from "axios";
 import router from "@/router";
 import { useParkingStore } from "@/stores/parkingStore";
-
-const { VITE_VUE_SPRING_URL } = import.meta.env;
-const kioskUrl = `${VITE_VUE_SPRING_URL}sse/kiosk`; //kiosk의 sse접속 url입니다.
-const currentTime = ref(getCurrentTime());
+import { useKioskStore } from "@/stores/kiosk";
+// import { instance } from "@/utils/mainAxios";
+// import { useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
+// const local = instance;
+const kioskStore = useKioskStore();
+const {
+  currentTime,
+  carNumber,
+  isDisabled,
+  updateCurrentTime,
+  allocation,
+  selectParking,
+  // getCurrentTime,
+} = storeToRefs(kioskStore);
 const allocatedLocation = ref("");
 const parkingStore = useParkingStore();
-const carNumber = ref("");
+// carNumber = ref("");
 import { instance } from "@/utils/mainAxios";
 
-const local = instance;
+// const local = instance;
 
 //프린트
 import printJs from "print-js";
@@ -38,70 +49,6 @@ const print = () => {
     type: "json",
   });
 };
-// print();
-
-onMounted(() => {
-  const sseEvent = new EventSource(kioskUrl);
-
-  //연결 리스너
-  sseEvent.addEventListener("open", function (e) {
-    //캐치할 에러코드를 써줌
-  });
-
-  //에러 리스너
-  sseEvent.addEventListener("error", function (e) {});
-
-  // 자리 배정 이벤트
-  sseEvent.addEventListener("VALID_CAR_NUM", function (e) {
-    // 차 번호 입력받았으니 장애 여부 입력받고 자리 할당 api 호출
-    carNumber.value = e.data;
-  });
-  // 정규식 틀렸을 경우
-  sseEvent.addEventListener("INVALID_CAR_NUM", function (e) {
-    // 잘못찍힘 화면으로 보냄
-    router.push({ name: "recognition-error" });
-  });
-  const interval = setInterval(() => {
-    currentTime.value = getCurrentTime();
-  }, 10000);
-
-  onUnmounted(() => {
-    clearInterval(interval);
-  });
-});
-
-function getCurrentTime() {
-  const now = new Date();
-  return now.toTimeString().substring(0, 5);
-}
-
-function selectParking() {
-  // 여기서는 isDisabled 파라미터를 사용하지 않고 직접 allocation 페이지로 이동
-  local.defaults.headers["Authorization"] =
-    sessionStorage.getItem("accessToken");
-  local
-    .post(
-      `${VITE_VUE_SPRING_URL}park/allocation`,
-      {
-        car_no: parkingStore.car_no,
-        is_disabled: false,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-    .then((response) => {
-      parkingStore.allocated_location = response.data.allocated_location;
-      print();
-    })
-    .catch((error) => {
-      allocatedLocation.value = "";
-      router.push({ name: "no-place" });
-    });
-  router.push({ name: "allocation" });
-}
 </script>
 
 <template>
@@ -115,10 +62,10 @@ function selectParking() {
     <div class="time-display">{{ currentTime }}</div>
     <div class="message"><strong>선호하시는 자리를 선택해주세요.</strong></div>
     <div class="button-container">
-      <button class="parking-option" @click.prevent="selectParking()">
+      <button class="parking-option" @click.prevent="kioskStore.allocation()">
         <div><strong>가까운 자리</strong></div>
       </button>
-      <button class="parking-option" @click.prevent="selectParking()">
+      <button class="parking-option" @click.prevent="kioskStore.allocation()">
         <div><strong>여유로운 자리</strong></div>
       </button>
     </div>

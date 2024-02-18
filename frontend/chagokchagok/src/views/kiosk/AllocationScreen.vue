@@ -1,3 +1,41 @@
+<script setup>
+import { onMounted, onUnmounted, ref } from "vue";
+import router from "@/router";
+import { useParkingStore } from "@/stores/parkingStore";
+import { useKioskStore } from "@/stores/kiosk";
+
+import { storeToRefs } from "pinia";
+
+const kioskStore = useKioskStore();
+const {
+  currentTime,
+  carNumber,
+  isDisabled,
+  updateCurrentTime,
+  allocation,
+  selectParking,
+  getCurrentTime,
+  allocated_location,
+} = storeToRefs(kioskStore);
+const parkingStore = useParkingStore(); // Pinia store 사용
+
+let intervalId = null; // 인터벌 ID를 저장할 변수
+
+onMounted(() => {
+  // updateCurrentTime();
+  intervalId = setInterval(updateCurrentTime, 1000);
+  setTimeout(() => {
+    carNumber.value = "";
+    router.push({ name: "choice" });
+  }, 5000);
+});
+
+// 컴포넌트가 언마운트될 때 인터벌 클리어
+onUnmounted(() => {
+  clearInterval(intervalId);
+});
+</script>
+
 <template>
   <div class="screen-container">
     <div class="time-display">{{ currentTime }}</div>
@@ -10,43 +48,11 @@
         alt="주차확인증"
         class="ticket-image"
       />
-      <div class="ticket">{{ parkingStore.allocated_location }}</div>
+      <div class="ticket">{{ kioskStore.allocated_location }}</div>
     </div>
     <div class="welcome-message">환영합니다.</div>
   </div>
 </template>
-
-<script setup>
-import { onMounted, onUnmounted, ref } from "vue";
-import router from "@/router";
-import { useParkingStore } from "@/stores/parkingStore";
-
-const currentTime = ref("");
-const parkingStore = useParkingStore(); // Pinia store 사용
-// const allocatedLocation =parkingStore.allocatedLocation; // 할당된 주차 구역 번호
-
-// 현재 시간을 24시간 형식으로 업데이트하는 함수
-function updateCurrentTime() {
-  const now = new Date();
-  currentTime.value = now.toTimeString().substring(0, 5);
-}
-
-let intervalId = null; // 인터벌 ID를 저장할 변수
-
-// 마운트될 때와 매초마다 현재 시간을 업데이트
-onMounted(() => {
-  updateCurrentTime();
-  intervalId = setInterval(updateCurrentTime, 1000);
-  setTimeout(() => {
-    router.push({ name: "choice" });
-  }, 5000);
-});
-
-// 컴포넌트가 언마운트될 때 인터벌 클리어
-onUnmounted(() => {
-  clearInterval(intervalId);
-});
-</script>
 
 <style scoped>
 .screen-container {

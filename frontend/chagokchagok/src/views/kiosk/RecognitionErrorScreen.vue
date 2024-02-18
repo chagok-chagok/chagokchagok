@@ -1,3 +1,41 @@
+<script setup>
+import { ref, onMounted, onUnmounted } from "vue";
+import { useKioskStore } from "@/stores/kiosk";
+// import { instance } from "@/utils/mainAxios";
+// import { useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
+// const local = instance;
+const kioskStore = useKioskStore();
+const {
+  currentTime,
+  carNumber,
+  isDisabled,
+  updateCurrentTime,
+  allocation,
+  selectParking,
+  getCurrentTime,
+} = storeToRefs(kioskStore);
+// const currentTime = ref(getCurrentTime());
+
+// // 현재 시간을 매초마다 업데이트하는 인터벌 설정
+// onMounted(() => {
+//   const interval = setInterval(() => {
+//     currentTime.value = getCurrentTime();
+//   }, 1000);
+
+//   // 컴포넌트가 언마운트되면 인터벌 클리어
+//   onUnmounted(() => {
+//     clearInterval(interval);
+//   });
+// });
+
+// // 현재 시간을 HH:MM 형식으로 반환하는 함수
+// function getCurrentTime() {
+//   const now = new Date();
+//   return now.toTimeString().substring(0, 5);
+// }
+</script>
+
 <template>
   <div class="screen-container">
     <div class="time-display">{{ currentTime }}</div>
@@ -14,30 +52,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref, onMounted, onUnmounted } from "vue";
-
-const currentTime = ref(getCurrentTime());
-
-// 현재 시간을 매초마다 업데이트하는 인터벌 설정
-onMounted(() => {
-  const interval = setInterval(() => {
-    currentTime.value = getCurrentTime();
-  }, 1000);
-
-  // 컴포넌트가 언마운트되면 인터벌 클리어
-  onUnmounted(() => {
-    clearInterval(interval);
-  });
-});
-
-// 현재 시간을 HH:MM 형식으로 반환하는 함수
-function getCurrentTime() {
-  const now = new Date();
-  return now.toTimeString().substring(0, 5);
-}
-</script>
 
 <style scoped>
 .screen-container {

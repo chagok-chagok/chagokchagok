@@ -1,97 +1,17 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
-import { useParkingStore } from "@/stores/parkingStore";
-import { instance } from "@/utils/mainAxios";
-import { useRouter } from "vue-router";
-const local = instance;
-
-const { VITE_VUE_SPRING_URL } = import.meta.env;
-const kioskUrl = `${VITE_VUE_SPRING_URL}sse/kiosk`; //kiosk의 sse접속 url입니다.
-const currentTime = ref(getCurrentTime());
-const allocatedLocation = ref("");
-const parkingStore = useParkingStore();
-const carNumber = ref("");
-const router = useRouter();
-
-router.beforeEach((to, from, next) => {
-  if (from.name === "allocation" && to.name === "choice-screen") {
-    carNumber.value = "";
-  }
-  next();
-});
-
-onMounted(() => {
-  const sseEvent = new EventSource(kioskUrl);
-
-  //연결 리스너
-  sseEvent.addEventListener("open", function (e) {
-    //캐치할 에러코드를 써줌
-  });
-
-  //에러 리스너
-  sseEvent.addEventListener("error", function (e) {});
-
-  // 자리 배정 이벤트
-  sseEvent.addEventListener("VALID_CAR_NUM", function (e) {
-    // 차 번호 입력받았으니 장애 여부 입력받고 자리 할당 api 호출
-    carNumber.value = e.data;
-    parkingStore.car_no = carNumber.value;
-  });
-  // 정규식 틀렸을 경우
-  sseEvent.addEventListener("INVALID_CAR_NUM", function (e) {
-    // 잘못찍힘 화면으로 보냄
-    router.push({ name: "recognition-error" });
-  });
-  const interval = setInterval(() => {
-    currentTime.value = getCurrentTime();
-  }, 10000);
-
-  onUnmounted(() => {
-    clearInterval(interval);
-  });
-});
-
-function getCurrentTime() {
-  const now = new Date();
-  return now.toTimeString().substring(0, 5);
-}
-
-function selectParking(isDisabled) {
-  if (!carNumber.value) {
-    router.push({ name: "recognition-error" });
-    return; // 함수 실행 중단
-  }
-
-  local.defaults.headers["Authorization"] =
-    sessionStorage.getItem("accessToken");
-  if (isDisabled) {
-    local
-      .post(
-        `${VITE_VUE_SPRING_URL}park/allocation`,
-        {
-          car_no: carNumber.value,
-          is_disabled: isDisabled,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        parkingStore.allocated_location = response.data.allocated_location;
-      })
-      .catch((error) => {
-        allocatedLocation.value = "";
-        router.push({ name: "no-place" });
-      });
-  } else {
-    router.push({ name: "recommendation" });
-  }
-}
+import { useKioskStore } from "@/stores/kiosk";
+import { storeToRefs } from "pinia";
+const kioskStore = useKioskStore();
+const {
+  currentTime,
+  carNumber,
+  isDisabled,
+  updateCurrentTime,
+  allocation,
+  selectParking,
+} = storeToRefs(kioskStore);
 </script>
 
-+
 <template>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -104,11 +24,17 @@ function selectParking(isDisabled) {
     <div v-if="carNumber" class="number">[{{ carNumber }}]님 환영합니다.</div>
     <div class="message"><strong>장애 차량 여부를 선택해주세요.</strong></div>
     <div class="button-container">
-      <button class="parking-option" @click.prevent="selectParking(false)">
+      <button
+        class="parking-option"
+        @click.prevent="kioskStore.selectParking(false)"
+      >
         <img src="@/assets/주차안내 이미지 1.png" alt="일반 주차" />
         <div>일반 주차구역을 <br />배정해드립니다.</div>
       </button>
-      <button class="parking-option" @click.prevent="selectParking(true)">
+      <button
+        class="parking-option"
+        @click.prevent="kioskStore.selectParking(true)"
+      >
         <img src="@/assets/주차안내 이미지 2.png" alt="장애인 주차" />
         <div style="padding-bottom: 11%">
           장애인 주차구역을 <br />우선 배정해드립니다.

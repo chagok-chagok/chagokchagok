@@ -1,3 +1,56 @@
+<script setup>
+import { ref, onMounted } from "vue";
+// import router from "@/router";
+// const { VITE_VUE_SPRING_URL } = import.meta.env;
+import { useKioskStore } from "@/stores/kiosk";
+// import { instance } from "@/utils/mainAxios";
+// import { useRouter } from "vue-router";
+import { storeToRefs } from "pinia";
+// const local = instance;
+const kioskStore = useKioskStore();
+const {
+  currentTime,
+  carNumber,
+  isDisabled,
+  updateCurrentTime,
+  allocation,
+  selectParking,
+  getCurrentTime,
+} = storeToRefs(kioskStore);
+// 현재 시간을 가져오는 함수
+// function getCurrentTime() {
+//   const now = new Date();
+//   return now.toTimeString().substring(0, 5);
+// }
+
+// 현재 시간을 HH:MM 형식으로 반환하는 함수
+// currentTime = ref(getCurrentTime());
+// const kioskUrl = `${VITE_VUE_SPRING_URL}sse/kiosk`;
+
+// 인터벌을 설정하여 현재 시간을 매초마다 업데이트
+// onMounted(() => {
+//   const sseEvent = new EventSource(kioskUrl);
+
+//   //연결 리스너
+//   sseEvent.addEventListener("open", function (e) {
+//     //캐치할 에러코드를 써줌
+//   });
+
+//   //에러 리스너
+//   sseEvent.addEventListener("error", function (e) {});
+
+//   // SENSOR_REPORT 상태코드 리스너 << 이런식으로 등록하면 됨
+//   sseEvent.addEventListener("CONGESTION_CLEAR", function (e) {
+//     //캐치할 상태코드를 써줌
+//     router.push({ name: "allocation" });
+//   });
+
+//   setInterval(() => {
+//     currentTime.value = getCurrentTime();
+//   }, 10000000);
+// });
+</script>
+
 <template>
   <div class="screen-container">
     <div class="time-display">{{ currentTime }}</div>
@@ -10,45 +63,6 @@
     <div class="additional-message">자리가 생기면 안내해 드리겠습니다.</div>
   </div>
 </template>
-
-<script setup>
-import { ref, onMounted } from "vue";
-import router from "@/router";
-const { VITE_VUE_SPRING_URL } = import.meta.env;
-
-// 현재 시간을 가져오는 함수
-function getCurrentTime() {
-  const now = new Date();
-  return now.toTimeString().substring(0, 5);
-}
-
-// 현재 시간을 HH:MM 형식으로 반환하는 함수
-const currentTime = ref(getCurrentTime());
-const kioskUrl = `${VITE_VUE_SPRING_URL}sse/kiosk`;
-
-// 인터벌을 설정하여 현재 시간을 매초마다 업데이트
-onMounted(() => {
-  const sseEvent = new EventSource(kioskUrl);
-
-  //연결 리스너
-  sseEvent.addEventListener("open", function (e) {
-    //캐치할 에러코드를 써줌
-  });
-
-  //에러 리스너
-  sseEvent.addEventListener("error", function (e) {});
-
-  // SENSOR_REPORT 상태코드 리스너 << 이런식으로 등록하면 됨
-  sseEvent.addEventListener("CONGESTION_CLEAR", function (e) {
-    //캐치할 상태코드를 써줌
-    router.push({ name: "allocation" });
-  });
-
-  setInterval(() => {
-    currentTime.value = getCurrentTime();
-  }, 10000000);
-});
-</script>
 
 <style scoped>
 .screen-container {

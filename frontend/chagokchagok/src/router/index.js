@@ -12,6 +12,7 @@ import AllocationScreen from "@/views/kiosk/AllocationScreen.vue";
 import RecommendationScreen from "@/views/kiosk/RecommendationScreen.vue";
 import ParkingSection from "../views/admin/ParkingSection.vue";
 import Tooltip from "@/components/admin/Tooltip2.vue";
+import KioskView from "@/views/Kiosk.vue";
 
 const requireAuth = () => (from, to, next) => {
   if (!sessionStorage.getItem("accessToken")) {
@@ -74,30 +75,62 @@ const router = createRouter({
       ],
     },
     {
-      path: "/choice",
-      name: "choice",
-      component: ChoiceScreen,
+      path: "/kiosk",
+      name: "kiosk",
+      component: KioskView,
+      children: [
+        {
+          path: "choice",
+          name: "choice",
+          component: ChoiceScreen,
+        },
+        {
+          path: "no-place",
+          name: "no-place",
+          component: NoplaceScreen,
+        },
+        {
+          path: "recognition-error",
+          name: "recognition-error",
+          component: RecognitionErrorScreen,
+        },
+        {
+          path: "allocation",
+          name: "allocation",
+          component: AllocationScreen,
+        },
+        {
+          path: "recommendation",
+          name: "recommendation",
+          component: RecommendationScreen,
+        },
+      ],
     },
-    {
-      path: "/no-place",
-      name: "no-place",
-      component: NoplaceScreen,
-    },
-    {
-      path: "/recognition-error",
-      name: "recognition-error",
-      component: RecognitionErrorScreen,
-    },
-    {
-      path: "/allocation",
-      name: "allocation",
-      component: AllocationScreen,
-    },
-    {
-      path: "/recommendation",
-      name: "recommendation",
-      component: RecommendationScreen,
-    },
+    // {
+    //   path: "/choice",
+    //   name: "choice",
+    //   component: ChoiceScreen,
+    // },
+    // {
+    //   path: "/no-place",
+    //   name: "no-place",
+    //   component: NoplaceScreen,
+    // },
+    // {
+    //   path: "/recognition-error",
+    //   name: "recognition-error",
+    //   component: RecognitionErrorScreen,
+    // },
+    // {
+    //   path: "/allocation",
+    //   name: "allocation",
+    //   component: AllocationScreen,
+    // },
+    // {
+    //   path: "/recommendation",
+    //   name: "recommendation",
+    //   component: RecommendationScreen,
+    // },
     {
       path: "/guest",
       name: "guest",
