@@ -13,7 +13,7 @@ import java.util.TimeZone;
 public class ChagokchagokApplication {
 	@PostConstruct
 	public void started() {
-		TimeZone.setDefault(TimeZone.getTimeZone("Aisa/Seoul"));
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
 		System.out.println("현재시각 : " + new Date());
 	}
 	public static void main(String[] args) {
