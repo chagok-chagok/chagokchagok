@@ -226,12 +226,6 @@ public class AdminService {
         //오늘 방문 차량 조회
         int[] today_visits = new int[LocalDateTime.now().getHour()+1];
         findEnteredCarInDay(LocalDate.now(), today_visits);
-        System.out.println("===============현재시간 : " + LocalDate.now() + " =================");
-        System.out.println("===============현재시간 : " + LocalDate.now() + " =================");
-        System.out.println("===============현재시간 : " + LocalDate.now() + " =================");
-        System.out.println("===============현재시간 : " + LocalDate.now() + " =================");
-        System.out.println("===============현재시간 : " + LocalDate.now() + " =================");
-        System.out.println("===============현재시간 : " + LocalDate.now() + " =================");
         //어제 방문 차량 조회
         int[] previous_visits = new int[24];
         findEnteredCarInDay(LocalDate.now().minusDays(1), previous_visits);
