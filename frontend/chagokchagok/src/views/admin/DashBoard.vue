@@ -108,7 +108,7 @@ function drawDoughtnut() {
 function drawLine() {
   const ctx = lineChart.value.getContext("2d");
   let gradientFill = ctx.createLinearGradient(0, 0, 0, 200);
-  gradientFill.addColorStop(0, "rgb(0,7,182,0.1)");
+  gradientFill.addColorStop(0, "rgb(63,102,181,0.3)");
   gradientFill.addColorStop(1, "rgba(0, 0, 0, 0)");
 
   const data = {
@@ -163,12 +163,7 @@ function drawLine() {
         y: {
           ticks: {
             color: "#b6baca",
-            // forces step size to be 50 units
-            stepSize: 50,
-            callback: (value, index) => {
-              if (value == 0) return "";
-              return value % 50 === 0 ? value : "";
-            },
+            stepSize: 10,
           },
           grid: {
             drawTicks: false,
@@ -219,6 +214,8 @@ function startAnimation() {
       <div id="chart-info">
         <h4 id="chart_left" class="title">Total Visits</h4>
         <div id="chart_right">
+          <div class="today-line"></div>
+          <p>ToDay</p>
           <div class="horizontal-line"></div>
           <p>Previous Day</p>
         </div>
@@ -339,6 +336,15 @@ p {
   /* 기타 초기화할 스타일 속성들 */
 }
 
+.today-line {
+  background-color: #3f66b5;
+
+  width: 60px;
+  height: 3px;
+  /* border: 1px solid black; */
+  border-radius: 40px;
+  margin-top: 12px;
+}
 .dashboard-main {
   display: flex;
   flex-direction: column;
@@ -450,6 +456,7 @@ p {
   display: flex;
   flex-direction: row;
   gap: 20px;
+  font-size: 0.8rem;
 }
 
 #report-chart-total {
