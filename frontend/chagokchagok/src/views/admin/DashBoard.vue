@@ -108,7 +108,7 @@ function drawDoughtnut() {
 function drawLine() {
   const ctx = lineChart.value.getContext("2d");
   let gradientFill = ctx.createLinearGradient(0, 0, 0, 200);
-  gradientFill.addColorStop(0, "rgb(63,102,181,0.3)");
+  gradientFill.addColorStop(0, "rgb(99,131,195,0.1)");
   gradientFill.addColorStop(1, "rgba(0, 0, 0, 0)");
 
   const data = {
