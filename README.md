@@ -4,6 +4,8 @@
 > 혼잡한 주차장 내부에서 발생하는 다양한 문제(자리가 없음에도 계속 돌아야함, 뒤늦게 온 차가 자리선점)의<br>
 > 근본적 해결책을 제시합니다. 이제 더이상 기다리지도, 찾아다니지도 말고 자리를 바로 배정받으세요!
 
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fchagok-chagok%2Fchagokchagok&count_bg=%2360A0FF&title_bg=%23626262&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+
 <br><br>
 ## 🎞 프로젝트 진행기간
 **[SSAFY 10기 공통 프로젝트]**<br>
