@@ -59,7 +59,7 @@ SSAFY 10기 공통 프로젝트<br>
 
 |       백성욱        | 김용준  | <center>김준호</center> |  박수형  |  임태수  |       최서현        |
 | :-----------------: | :-----: | :---------------------: | :------: | :------: | :-----------------: |
-| Leader <br> Backend | Backend |        FrontEnd         | Hardware | Hardware | Backend <br> Design |
+| Leader <br> Backend | Backend <br> Frontend |        FrontEnd         | Hardware | Hardware | Backend <br> Design <br> Frontend|
 
 ### 역할분배
 
